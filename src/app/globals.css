@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-primary: #418456;
+  --color-primary-dark: #1f4223;
+  --color-primary-light: rgba(65, 132, 86, 0.08);
+  --color-secondary: #e9b063;
+  --color-cream: rgba(233, 176, 99, 0.09);
+  --color-footer-text: #e6ebe6;
+  --color-border-green: rgba(65, 132, 86, 0.2);
+  --font-sans: var(--font-adys), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-primary-dark);
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
