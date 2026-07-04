@@ -12,17 +12,24 @@ export function FaqSection() {
   const visibleQuestions = faqQuestions.slice(0, FAQ_PREVIEW_LIMIT);
 
   return (
-    <section id="questionnaires" className="w-full bg-cream py-16 md:py-24">
+    <section id="questionnaires" className="w-full bg-cream py-20 md:py-32">
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[25%_45%] lg:gap-[10%]">
-          <Reveal className="lg:sticky lg:top-24 lg:self-start">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <Reveal>
+            <FaqList items={visibleQuestions} />
+          </Reveal>
+
+          <Reveal delay={150} className="lg:sticky lg:top-24 lg:self-start">
             <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.04] text-primary">
               Бързи отговори на най-честите въпроси
             </h2>
 
             <SectionLead className="mt-4 max-w-[360px]">
-              Физическо и моторно развитие, Социално развитие, Език и говор,
-              и др.
+              Физическо и моторно развитие
+              <br />
+              Социално развитие
+              <br />
+              Език и говор, и др.
             </SectionLead>
 
             <Link
@@ -38,10 +45,6 @@ export function FaqSection() {
                 className={`shrink-0 transition-transform ${motion} group-hover:translate-x-1`}
               />
             </Link>
-          </Reveal>
-
-          <Reveal delay={150}>
-            <FaqList items={visibleQuestions} />
           </Reveal>
         </div>
       </Container>

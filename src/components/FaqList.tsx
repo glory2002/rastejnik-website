@@ -14,7 +14,7 @@ function FaqToggleIcon({ isOpen }: { isOpen: boolean }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
-      className={`mt-1 h-[18px] w-[25px] shrink-0 transition-[transform,color] ${motion} md:h-[22px] md:w-[29px] ${
+      className={`mt-1 h-4 w-[22px] shrink-0 transition-[transform,color] ${motion} md:h-5 md:w-[26px] ${
         isOpen ? "-rotate-90 text-secondary" : "-rotate-45 text-primary"
       }`}
     >
@@ -64,7 +64,7 @@ export function FaqList({ items }: FaqListProps) {
             >
               <div className="overflow-hidden">
                 <div className="flex gap-3 px-4 pb-5 md:gap-3.5 md:pb-6">
-                  <div className="w-[25px] shrink-0 md:w-[29px]" aria-hidden />
+                  <div className="w-[22px] shrink-0 md:w-[26px]" aria-hidden />
                   <p className="flex-1 text-lg leading-[1.3] text-primary-dark">
                     {item.answer}
                   </p>

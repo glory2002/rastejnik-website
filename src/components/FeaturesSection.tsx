@@ -86,7 +86,7 @@ export function FeaturesSection() {
               >
                 <div className="relative z-10 flex h-[70px] w-[70px] shrink-0 items-center justify-center">
                   <div
-                    className={`origin-center scale-[0.78] transition-transform ${motion} group-hover:scale-[1.38]`}
+                    className={`origin-center scale-[1.014] transition-transform ${motion} group-hover:scale-[1.38]`}
                   >
                     <Image
                       src={feature.icon}

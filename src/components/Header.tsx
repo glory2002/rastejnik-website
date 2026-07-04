@@ -111,74 +111,110 @@ export function Header({
   variant = "overlay",
 }: {
   /** "overlay" sits transparently on top of dark hero media with white text.
-   * "light" is the inverted palette for use on light page backgrounds. */
-  variant?: "overlay" | "light";
+   * "light" is the inverted palette for use on light page backgrounds.
+   * "framed" is a static cream header that sits above an inset hero block
+   * (video framed with margins below it) rather than overlaying it. */
+  variant?: "overlay" | "light" | "framed";
 }) {
   const isLight = variant === "light";
+  const isFramed = variant === "framed";
+  const isStatic = isLight || isFramed;
 
   // Scroll-away header: hides while scrolling down, reappears (with a
   // solid white surface) on the slightest scroll up. Only the "overlay"
-  // variant needs this — "light" pages already have a static solid header.
+  // variant needs this — static variants already sit on a solid surface.
   const [hidden, setHidden] = useState(false);
   const [elevated, setElevated] = useState(false);
 
   useEffect(() => {
-    if (isLight) return;
+    if (isStatic) return;
 
-    let lastY = window.scrollY;
+    // A show/hide decision only fires once scroll has moved a deliberate
+    // amount past the last decision point — this hysteresis is what keeps
+    // the header still during momentum-scroll micro-jitter instead of
+    // flickering back and forth every frame.
+    const THRESHOLD = 8;
+    let anchorY = window.scrollY;
+    let ticking = false;
 
-    function handleScroll() {
+    function update() {
       const y = window.scrollY;
-      const scrolledDown = y > lastY;
 
       setElevated(y > 40);
 
       if (y < 10) {
         setHidden(false);
-      } else if (scrolledDown) {
+        anchorY = y;
+      } else if (y - anchorY > THRESHOLD) {
         setHidden(true);
-      } else {
+        anchorY = y;
+      } else if (anchorY - y > THRESHOLD) {
         setHidden(false);
+        anchorY = y;
       }
 
-      lastY = y;
+      ticking = false;
+    }
+
+    function handleScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isLight]);
+  }, [isStatic]);
 
-  const isWhiteSurface = !isLight && elevated;
+  const isWhiteSurface = !isStatic && elevated;
 
   return (
     <header
       className={
-        isLight
-          ? "relative w-full border-b border-border-green bg-primary-light"
-          : `fixed inset-x-0 top-0 z-50 w-full transition-[background-color,transform,box-shadow] duration-300 ease-out ${
+        isStatic
+          ? `relative w-full ${
+              isFramed
+                ? "bg-cream"
+                : "border-b border-border-green bg-primary-light"
+            }`
+          : `fixed inset-x-0 top-0 z-50 w-full transition-[background-color,transform,opacity,box-shadow] will-change-transform ${
               isWhiteSurface ? "bg-white shadow-sm" : "bg-transparent"
-            } ${hidden ? "-translate-y-full" : "translate-y-0"}`
+            } ${
+              hidden
+                ? "-translate-y-4 opacity-0 pointer-events-none duration-[250ms] ease-[cubic-bezier(0.4,0,1,1)]"
+                : "translate-y-0 opacity-100 duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+            }`
       }
     >
       <FullWidth className="flex items-center justify-between py-3">
         <Link href="/" aria-label="Растежник начало">
           <Logo
             variant="header"
-            tone={isLight ? "dark" : isWhiteSurface ? "green" : "light"}
+            tone={
+              isFramed
+                ? "green"
+                : isLight
+                  ? "dark"
+                  : isWhiteSurface
+                    ? "green"
+                    : "light"
+            }
           />
         </Link>
 
-        <nav className="hidden items-center gap-5 md:flex lg:gap-5.5">
+        <nav className="hidden items-center gap-8 md:flex lg:gap-11">
           {navLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
               className={`text-[21px] font-medium transition-colors hover:opacity-80 ${
-                isLight
-                  ? "text-primary-dark"
-                  : isWhiteSurface
-                    ? "text-primary"
-                    : "text-white"
+                isFramed
+                  ? "text-primary"
+                  : isLight
+                    ? "text-primary-dark"
+                    : isWhiteSurface
+                      ? "text-primary"
+                      : "text-white"
               }`}
             >
               {link.label}

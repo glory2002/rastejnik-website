@@ -20,7 +20,7 @@ export function Container({
 }: ContainerProps) {
   return (
     <Tag
-      className={`mx-auto w-full max-w-[1800px] px-6 md:px-10 lg:px-26 ${className}`}
+      className={`mx-auto w-full max-w-[1800px] px-5 md:px-8 lg:px-16 ${className}`}
     >
       {children}
     </Tag>
@@ -35,7 +35,7 @@ export function FullWidth({
 }: ContainerProps) {
   return (
     <Tag
-      className={`mx-auto w-full max-w-[1800px] px-6 md:px-10 lg:px-26 ${className}`}
+      className={`mx-auto w-full max-w-[1800px] px-5 md:px-8 lg:px-16 ${className}`}
     >
       {children}
     </Tag>
