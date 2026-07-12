@@ -7,7 +7,7 @@ import { FullWidth } from "./ui/Container";
 
 const navLinks = [
   { label: "За Нас", href: "/about" },
-  { label: "Въпросници", href: "/#questionnaires" },
+  { label: "Въпросници", href: "/questionnaires" },
   { label: "Ресурси", href: "/#resources" },
 ];
 
@@ -65,7 +65,7 @@ function LogoMark({
         />
         <path
           d="M155.485 3.48903L152.001 0L148.584 3.48903L145.1 0L141.617 3.48903L148.584 10.4671L155.485 3.48903Z"
-          fill="#E58FAB"
+          fill="#D8727F"
         />
       </g>
       <defs>

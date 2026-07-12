@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { FaqBrowser } from "@/components/FaqBrowser";
 import { Footer } from "@/components/Footer";
-import { Logo } from "@/components/Header";
-import { FullWidth, Container } from "@/components/ui/Container";
-import Link from "next/link";
+import { Header } from "@/components/Header";
+import { Container } from "@/components/ui/Container";
 
 export const metadata: Metadata = {
   title: "Всички въпроси — Растежник",
@@ -13,23 +12,10 @@ export const metadata: Metadata = {
 
 export default function FaqPage() {
   return (
-    <main className="bg-cream">
-      <FullWidth
-        as="header"
-        className="flex items-center justify-between border-b border-border-green py-6"
-      >
-        <Link href="/" aria-label="Растежник начало">
-          <Logo variant="footer" tone="dark" />
-        </Link>
-        <Link
-          href="/#questionnaires"
-          className="text-sm font-bold uppercase tracking-wider text-primary transition-opacity hover:opacity-70"
-        >
-          ← Начало
-        </Link>
-      </FullWidth>
+    <main>
+      <Header variant="framed" />
 
-      <section className="w-full py-16 md:py-24">
+      <section className="w-full bg-cream py-16 md:py-24">
         <Container>
           <h1 className="max-w-[700px] text-[clamp(2rem,4vw,3.5rem)] font-bold leading-[1.05] text-primary">
             Всички въпроси

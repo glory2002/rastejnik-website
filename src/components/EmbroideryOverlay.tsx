@@ -106,7 +106,7 @@ export function EmbroideryOverlay() {
     <div
       ref={wrapperRef}
       aria-hidden
-      className="pointer-events-none fixed right-0 top-1/2 z-10 hidden w-[568px] translate-x-[30%] -translate-y-1/2 md:block md:w-[743px] lg:w-[874px]"
+      className="pointer-events-none fixed right-0 top-1/2 z-10 block w-[364px] translate-x-[30%] -translate-y-1/2 sm:w-[440px] md:w-[743px] lg:w-[874px]"
     >
       <div className="relative aspect-[708.98/726.03] w-full">
         {/*

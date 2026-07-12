@@ -15,10 +15,10 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="bg-cream">
-      <Header variant="light" />
+    <main>
+      <Header variant="framed" />
 
-      <section className="w-full py-16 md:py-24">
+      <section className="w-full bg-cream py-16 md:py-24">
         <Container>
           <h1 className="max-w-[700px] text-[clamp(2rem,4vw,3.5rem)] font-bold leading-[1.05] text-primary">
             За Растежник
