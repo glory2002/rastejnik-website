@@ -2,10 +2,9 @@
  * Inline version of embroidery-4.svg (the shevitsa motif from the homepage
  * CTA section), split into its natural clusters of shapes. Each cluster is
  * wrapped in its own <g className="shevitsa-piece"> with a `--piece-dx` /
- * `--piece-dy` offset pointing away from the motif's center — see the
- * `shevitsa-piece-in` keyframes in globals.css. When played, every piece
- * starts out at that offset (as if scattered off-screen) and flies inward,
- * assembling into the full motif at its natural, centered position.
+ * `--piece-dy` offset pointing far off-screen — see the `shevitsa-piece-in`
+ * keyframes in globals.css. Choreography: large green/red arms first, then
+ * orange, then pink/blue accents (via animationDelay on each piece).
  */
 export function ShevitsaAssembleIcon({ className }: { className?: string }) {
   return (
@@ -13,14 +12,25 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
       viewBox="0 0 708.98 726.03"
       className={className}
       aria-hidden="true"
+      overflow="visible"
     >
       <defs>
-        <style>{`.cls-1{fill:#e19826}.cls-2{fill:#fff;opacity:.35}.cls-3{fill:#ee3c42}.cls-4{fill:#f17996}.cls-5{fill:#1f4fa1}`}</style>
+        {/* Same palette as embroidery-3.svg (light-background variant). */}
+        <style>{`.cls-1{fill:#e19826}.cls-2{fill:#6d954b}.cls-3{fill:#ee3c42}.cls-4{fill:#f17996}.cls-5{fill:#1f4fa1}`}</style>
       </defs>
 
       <g
         className="shevitsa-piece"
-        style={{ "--piece-dx": "-49px", "--piece-dy": "584px", animationDelay: "40ms" } as React.CSSProperties}
+        style={
+          {
+            "--piece-z": "-520px",
+            "--piece-scale": "0.9",
+            "--piece-dx": "-520px",
+            "--piece-dy": "2600px",
+            "--piece-spin": "140deg",
+            animationDelay: "520ms",
+          } as React.CSSProperties
+        }
       >
         <polygon className="cls-4" points="372.21 690.58 389.94 672.86 372.21 655.13 389.94 637.41 372.21 619.69 354.49 637.41 336.76 655.13 354.49 672.86 372.21 690.58" />
         <rect className="cls-4" x="306.51" y="678.05" width="25.07" height="25.07" transform="translate(-394.87 427.86) rotate(-45)" />
@@ -31,7 +41,16 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
 
       <g
         className="shevitsa-piece"
-        style={{ "--piece-dx": "-149px", "--piece-dy": "324px", animationDelay: "0ms" } as React.CSSProperties}
+        style={
+          {
+            "--piece-z": "-280px",
+            "--piece-scale": "1.35",
+            "--piece-dx": "-1680px",
+            "--piece-dy": "2100px",
+            "--piece-spin": "-95deg",
+            animationDelay: "560ms",
+          } as React.CSSProperties
+        }
       >
         <polygon className="cls-5" points="319.04 495.61 301.32 477.89 283.59 495.61 265.87 477.89 248.14 495.61 265.87 513.34 283.59 531.06 301.32 513.34 319.04 495.61" />
         <rect className="cls-5" x="306.51" y="536.26" width="25.07" height="25.07" transform="translate(-294.61 386.33) rotate(-45)" />
@@ -42,7 +61,16 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
 
       <g
         className="shevitsa-piece"
-        style={{ "--piece-dx": "161px", "--piece-dy": "364px", animationDelay: "70ms" } as React.CSSProperties}
+        style={
+          {
+            "--piece-z": "220px",
+            "--piece-scale": "1.85",
+            "--piece-dx": "1900px",
+            "--piece-dy": "2200px",
+            "--piece-spin": "125deg",
+            animationDelay: "600ms",
+          } as React.CSSProperties
+        }
       >
         <polygon className="cls-5" points="478.56 584.24 496.28 566.51 478.56 548.79 496.28 531.06 478.56 513.34 460.83 531.06 443.11 548.79 460.83 566.51 478.56 584.24" />
         <rect className="cls-5" x="412.85" y="571.7" width="25.07" height="25.07" transform="translate(-288.53 471.91) rotate(-45)" />
@@ -53,7 +81,16 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
 
       <g
         className="shevitsa-piece"
-        style={{ "--piece-dx": "-1px", "--piece-dy": "168px", animationDelay: "20ms" } as React.CSSProperties}
+        style={
+          {
+            "--piece-z": "480px",
+            "--piece-scale": "2.25",
+            "--piece-dx": "280px",
+            "--piece-dy": "2400px",
+            "--piece-spin": "-70deg",
+            animationDelay: "45ms",
+          } as React.CSSProperties
+        }
       >
         <rect className="cls-2" x="341.96" y="394.46" width="25.07" height="25.07" transform="translate(892.94 444.12) rotate(135)" />
         <rect className="cls-2" x="341.96" y="429.91" width="25.07" height="25.07" transform="translate(918 504.63) rotate(135)" />
@@ -63,7 +100,16 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
 
       <g
         className="shevitsa-piece"
-        style={{ "--piece-dx": "-209px", "--piece-dy": "534px", animationDelay: "90ms" } as React.CSSProperties}
+        style={
+          {
+            "--piece-z": "-140px",
+            "--piece-scale": "1.5",
+            "--piece-dx": "-2100px",
+            "--piece-dy": "1800px",
+            "--piece-spin": "160deg",
+            animationDelay: "90ms",
+          } as React.CSSProperties
+        }
       >
         <polygon className="cls-2" points="212.69 708.31 230.42 690.58 248.14 672.86 265.87 655.13 283.59 637.41 301.32 619.69 319.04 601.96 336.76 584.24 354.49 566.51 372.21 548.79 354.49 531.06 336.76 548.79 319.04 566.51 301.32 584.24 283.59 601.96 265.87 619.69 248.14 637.41 230.42 655.13 212.69 672.86 194.97 690.58 177.24 672.86 159.52 655.13 141.8 637.41 124.07 655.13 141.8 672.86 159.52 690.58 177.24 708.31 194.97 726.03 212.69 708.31" />
         <polygon className="cls-2" points="177.24 601.96 159.52 584.24 141.8 601.96 124.07 619.69 141.8 637.41 159.52 619.69 177.24 601.96" />
@@ -71,22 +117,187 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
         <rect className="cls-2" x="182.44" y="589.43" width="25.07" height="25.07" transform="translate(-368.55 314.17) rotate(-45)" />
       </g>
 
-      <polygon className="shevitsa-piece cls-1" style={{ "--piece-dx": "177px", "--piece-dy": "-196px", animationDelay: "110ms" } as React.CSSProperties} points="460.83 282.92 478.56 265.2 460.83 247.47 443.11 229.75 425.39 247.47 407.66 265.2 425.39 282.92 443.11 300.65 460.83 282.92" />
-      <polygon className="shevitsa-piece cls-1" style={{ "--piece-dx": "177px", "--piece-dy": "158px", animationDelay: "30ms" } as React.CSSProperties} points="460.83 460.17 478.56 442.44 460.83 424.72 443.11 406.99 425.39 424.72 407.66 442.44 425.39 460.17 443.11 477.89 460.83 460.17" />
-      <polygon className="shevitsa-piece cls-4" style={{ "--piece-dx": "283px", "--piece-dy": "264px", animationDelay: "130ms" } as React.CSSProperties} points="514.01 513.34 531.73 495.61 514.01 477.89 496.28 460.17 478.56 477.89 460.83 495.61 478.56 513.34 496.28 531.06 514.01 513.34" />
-      <polygon className="shevitsa-piece cls-4" style={{ "--piece-dx": "283px", "--piece-dy": "-302px", animationDelay: "60ms" } as React.CSSProperties} points="514.01 229.75 531.73 212.02 514.01 194.3 496.28 176.58 478.56 194.3 460.83 212.02 478.56 229.75 496.28 247.47 514.01 229.75" />
-      <polygon className="shevitsa-piece cls-4" style={{ "--piece-dx": "-285px", "--piece-dy": "-302px", animationDelay: "100ms" } as React.CSSProperties} points="230.42 229.75 248.14 212.02 230.42 194.3 212.69 176.58 194.97 194.3 177.24 212.02 194.97 229.75 212.69 247.47 230.42 229.75" />
-      <polygon className="shevitsa-piece cls-4" style={{ "--piece-dx": "-285px", "--piece-dy": "264px", animationDelay: "10ms" } as React.CSSProperties} points="230.42 513.34 248.14 495.61 230.42 477.89 212.69 460.17 194.97 477.89 177.24 495.61 194.97 513.34 212.69 531.06 230.42 513.34" />
-      <polygon className="shevitsa-piece cls-1" style={{ "--piece-dx": "-179px", "--piece-dy": "158px", animationDelay: "80ms" } as React.CSSProperties} points="283.59 460.17 301.32 442.44 283.59 424.72 265.87 406.99 248.14 424.72 230.42 442.44 248.14 460.17 265.87 477.89 283.59 460.17" />
-      <polygon className="shevitsa-piece cls-1" style={{ "--piece-dx": "-179px", "--piece-dy": "-196px", animationDelay: "50ms" } as React.CSSProperties} points="283.59 282.92 301.32 265.2 283.59 247.47 265.87 229.75 248.14 247.47 230.42 265.2 248.14 282.92 265.87 300.65 283.59 282.92" />
-      <polygon className="shevitsa-piece cls-2" style={{ "--piece-dx": "-1px", "--piece-dy": "-162px", animationDelay: "140ms" } as React.CSSProperties} points="372.21 300.65 389.94 282.92 372.21 265.2 354.49 247.47 336.76 265.2 319.04 282.92 336.76 300.65 354.49 318.37 372.21 300.65" />
-      <polygon className="shevitsa-piece cls-2" style={{ "--piece-dx": "-1px", "--piece-dy": "-20px", animationDelay: "0ms" } as React.CSSProperties} points="372.21 371.54 389.94 353.82 372.21 336.1 354.49 318.37 336.76 336.09 319.04 353.82 336.76 371.54 354.49 389.27 372.21 371.54" />
-      <polygon className="shevitsa-piece cls-2" style={{ "--piece-dx": "141px", "--piece-dy": "-20px", animationDelay: "120ms" } as React.CSSProperties} points="443.11 371.54 460.83 353.82 443.11 336.1 425.39 318.37 407.66 336.09 389.94 353.82 407.66 371.54 425.39 389.27 443.11 371.54" />
-      <polygon className="shevitsa-piece cls-2" style={{ "--piece-dx": "-143px", "--piece-dy": "-20px", animationDelay: "20ms" } as React.CSSProperties} points="301.32 371.54 319.04 353.82 301.32 336.1 283.59 318.37 265.87 336.09 248.14 353.82 265.87 371.54 283.59 389.27 301.32 371.54" />
+      <polygon
+        className="shevitsa-piece cls-1"
+        style={
+          {
+            "--piece-z": "340px",
+            "--piece-scale": "2.0",
+            "--piece-dx": "1700px",
+            "--piece-dy": "-1900px",
+            "--piece-spin": "-130deg",
+            animationDelay: "360ms",
+          } as React.CSSProperties
+        }
+        points="460.83 282.92 478.56 265.2 460.83 247.47 443.11 229.75 425.39 247.47 407.66 265.2 425.39 282.92 443.11 300.65 460.83 282.92"
+      />
+      <polygon
+        className="shevitsa-piece cls-1"
+        style={
+          {
+            "--piece-z": "-520px",
+            "--piece-scale": "0.9",
+            "--piece-dx": "1950px",
+            "--piece-dy": "900px",
+            "--piece-spin": "85deg",
+            animationDelay: "400ms",
+          } as React.CSSProperties
+        }
+        points="460.83 460.17 478.56 442.44 460.83 424.72 443.11 406.99 425.39 424.72 407.66 442.44 425.39 460.17 443.11 477.89 460.83 460.17"
+      />
+      <polygon
+        className="shevitsa-piece cls-4"
+        style={
+          {
+            "--piece-z": "-280px",
+            "--piece-scale": "1.35",
+            "--piece-dx": "2300px",
+            "--piece-dy": "1600px",
+            "--piece-spin": "-150deg",
+            animationDelay: "640ms",
+          } as React.CSSProperties
+        }
+        points="514.01 513.34 531.73 495.61 514.01 477.89 496.28 460.17 478.56 477.89 460.83 495.61 478.56 513.34 496.28 531.06 514.01 513.34"
+      />
+      <polygon
+        className="shevitsa-piece cls-4"
+        style={
+          {
+            "--piece-z": "220px",
+            "--piece-scale": "1.85",
+            "--piece-dx": "2200px",
+            "--piece-dy": "-2100px",
+            "--piece-spin": "100deg",
+            animationDelay: "680ms",
+          } as React.CSSProperties
+        }
+        points="514.01 229.75 531.73 212.02 514.01 194.3 496.28 176.58 478.56 194.3 460.83 212.02 478.56 229.75 496.28 247.47 514.01 229.75"
+      />
+      <polygon
+        className="shevitsa-piece cls-4"
+        style={
+          {
+            "--piece-z": "480px",
+            "--piece-scale": "2.25",
+            "--piece-dx": "-2300px",
+            "--piece-dy": "-2000px",
+            "--piece-spin": "-115deg",
+            animationDelay: "720ms",
+          } as React.CSSProperties
+        }
+        points="230.42 229.75 248.14 212.02 230.42 194.3 212.69 176.58 194.97 194.3 177.24 212.02 194.97 229.75 212.69 247.47 230.42 229.75"
+      />
+      <polygon
+        className="shevitsa-piece cls-4"
+        style={
+          {
+            "--piece-z": "-140px",
+            "--piece-scale": "1.5",
+            "--piece-dx": "-2200px",
+            "--piece-dy": "1700px",
+            "--piece-spin": "75deg",
+            animationDelay: "760ms",
+          } as React.CSSProperties
+        }
+        points="230.42 513.34 248.14 495.61 230.42 477.89 212.69 460.17 194.97 477.89 177.24 495.61 194.97 513.34 212.69 531.06 230.42 513.34"
+      />
+      <polygon
+        className="shevitsa-piece cls-1"
+        style={
+          {
+            "--piece-z": "340px",
+            "--piece-scale": "2.0",
+            "--piece-dx": "-1800px",
+            "--piece-dy": "1100px",
+            "--piece-spin": "-90deg",
+            animationDelay: "440ms",
+          } as React.CSSProperties
+        }
+        points="283.59 460.17 301.32 442.44 283.59 424.72 265.87 406.99 248.14 424.72 230.42 442.44 248.14 460.17 265.87 477.89 283.59 460.17"
+      />
+      <polygon
+        className="shevitsa-piece cls-1"
+        style={
+          {
+            "--piece-z": "-520px",
+            "--piece-scale": "0.9",
+            "--piece-dx": "-1750px",
+            "--piece-dy": "-1750px",
+            "--piece-spin": "135deg",
+            animationDelay: "480ms",
+          } as React.CSSProperties
+        }
+        points="283.59 282.92 301.32 265.2 283.59 247.47 265.87 229.75 248.14 247.47 230.42 265.2 248.14 282.92 265.87 300.65 283.59 282.92"
+      />
+      <polygon
+        className="shevitsa-piece cls-2"
+        style={
+          {
+            "--piece-z": "-280px",
+            "--piece-scale": "1.35",
+            "--piece-dx": "180px",
+            "--piece-dy": "-2300px",
+            "--piece-spin": "-160deg",
+            animationDelay: "135ms",
+          } as React.CSSProperties
+        }
+        points="372.21 300.65 389.94 282.92 372.21 265.2 354.49 247.47 336.76 265.2 319.04 282.92 336.76 300.65 354.49 318.37 372.21 300.65"
+      />
+      <polygon
+        className="shevitsa-piece cls-2"
+        style={
+          {
+            "--piece-z": "220px",
+            "--piece-scale": "1.85",
+            "--piece-dx": "-900px",
+            "--piece-dy": "-2500px",
+            "--piece-spin": "55deg",
+            animationDelay: "180ms",
+          } as React.CSSProperties
+        }
+        points="372.21 371.54 389.94 353.82 372.21 336.1 354.49 318.37 336.76 336.09 319.04 353.82 336.76 371.54 354.49 389.27 372.21 371.54"
+      />
+      <polygon
+        className="shevitsa-piece cls-2"
+        style={
+          {
+            "--piece-z": "480px",
+            "--piece-scale": "2.25",
+            "--piece-dx": "2100px",
+            "--piece-dy": "-300px",
+            "--piece-spin": "-45deg",
+            animationDelay: "225ms",
+          } as React.CSSProperties
+        }
+        points="443.11 371.54 460.83 353.82 443.11 336.1 425.39 318.37 407.66 336.09 389.94 353.82 407.66 371.54 425.39 389.27 443.11 371.54"
+      />
+      <polygon
+        className="shevitsa-piece cls-2"
+        style={
+          {
+            "--piece-z": "-140px",
+            "--piece-scale": "1.5",
+            "--piece-dx": "-2100px",
+            "--piece-dy": "200px",
+            "--piece-spin": "120deg",
+            animationDelay: "270ms",
+          } as React.CSSProperties
+        }
+        points="301.32 371.54 319.04 353.82 301.32 336.1 283.59 318.37 265.87 336.09 248.14 353.82 265.87 371.54 283.59 389.27 301.32 371.54"
+      />
 
       <g
         className="shevitsa-piece"
-        style={{ "--piece-dx": "521px", "--piece-dy": "-36px", animationDelay: "60ms" } as React.CSSProperties}
+        style={
+          {
+            "--piece-z": "340px",
+            "--piece-scale": "2.0",
+            "--piece-dx": "2700px",
+            "--piece-dy": "-400px",
+            "--piece-spin": "-170deg",
+            animationDelay: "50ms",
+          } as React.CSSProperties
+        }
       >
         <rect className="cls-3" x="678.72" y="341.29" width="25.07" height="25.07" transform="translate(-47.73 592.42) rotate(-45)" />
         <polygon className="cls-3" points="638.08 389.27 655.8 406.99 673.53 389.27 655.8 371.54 673.53 353.82 655.8 336.1 673.53 318.37 655.8 300.65 638.08 318.37 620.35 336.1 602.63 353.82 620.35 371.54 638.08 389.27" />
@@ -96,7 +307,16 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
 
       <g
         className="shevitsa-piece"
-        style={{ "--piece-dx": "-9px", "--piece-dy": "-446px", animationDelay: "150ms" } as React.CSSProperties}
+        style={
+          {
+            "--piece-z": "-520px",
+            "--piece-scale": "0.9",
+            "--piece-dx": "400px",
+            "--piece-dy": "-2700px",
+            "--piece-spin": "145deg",
+            animationDelay: "0ms",
+          } as React.CSSProperties
+        }
       >
         <rect className="cls-2" x="341.96" y="4.52" width="25.07" height="25.07" transform="translate(91.77 255.66) rotate(-45)" />
         <polygon className="cls-2" points="389.94 70.23 407.66 52.5 389.94 34.78 372.21 52.5 354.49 34.78 336.76 52.5 319.04 34.78 301.32 52.5 319.04 70.23 336.76 87.95 354.49 105.68 372.21 87.95 389.94 70.23" />
@@ -106,7 +326,16 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
 
       <g
         className="shevitsa-piece"
-        style={{ "--piece-dx": "-459px", "--piece-dy": "-36px", animationDelay: "110ms" } as React.CSSProperties}
+        style={
+          {
+            "--piece-z": "-280px",
+            "--piece-scale": "1.35",
+            "--piece-dx": "-2700px",
+            "--piece-dy": "-350px",
+            "--piece-spin": "-155deg",
+            animationDelay: "90ms",
+          } as React.CSSProperties
+        }
       >
         <rect className="cls-3" x="5.19" y="341.29" width="25.07" height="25.07" transform="translate(-245 116.16) rotate(-45)" />
         <polygon className="cls-3" points="70.9 318.37 53.17 300.65 35.45 318.37 53.17 336.09 35.45 353.82 53.17 371.54 35.45 389.27 53.17 406.99 70.9 389.27 88.62 371.54 106.35 353.82 88.62 336.1 70.9 318.37" />

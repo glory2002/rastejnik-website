@@ -4,9 +4,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { BabyCrawlIcon } from "@/components/icons/BabyCrawlIcon";
+import { BabyRattleIcon } from "@/components/icons/BabyRattleIcon";
 import { QuestionnaireFlow } from "@/components/QuestionnaireFlow";
-import { Container } from "@/components/ui/Container";
 import { defaultQuestions } from "@/data/questionBank";
+import { getBabyIcons } from "@/lib/babyIcons";
 import {
   questionnaireCategories,
   findInterval,
@@ -50,45 +52,79 @@ export default async function IntervalQuestionnairePage({
 
   if (!found) notFound();
 
-  const { sub, interval: currentInterval } = found;
+  const { sub, interval: currentInterval, index } = found;
+
+  const babyIcons = getBabyIcons();
+  const icon = babyIcons.length > 0 ? babyIcons[index % babyIcons.length] : null;
+  const isRattleBaby = icon === "/images/baby-1.svg";
+  const isCrawlBaby = icon === "/images/baby-2.svg";
+
+  const header = (
+    <div className="flex flex-col items-center gap-4 text-center">
+      {/* Breadcrumb: ancestors muted, current interval in active primary. */}
+      <nav
+        aria-label="Навигация във въпросника"
+        className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[13px] font-bold uppercase"
+      >
+        <Link
+          href="/questionnaires"
+          className="text-primary/40 transition-colors hover:text-primary/70"
+        >
+          {parentCategory.title}
+        </Link>
+        <span aria-hidden className="text-primary/25">
+          /
+        </span>
+        <Link
+          href={`/questionnaires/ranno-detsko-razvitie/${sub.slug}`}
+          className="text-primary/40 transition-colors hover:text-primary/70"
+        >
+          {sub.title}
+        </Link>
+        <span aria-hidden className="text-primary/25">
+          /
+        </span>
+        <span className="text-primary" aria-current="page">
+          {currentInterval.label}
+        </span>
+      </nav>
+
+      <div className="flex items-center gap-3.5">
+        {icon && (
+          <div className="baby-animate-always relative flex h-[96px] w-[96px] shrink-0 items-center justify-center">
+            {isRattleBaby ? (
+              <BabyRattleIcon className="h-[96px] w-[96px]" />
+            ) : isCrawlBaby ? (
+              <BabyCrawlIcon className="h-[96px] w-[96px]" />
+            ) : (
+              <Image
+                src={icon}
+                alt=""
+                width={96}
+                height={96}
+                className="h-[96px] w-[96px]"
+              />
+            )}
+          </div>
+        )}
+
+        <h1 className="max-w-[700px] text-[clamp(1.5rem,2.5vw,2rem)] font-bold leading-[1.05] text-primary">
+          {currentInterval.label}
+        </h1>
+      </div>
+    </div>
+  );
 
   return (
     <main>
       <Header variant="framed" />
 
-      <section className="w-full bg-cream py-16 md:py-24">
-        <Container>
-          <Link
-            href={`/questionnaires/ranno-detsko-razvitie/${sub.slug}`}
-            className="group mb-8 inline-flex items-center gap-1.5 text-[15px] font-bold uppercase text-primary transition-opacity hover:opacity-80"
-          >
-            <Image
-              src="/images/arrow-link.svg"
-              alt=""
-              width={12}
-              height={19}
-              className="shrink-0 rotate-180"
-            />
-            {sub.title}
-          </Link>
-
-          <h1 className="max-w-[700px] text-[clamp(2rem,4vw,3.5rem)] font-bold leading-[1.05] text-primary">
-            {currentInterval.label}
-          </h1>
-        </Container>
-      </section>
-
-      <section className="w-full bg-white py-16 md:py-24">
-        <Container>
-          <div className="mx-auto w-full max-w-[720px]">
-            <QuestionnaireFlow
-              questions={defaultQuestions}
-              backHref={`/questionnaires/ranno-detsko-razvitie/${sub.slug}`}
-              backLabel="Обратно към възрастовата група"
-            />
-          </div>
-        </Container>
-      </section>
+      <QuestionnaireFlow
+        questions={defaultQuestions}
+        backHref="/dashboard"
+        backLabel="Към таблото"
+        header={header}
+      />
 
       <Footer />
     </main>

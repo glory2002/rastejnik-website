@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="xMidYMid meet" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="36" height="36" rx="18" fill="var(--fill-0, white)"/>
+  <!-- plus-icon glyph, scaled into the white disc (same construction as arrow-hero) -->
+  <g transform="translate(18 18) scale(0.068) translate(-122.5 -122.5)">
+    <polygon
+      fill="var(--fill-0, #6d954b)"
+      points="245 81.67 163.33 81.67 163.33 0 81.67 0 81.67 81.67 0 81.67 0 163.33 81.67 163.33 81.67 245 163.33 245 163.33 163.33 245 163.33 245 81.67"
+    />
+  </g>
+</svg>

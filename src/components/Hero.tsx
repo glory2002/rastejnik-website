@@ -2,6 +2,7 @@ import { Header } from "./Header";
 import { Button } from "./ui/Button";
 import { Container } from "./ui/Container";
 import { Reveal } from "./ui/Reveal";
+import { SectionLead } from "./ui/SectionLead";
 
 const HERO_VIDEO = "/videos/hero-video.mp4";
 const HERO_POSTER = "/images/hero.jpg";
@@ -11,7 +12,7 @@ export function Hero() {
     <section className="relative w-full">
       <Header variant="framed" />
 
-      <div className="bg-cream px-5 pb-6 md:px-8 md:pb-10 lg:px-16 lg:pb-14">
+      <div className="bg-cream px-2.5 pb-1.5 md:px-4 md:pb-2.5 lg:px-8 lg:pb-3.5">
         <div className="relative h-[85dvh] min-h-[560px] max-h-[860px] w-full overflow-hidden">
           <div className="absolute inset-0 bg-primary-dark">
             <video
@@ -37,10 +38,10 @@ export function Hero() {
               <h1 className="max-w-[600px] text-[clamp(2.5rem,6.4vw,88px)] font-medium leading-[1] text-white">
                 Помагаме на децата да разцъфтят
               </h1>
-              <p className="mt-6 max-w-[440px] text-lg leading-[1.3] text-white/85">
+              <SectionLead tone="light" className="mt-6 max-w-[440px]">
                 Кратки валидирани оценки на развитието - какво работи в
                 реалния живот: ритуали, граници, разговори, ежедневни.
-              </p>
+              </SectionLead>
               <Button className="mt-10">Направи Въпросника Безплатно</Button>
             </Reveal>
           </Container>

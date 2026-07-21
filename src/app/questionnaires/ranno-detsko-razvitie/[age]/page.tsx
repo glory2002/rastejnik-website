@@ -1,5 +1,3 @@
-import fs from "fs";
-import path from "path";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,6 +9,7 @@ import { BabyRattleIcon } from "@/components/icons/BabyRattleIcon";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLead } from "@/components/ui/SectionLead";
+import { getBabyIcons } from "@/lib/babyIcons";
 import {
   questionnaireCategories,
   findAgeSubcategory,
@@ -19,23 +18,6 @@ import {
 const parentCategory = questionnaireCategories.find(
   (category) => category.slug === "ranno-detsko-razvitie",
 )!;
-
-/**
- * Baby illustrations are added one at a time (baby-1.svg, baby-2.svg, ...).
- * Reading the actual files lets each new one automatically join the
- * rotation for every age card instead of needing a code change per icon.
- */
-function getBabyIcons(): string[] {
-  const imagesDir = path.join(process.cwd(), "public", "images");
-  const files = fs
-    .readdirSync(imagesDir)
-    .filter((file) => /^baby-\d+\.svg$/.test(file))
-    .sort(
-      (a, b) =>
-        Number(a.match(/\d+/)![0]) - Number(b.match(/\d+/)![0]),
-    );
-  return files.length > 0 ? files.map((file) => `/images/${file}`) : [];
-}
 
 export function generateStaticParams() {
   return parentCategory.subcategories!.map((sub) => ({ age: sub.slug }));
@@ -109,7 +91,7 @@ export default async function AgeQuestionnairePage({
                 <Link
                   key={interval.label}
                   href={`/questionnaires/ranno-detsko-razvitie/${sub.slug}/${interval.slug}`}
-                  className="group relative flex aspect-square flex-col gap-4 bg-cream p-6 transition-colors duration-200 ease-out hover:bg-[#f3ecdf]"
+                  className="group relative flex aspect-square flex-col items-center gap-4 bg-cream p-6 text-center transition-colors duration-200 ease-out hover:bg-[#fefefc]"
                 >
                   {babyIcons.length > 0 && (
                     <div className="relative flex h-[112px] w-[112px] shrink-0 items-center justify-center">

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { Container } from "./ui/Container";
 import { Reveal } from "./ui/Reveal";
 
 const features = [
@@ -47,7 +48,7 @@ export function FeaturesSection() {
 
   return (
     <section id="resources" className="w-full bg-cream py-20 md:py-32">
-      <div className="mx-auto w-full max-w-[1800px] px-6 md:px-10 lg:px-26">
+      <Container>
         <Reveal as="h2" className="mb-16 max-w-[1000px] text-left text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.04] text-primary">
           Нашите рубрики
         </Reveal>
@@ -126,7 +127,7 @@ export function FeaturesSection() {
             );
           })}
         </Reveal>
-      </div>
+      </Container>
     </section>
   );
 }

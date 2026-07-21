@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ProfileMenu } from "@/components/ProfileMenu";
+import { login, useMockAuth } from "@/lib/authMock";
 import { Button } from "./ui/Button";
 import { FullWidth } from "./ui/Container";
 
@@ -119,6 +122,8 @@ export function Header({
   const isLight = variant === "light";
   const isFramed = variant === "framed";
   const isStatic = isLight || isFramed;
+  const loggedIn = useMockAuth();
+  const router = useRouter();
 
   // Scroll-away header: hides while scrolling down, reappears (with a
   // solid white surface) on the slightest scroll up. Only the "overlay"
@@ -220,7 +225,27 @@ export function Header({
               {link.label}
             </Link>
           ))}
-          <Button showArrow={false}>Вход</Button>
+          {loggedIn ? (
+            <ProfileMenu />
+          ) : (
+            <div className="flex items-center gap-3">
+              <Button
+                showArrow={false}
+                onClick={() => {
+                  login();
+                  router.push("/dashboard");
+                }}
+              >
+                Вход
+              </Button>
+              <Button
+                showArrow={false}
+                href="/questionnaires"
+              >
+                Регистрация
+              </Button>
+            </div>
+          )}
         </nav>
       </FullWidth>
     </header>

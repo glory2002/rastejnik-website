@@ -4,10 +4,35 @@
   --color-primary: #6d954b;
   --color-primary-dark: #1f4223;
   --color-primary-light: rgba(109, 149, 75, 0.08);
+  /* Solid match of primary-light over white — for sticky/opaque surfaces. */
+  --color-primary-light-solid: #f3f6f0;
   --color-secondary: #e9b063;
   --color-cream: rgba(233, 176, 99, 0.09);
+  /*
+   * Stronger solid cream for masked patterns (wave track). The page cream
+   * is only 9% secondary over white — fine as a section wash, too faint
+   * when used as a repeating glyph fill.
+   */
+  --color-cream-solid: #f3dfc5;
   --color-footer-text: #e6ebe6;
   --color-border-green: rgba(109, 149, 75, 0.2);
+
+  /*
+   * Shared 4-color accent set (also used by the icon marks and the
+   * questionnaire wave progress bar) — reused wherever content needs to be
+   * told apart by color without inventing a one-off hex value.
+   */
+  --color-accent-pink: #f27a97;
+  --color-accent-orange: #e9b063;
+  --color-accent-green: #6d954b;
+  --color-accent-blue: #476abf;
+  /* Status red for the results screen's traffic-light indicator (no green/orange equivalent needed — those reuse --color-primary / --color-accent-orange). */
+  --color-status-red: #c1443e;
+  --color-status-red-light: rgba(193, 68, 62, 0.12);
+  --color-accent-pink-light: rgba(242, 122, 151, 0.1);
+  --color-accent-orange-light: rgba(233, 176, 99, 0.14);
+  --color-accent-green-light: rgba(109, 149, 75, 0.1);
+  --color-accent-blue-light: rgba(71, 106, 191, 0.1);
   --font-sans: var(--font-adys), system-ui, sans-serif;
 }
 
@@ -32,6 +57,151 @@ select {
   font-family: inherit;
 }
 
+/* Custom select chevron — same mark as primary button arrows, pointing down. */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #fff;
+  background-image: url("/images/arrow-select.svg");
+  background-repeat: no-repeat;
+  background-position: right 0.95rem center;
+  background-size: 14px 10px;
+  padding-right: 2.85rem;
+}
+
+/* Hide native scrollbar — custom green bar sits under the results table. */
+.results-table-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.results-table-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Dashboard child avatars: blink + tuft/mouth wiggle in sync. */
+.baby-eye,
+.baby-tuft,
+.baby-mouth {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.baby-tuft {
+  transform-origin: center bottom;
+}
+
+.baby-mouth {
+  transform-origin: center top;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Idle: occasional blink. */
+  .baby-avatar-blink .baby-eye {
+    animation: baby-blink 4.2s ease-in-out infinite;
+  }
+
+  .baby-avatar-blink .baby-tuft {
+    animation: baby-tuft-wiggle 4.2s ease-in-out infinite;
+  }
+
+  .baby-avatar-blink .baby-mouth {
+    animation: baby-mouth-wiggle 4.2s ease-in-out infinite;
+  }
+
+  /* Hover: quicker blink while the pointer is over the tab. */
+  .group:hover .baby-eye,
+  .group:focus-visible .baby-eye {
+    animation: baby-blink-hover 1.1s ease-in-out infinite;
+  }
+
+  .group:hover .baby-tuft,
+  .group:focus-visible .baby-tuft {
+    animation: baby-tuft-wiggle-hover 1.1s ease-in-out infinite;
+  }
+
+  .group:hover .baby-mouth,
+  .group:focus-visible .baby-mouth {
+    animation: baby-mouth-wiggle-hover 1.1s ease-in-out infinite;
+  }
+}
+
+@keyframes baby-blink {
+  0%,
+  90%,
+  100% {
+    transform: scaleY(1);
+  }
+  92%,
+  96% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes baby-tuft-wiggle {
+  0%,
+  90%,
+  100% {
+    transform: rotate(0deg) translateY(0);
+  }
+  92% {
+    transform: rotate(-8deg) translateY(1px);
+  }
+  96% {
+    transform: rotate(6deg) translateY(0);
+  }
+}
+
+@keyframes baby-mouth-wiggle {
+  0%,
+  90%,
+  100% {
+    transform: scaleY(1) scaleX(1);
+  }
+  92%,
+  96% {
+    transform: scaleY(0.85) scaleX(1.06);
+  }
+}
+
+@keyframes baby-blink-hover {
+  0%,
+  55%,
+  100% {
+    transform: scaleY(1);
+  }
+  62%,
+  72% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes baby-tuft-wiggle-hover {
+  0%,
+  55%,
+  100% {
+    transform: rotate(0deg) translateY(0);
+  }
+  62% {
+    transform: rotate(-8deg) translateY(1px);
+  }
+  72% {
+    transform: rotate(6deg) translateY(0);
+  }
+}
+
+@keyframes baby-mouth-wiggle-hover {
+  0%,
+  55%,
+  100% {
+    transform: scaleY(1) scaleX(1);
+  }
+  62%,
+  72% {
+    transform: scaleY(0.85) scaleX(1.06);
+  }
+}
+
 /* Baby-rattle icon: shakes when the nearest `group` ancestor is hovered. */
 .rattle-toy {
   transform-origin: 0 0;
@@ -42,6 +212,11 @@ select {
   .group:hover .rattle-toy,
   .group:focus-visible .rattle-toy {
     animation: rattle-shake 0.55s ease-in-out infinite;
+  }
+
+  /* Header baby: same shake, then a long rest, then repeat. */
+  .baby-animate-always .rattle-toy {
+    animation: rattle-shake-pulse 3.6s ease-in-out infinite;
   }
 }
 
@@ -58,6 +233,27 @@ select {
   }
   75% {
     transform: translate(17.2px, 37.68px) rotate(14deg) translate(-17.2px, -37.68px);
+  }
+}
+
+/* ~0.55s of motion packed into the first ~15% of the cycle, then stillness. */
+@keyframes rattle-shake-pulse {
+  0%,
+  4% {
+    transform: translate(17.2px, 37.68px) rotate(0deg) translate(-17.2px, -37.68px);
+  }
+  8% {
+    transform: translate(17.2px, 37.68px) rotate(22deg) translate(-17.2px, -37.68px);
+  }
+  11% {
+    transform: translate(17.2px, 37.68px) rotate(-16deg) translate(-17.2px, -37.68px);
+  }
+  14% {
+    transform: translate(17.2px, 37.68px) rotate(14deg) translate(-17.2px, -37.68px);
+  }
+  18%,
+  100% {
+    transform: translate(17.2px, 37.68px) rotate(0deg) translate(-17.2px, -37.68px);
   }
 }
 
@@ -82,6 +278,14 @@ select {
   .group:focus-visible .baby-hand {
     animation: hand-pat 0.6s ease-in-out infinite;
   }
+
+  .baby-animate-always .baby-cube {
+    animation: cube-wobble-pulse 4s ease-in-out infinite;
+  }
+
+  .baby-animate-always .baby-hand {
+    animation: hand-pat-pulse 4s ease-in-out infinite;
+  }
 }
 
 @keyframes cube-wobble {
@@ -100,6 +304,26 @@ select {
   }
 }
 
+@keyframes cube-wobble-pulse {
+  0%,
+  5% {
+    transform: translate(13.9px, 91.24px) rotate(0deg) translate(-13.9px, -91.24px);
+  }
+  10% {
+    transform: translate(13.9px, 91.24px) rotate(9deg) translate(-13.9px, -91.24px);
+  }
+  15% {
+    transform: translate(13.9px, 91.24px) rotate(-7deg) translate(-13.9px, -91.24px);
+  }
+  20% {
+    transform: translate(13.9px, 91.24px) rotate(6deg) translate(-13.9px, -91.24px);
+  }
+  25%,
+  100% {
+    transform: translate(13.9px, 91.24px) rotate(0deg) translate(-13.9px, -91.24px);
+  }
+}
+
 @keyframes hand-pat {
   0%,
   100% {
@@ -110,11 +334,53 @@ select {
   }
 }
 
+@keyframes hand-pat-pulse {
+  0%,
+  5% {
+    transform: translate(0, 0);
+  }
+  12% {
+    transform: translate(4px, -5px);
+  }
+  20%,
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* Traffic-light indicator: the active status mark breathes gently to draw the eye. */
+@media (prefers-reduced-motion: no-preference) {
+  .traffic-light-active {
+    animation: traffic-light-pulse 1.8s ease-in-out infinite;
+  }
+}
+
+@keyframes traffic-light-pulse {
+  0%,
+  100% {
+    transform: scale(1.15);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+}
+
 /*
  * Wave progress bar: the track and the fill share the exact same tiled
  * wave.svg mask, both anchored to the left edge, so the pattern lines up
  * seamlessly as the colored fill grows over the muted track underneath.
+ *
+ * wave.svg's tile only reads as one continuous, connected chain when it
+ * keeps its native aspect ratio (74.54 : 63.89) — stretch it and the
+ * "links" no longer meet edge-to-edge. So the bar's own height is derived
+ * from its (container-query) width, not fixed, guaranteeing exactly 18
+ * undistorted, connected tiles at any size.
  */
+.wave-progress-bar {
+  --wave-tile: calc(100cqw / 18);
+  height: calc(var(--wave-tile) * 6389 / 7454);
+}
+
 .wave-progress-track,
 .wave-progress-fill {
   -webkit-mask-image: url("/images/wave.svg");
@@ -123,57 +389,102 @@ select {
   mask-repeat: repeat-x;
   -webkit-mask-position: left center;
   mask-position: left center;
-  -webkit-mask-size: 42px 100%;
-  mask-size: 42px 100%;
+  -webkit-mask-size: var(--wave-tile) 100%;
+  mask-size: var(--wave-tile) 100%;
 }
 
-/* Each wave tile (42px) cycles through the brand's category colors. */
+/* Brand colors in groups of 3 tiles, cycling pink → green → orange → blue. */
 .wave-progress-fill {
   background-image: repeating-linear-gradient(
     to right,
-    #f27a97 0px,
-    #f27a97 42px,
-    #6d954b 42px,
-    #6d954b 84px,
-    #e9b063 84px,
-    #e9b063 126px,
-    #476abf 126px,
-    #476abf 168px
+    #f27a97 0,
+    #f27a97 calc(var(--wave-tile) * 3),
+    #6d954b calc(var(--wave-tile) * 3),
+    #6d954b calc(var(--wave-tile) * 6),
+    #e9b063 calc(var(--wave-tile) * 6),
+    #e9b063 calc(var(--wave-tile) * 9),
+    #476abf calc(var(--wave-tile) * 9),
+    #476abf calc(var(--wave-tile) * 12)
   );
   background-position: left center;
 }
 
 /*
- * Shevitsa-assemble transition: every piece of the embroidery motif starts
- * scattered off its natural spot (offset by --piece-dx/--piece-dy, set per
- * piece in ShevitsaAssembleIcon.tsx) and flies inward, converging on the
- * center of the screen to assemble the full motif.
+ * Shevitsa-assemble transition: pieces start far off-screen on different
+ * depth planes (--piece-z / --piece-scale) and converge into one flat motif.
+ * Choreography delays are set per piece in ShevitsaAssembleIcon.tsx
+ * (large arms first, then accents). Soft overshoot on landing + whole-motif settle.
  */
+.shevitsa-stage-space {
+  perspective: 1100px;
+  perspective-origin: 50% 45%;
+}
+
+.shevitsa-stage-space > svg {
+  transform-style: preserve-3d;
+  transform-origin: center;
+  animation: shevitsa-motif-settle 0.75s cubic-bezier(0.22, 1, 0.36, 1) 2.85s both;
+}
+
 .shevitsa-piece {
   transform-box: fill-box;
   transform-origin: center;
+  transform-style: preserve-3d;
   opacity: 0;
-  animation: shevitsa-piece-in 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity, filter;
+  animation: shevitsa-piece-in 2.35s cubic-bezier(0.16, 0.84, 0.18, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .shevitsa-piece {
     animation: none;
     opacity: 1;
+    filter: none;
+  }
+
+  .shevitsa-stage-space > svg {
+    animation: none;
   }
 }
 
 @keyframes shevitsa-piece-in {
   0% {
-    transform: translate(var(--piece-dx), var(--piece-dy)) scale(0.4) rotate(50deg);
+    transform: translate3d(
+        var(--piece-dx),
+        var(--piece-dy),
+        var(--piece-z, 0px)
+      )
+      scale(var(--piece-scale, 1.55))
+      rotate(var(--piece-spin, 110deg));
     opacity: 0;
+    filter: blur(1.6px);
   }
-  55% {
+  20% {
     opacity: 1;
+    filter: blur(0.5px);
+  }
+  78% {
+    transform: translate3d(0, 0, 0) scale(1.035) rotate(0deg);
+    opacity: 1;
+    filter: blur(0);
   }
   100% {
-    transform: translate(0, 0) scale(1) rotate(0deg);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
     opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Whole motif eases into final size after pieces have landed. */
+@keyframes shevitsa-motif-settle {
+  0% {
+    transform: scale(0.96);
+  }
+  70% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 

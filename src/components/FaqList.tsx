@@ -7,7 +7,7 @@ const motion = "duration-200 ease-out motion-reduce:transition-none";
 
 /** Shared brand mark used as the accordion state indicator — green & tilted
  *  when collapsed, upright & amber when the answer is revealed. */
-function FaqToggleIcon({ isOpen }: { isOpen: boolean }) {
+export function FaqToggleIcon({ isOpen }: { isOpen: boolean }) {
   return (
     <svg
       viewBox="0 0 51.4928 38.8664"

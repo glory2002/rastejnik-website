@@ -5,10 +5,14 @@ export interface AgeInterval {
   slug: string;
 }
 
+export type QuestionnaireAccent = "pink" | "orange" | "green" | "blue";
+
 export interface QuestionnaireSubcategory {
   slug: string;
   title: string;
   description: string;
+  /** Design-system accent color used to tell the age groups apart at a glance. */
+  accent: QuestionnaireAccent;
   /** Individual checkpoints within this age range (monthly, quarterly, etc). */
   intervals: AgeInterval[];
 }
@@ -89,24 +93,28 @@ export const questionnaireCategories: QuestionnaireCategory[] = [
         slug: "0-1-godina",
         title: "0 – 1 година",
         description: "Рефлекси, задържане на главата, сядане, пълзене.",
+        accent: "pink",
         intervals: monthlyIntervals(12),
       },
       {
         slug: "1-2-godini",
         title: "1 – 2 години",
         description: "Прохождане, първи думи, самостоятелно хранене.",
+        accent: "orange",
         intervals: quarterlyIntervals(1),
       },
       {
         slug: "2-3-godini",
         title: "2 – 3 години",
         description: "Кратки фрази, игра с други деца, самообслужване.",
+        accent: "green",
         intervals: quarterlyIntervals(2),
       },
       {
         slug: "3-4-godini",
         title: "3 – 4 години",
         description: "Свързана реч, баланс и координация, социални игри.",
+        accent: "blue",
         intervals: quarterlyIntervals(3),
       },
     ],

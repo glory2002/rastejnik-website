@@ -15,11 +15,7 @@ export function FaqSection() {
     <section id="questionnaires" className="w-full bg-cream py-20 md:py-32">
       <Container>
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <Reveal>
-            <FaqList items={visibleQuestions} />
-          </Reveal>
-
-          <Reveal delay={150} className="lg:sticky lg:top-24 lg:self-start">
+          <Reveal className="lg:sticky lg:top-24 lg:self-start">
             <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.04] text-primary">
               Бързи отговори на най-честите въпроси
             </h2>
@@ -45,6 +41,10 @@ export function FaqSection() {
                 className={`shrink-0 transition-transform ${motion} group-hover:translate-x-1`}
               />
             </Link>
+          </Reveal>
+
+          <Reveal delay={150}>
+            <FaqList items={visibleQuestions} />
           </Reveal>
         </div>
       </Container>

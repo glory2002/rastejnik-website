@@ -1,43 +1,27 @@
+import Image from "next/image";
 import { Container } from "./ui/Container";
 import { Reveal } from "./ui/Reveal";
 
-/**
- * Placeholder marks only — swap `partners` for the real partner logos
- * (as image assets) once they're provided. Kept as simple inline SVGs so
- * nothing breaks visually in the meantime.
- */
 const partners = [
-  { name: "Ейпекс" },
-  { name: "Нордвю" },
-  { name: "Кедрина" },
-  { name: "Солара" },
-  { name: "Вертис" },
-  { name: "Лумина" },
+  {
+    name: "Зеленият морски двор на Варна",
+    src: "/images/partner-zeleniyat-morski-dvor.png",
+    width: 220,
+    height: 76,
+  },
+  {
+    name: "Медицински университет Варна",
+    src: "/images/partner-mu-varna.png",
+    width: 110,
+    height: 110,
+  },
+  {
+    name: "Морско казино Варна",
+    src: "/images/partner-morsko-kazino-varna.png",
+    width: 200,
+    height: 90,
+  },
 ];
-
-function PlaceholderMark({ name }: { name: string }) {
-  return (
-    <div className="flex items-center gap-3 opacity-50 grayscale transition-[opacity,filter] duration-200 ease-out hover:opacity-100 hover:grayscale-0">
-      <svg
-        viewBox="0 0 32 32"
-        width="32"
-        height="32"
-        fill="none"
-        aria-hidden
-        className="shrink-0 text-primary"
-      >
-        <circle cx="16" cy="16" r="15" stroke="currentColor" strokeWidth="2" />
-        <path
-          d="M16 8L20 16L16 24L12 16L16 8Z"
-          fill="currentColor"
-        />
-      </svg>
-      <span className="text-xl font-bold uppercase tracking-wide text-primary-dark">
-        {name}
-      </span>
-    </div>
-  );
-}
 
 export function PartnersSection() {
   return (
@@ -50,10 +34,16 @@ export function PartnersSection() {
           Партньори
         </Reveal>
 
-        <div className="flex flex-wrap items-center justify-center gap-x-14 gap-y-8">
+        <div className="flex flex-wrap items-center justify-center gap-x-16 gap-y-10">
           {partners.map((partner, index) => (
             <Reveal key={partner.name} delay={index * 60}>
-              <PlaceholderMark name={partner.name} />
+              <Image
+                src={partner.src}
+                alt={partner.name}
+                width={partner.width}
+                height={partner.height}
+                className="h-auto w-auto max-h-[90px] object-contain opacity-70 grayscale transition-[opacity,filter] duration-200 ease-out hover:opacity-100 hover:grayscale-0"
+              />
             </Reveal>
           ))}
         </div>

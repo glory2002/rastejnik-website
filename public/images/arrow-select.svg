@@ -1,0 +1,8 @@
+<svg viewBox="0 0 22 14.2411" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Same chevron as primary buttons (`arrow-link` / button arrow), rotated to point down. -->
+  <path
+    transform="translate(22 0) rotate(90)"
+    d="M4.74702 1.56625L2.71633e-07 6.30549L4.74702 10.9553L6.82041e-07 15.6945L4.74702 20.4337L14.2411 10.9553L4.74702 1.56625Z"
+    fill="#6d954b"
+  />
+</svg>
