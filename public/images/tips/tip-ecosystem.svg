@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <!-- Ecosystem: sprout motif inside embroidery field -->
+  <!-- ground row -->
+  <rect x="150" y="178" width="22" height="22" fill="#6d954b" transform="rotate(45 161 189)"/>
+  <rect x="178" y="178" width="22" height="22" fill="#1f4223" transform="rotate(45 189 189)"/>
+  <rect x="206" y="178" width="22" height="22" fill="#6d954b" transform="rotate(45 217 189)"/>
+  <rect x="234" y="178" width="22" height="22" fill="#1f4fa1" transform="rotate(45 245 189)"/>
+  <!-- stem -->
+  <rect x="189" y="110" width="22" height="22" fill="#6d954b" transform="rotate(45 200 121)"/>
+  <rect x="189" y="144" width="22" height="22" fill="#6d954b" transform="rotate(45 200 155)"/>
+  <!-- leaves -->
+  <polygon points="156,96 176,116 156,136 136,116" fill="#e9b063"/>
+  <polygon points="244,96 264,116 244,136 224,116" fill="#1f4fa1"/>
+  <!-- bud / crown -->
+  <polygon points="200,48 220,68 200,88 180,68" fill="#f17996"/>
+  <rect x="189" y="72" width="22" height="22" fill="#6d954b" transform="rotate(45 200 83)"/>
+  <!-- air dots -->
+  <polygon points="98,70 108,80 98,90 88,80" fill="#1f4fa1"/>
+  <polygon points="310,78 320,88 310,98 300,88" fill="#e9b063"/>
+</svg>

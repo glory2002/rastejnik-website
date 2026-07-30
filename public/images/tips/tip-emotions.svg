@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <!-- Emotions: soft arc / drop of embroidery diamonds -->
+  <polygon points="200,42 222,64 200,86 178,64" fill="#f17996"/>
+  <rect x="158" y="78" width="24" height="24" fill="#e9b063" transform="rotate(45 170 90)"/>
+  <rect x="218" y="78" width="24" height="24" fill="#e9b063" transform="rotate(45 230 90)"/>
+  <rect x="132" y="112" width="24" height="24" fill="#f17996" transform="rotate(45 144 124)"/>
+  <rect x="244" y="112" width="24" height="24" fill="#f17996" transform="rotate(45 256 124)"/>
+  <rect x="158" y="146" width="24" height="24" fill="#6d954b" transform="rotate(45 170 158)"/>
+  <rect x="218" y="146" width="24" height="24" fill="#6d954b" transform="rotate(45 230 158)"/>
+  <polygon points="200,168 222,190 200,212 178,190" fill="#1f4fa1"/>
+  <!-- soft side accents -->
+  <polygon points="96,130 108,142 96,154 84,142" fill="#e9b063"/>
+  <polygon points="304,130 316,142 304,154 292,142" fill="#e9b063"/>
+</svg>

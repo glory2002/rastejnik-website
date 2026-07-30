@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <!-- Boundaries with love: diamond frame + soft center -->
+  <!-- outer frame -->
+  <polygon points="200,36 220,56 200,76 180,56" fill="#1f4223"/>
+  <polygon points="268,70 288,90 268,110 248,90" fill="#6d954b"/>
+  <polygon points="300,125 320,145 300,165 280,145" fill="#1f4223"/>
+  <polygon points="268,180 288,200 268,220 248,200" fill="#6d954b"/>
+  <polygon points="200,210 220,230 200,250 180,230" fill="#1f4223"/>
+  <polygon points="132,180 152,200 132,220 112,200" fill="#6d954b"/>
+  <polygon points="100,125 120,145 100,165 80,145" fill="#1f4223"/>
+  <polygon points="132,70 152,90 132,110 112,90" fill="#6d954b"/>
+  <!-- warm center -->
+  <polygon points="200,100 228,128 200,156 172,128" fill="#f17996"/>
+  <rect x="186" y="114" width="28" height="28" fill="#e9b063" transform="rotate(45 200 128)"/>
+</svg>

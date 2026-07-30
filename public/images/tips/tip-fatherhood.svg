@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <!-- Fatherhood: larger + smaller embroidery figures linked by a shared diamond -->
+  <g transform="translate(118 55)">
+    <!-- taller figure (parent) -->
+    <rect x="28" y="0" width="28" height="28" fill="#1f4fa1" transform="rotate(45 42 14)"/>
+    <polygon points="42,48 62,68 42,88 22,68" fill="#1f4fa1"/>
+    <rect x="28" y="92" width="28" height="28" fill="#6d954b" transform="rotate(45 42 106)"/>
+    <rect x="28" y="128" width="28" height="28" fill="#1f4fa1" transform="rotate(45 42 142)"/>
+  </g>
+  <!-- shared link -->
+  <polygon points="200,125 214,139 200,153 186,139" fill="#e9b063"/>
+  <g transform="translate(218 95)">
+    <!-- smaller figure (child) -->
+    <rect x="18" y="0" width="20" height="20" fill="#f17996" transform="rotate(45 28 10)"/>
+    <polygon points="28,34 42,48 28,62 14,48" fill="#f17996"/>
+    <rect x="18" y="66" width="20" height="20" fill="#6d954b" transform="rotate(45 28 76)"/>
+  </g>
+</svg>

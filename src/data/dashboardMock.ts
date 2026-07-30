@@ -56,6 +56,8 @@ export interface DashboardChild {
   name: string;
   gender: DashboardChildGender;
   ageLabel: string;
+  /** `YYYY-MM` — used when editing the child's profile. */
+  birthMonth: string;
   /** Age band the child is currently in — drives default tab / timeline node. */
   currentAgeGroupSlug: string;
   earlyDevelopmentBands: EarlyDevelopmentBand[];
@@ -230,6 +232,7 @@ export const dashboardChildren: DashboardChild[] = [
     name: "Иванчо",
     gender: "boy",
     ageLabel: "3 месеца",
+    birthMonth: "2026-04",
     currentAgeGroupSlug: "0-1-godina",
     earlyDevelopmentBands: [
       makeBand("0-1-godina", "0–1 г.", ivanchoZeroOneRows),
@@ -263,6 +266,7 @@ export const dashboardChildren: DashboardChild[] = [
     name: "Петя",
     gender: "girl",
     ageLabel: "2 години",
+    birthMonth: "2024-07",
     currentAgeGroupSlug: "2-3-godini",
     earlyDevelopmentBands: [
       makeBand("0-1-godina", "0–1 г.", petyaZeroOneRows),
@@ -363,6 +367,7 @@ export function createDashboardChild(input: NewChildInput): DashboardChild {
     name: input.name.trim(),
     gender: input.gender === "Момиче" ? "girl" : "boy",
     ageLabel: ageLabelFromMonths(ageMonths),
+    birthMonth: input.birthMonth,
     currentAgeGroupSlug: current.slug,
     earlyDevelopmentBands: AGE_BAND_DEFS.map((band, index) =>
       makeBand(
@@ -379,6 +384,28 @@ export function createDashboardChild(input: NewChildInput): DashboardChild {
         ]),
       ),
     ),
+  };
+}
+
+/**
+ * Updates profile fields on an existing child. Keeps test history intact;
+ * only refreshes the displayed age label and current age-band slug.
+ */
+export function updateDashboardChild(
+  child: DashboardChild,
+  input: NewChildInput,
+): DashboardChild {
+  const ageMonths = ageMonthsFromBirthMonth(input.birthMonth);
+  const bandIdx = Math.max(0, currentBandIndex(ageMonths));
+  const current = AGE_BAND_DEFS[bandIdx] ?? AGE_BAND_DEFS[0];
+
+  return {
+    ...child,
+    name: input.name.trim(),
+    gender: input.gender === "Момиче" ? "girl" : "boy",
+    ageLabel: ageLabelFromMonths(ageMonths),
+    birthMonth: input.birthMonth,
+    currentAgeGroupSlug: current.slug,
   };
 }
 

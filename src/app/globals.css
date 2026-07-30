@@ -348,7 +348,8 @@ select {
   }
 }
 
-/* Traffic-light indicator: the active status mark breathes gently to draw the eye. */
+/* Traffic-light indicator: the active status mark breathes gently to draw the eye.
+ * Animate only `scale` (individual property) so it doesn't fight Tailwind `rotate-45`. */
 @media (prefers-reduced-motion: no-preference) {
   .traffic-light-active {
     animation: traffic-light-pulse 1.8s ease-in-out infinite;
@@ -358,10 +359,10 @@ select {
 @keyframes traffic-light-pulse {
   0%,
   100% {
-    transform: scale(1.15);
+    scale: 1.15;
   }
   50% {
-    transform: scale(1.3);
+    scale: 1.3;
   }
 }
 
@@ -418,6 +419,9 @@ select {
 .shevitsa-stage-space {
   perspective: 1100px;
   perspective-origin: 50% 45%;
+  transform-origin: center;
+  /* Heartbeat on the wrapper so it doesn't fight the SVG settle transform. */
+  animation: shevitsa-heartbeat 0.85s ease-in-out 3.4s infinite;
 }
 
 .shevitsa-stage-space > svg {
@@ -442,6 +446,7 @@ select {
     filter: none;
   }
 
+  .shevitsa-stage-space,
   .shevitsa-stage-space > svg {
     animation: none;
   }
@@ -484,6 +489,26 @@ select {
     transform: scale(1.02);
   }
   100% {
+    transform: scale(1);
+  }
+}
+
+/* Quick heartbeat: double beat, then a longer rest (uneven rhythm). */
+@keyframes shevitsa-heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  8% {
+    transform: scale(1.1);
+  }
+  16% {
+    transform: scale(1);
+  }
+  28% {
+    transform: scale(1.16);
+  }
+  40% {
     transform: scale(1);
   }
 }

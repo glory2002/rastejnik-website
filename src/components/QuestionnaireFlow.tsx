@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import {
-  answerOptions,
+  answerOptions as defaultAnswerOptions,
   generalGuidance,
   getDomainResults,
   getOverallStatus,
   type OverallLevel,
+  type QuestionAnswerOption,
   type QuestionnaireQuestion,
 } from "@/data/questionBank";
 import { ShevitsaAssembleIcon } from "@/components/icons/ShevitsaAssembleIcon";
@@ -140,7 +142,7 @@ function TrafficLight({
 }) {
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-5">
         {trafficLightOrder.map((dot) => {
           const isActive = dot === level;
           return (
@@ -148,8 +150,8 @@ function TrafficLight({
               key={dot}
               className={`relative flex h-11 w-11 shrink-0 origin-center items-center justify-center transition-transform duration-300 ease-out ${
                 isActive
-                  ? `${trafficLightActiveBg[dot]} scale-[1.15] traffic-light-active`
-                  : `${trafficLightIdleBg[dot]} scale-100`
+                  ? `${trafficLightActiveBg[dot]} z-10 rotate-45 scale-[1.15] traffic-light-active`
+                  : `${trafficLightIdleBg[dot]} z-0 rotate-45 scale-100`
               }`}
             >
               {isActive && (
@@ -166,7 +168,7 @@ function TrafficLight({
 
 const PAGE_SIZE = 5;
 /** Piece anim ~2.35s + max delay ~0.76s + settle 0.75s + short hold. */
-const TRANSITION_DURATION_MS = 3600;
+const TRANSITION_DURATION_MS = 5600;
 type Stage =
   | "checking"
   | "register"
@@ -226,7 +228,18 @@ interface QuestionnaireFlowProps {
   backLabel: string;
   /** Age/interval title block (icon, label, back link) — hidden once the
    *  results are shown, so the completion screen isn't crowded by it. */
-  header: React.ReactNode;
+  header?: React.ReactNode;
+  /** Override Yes/Sometimes/Not-yet — used by parental literacy (true/false/unknown). */
+  options?: QuestionAnswerOption[];
+  /** Questions shown per step. Literacy uses 1 to match the validated form. */
+  pageSize?: number;
+  /** Shared instruction above each literacy statement. */
+  instruction?: string;
+  /**
+   * `"literacy"` — one statement per step, centered radio cards
+   * (вярно / невярно / не знам), matching the validated UI.
+   */
+  variant?: "default" | "literacy";
 }
 
 export function QuestionnaireFlow({
@@ -234,6 +247,10 @@ export function QuestionnaireFlow({
   backHref,
   backLabel,
   header,
+  options = defaultAnswerOptions,
+  pageSize = PAGE_SIZE,
+  instruction,
+  variant = "default",
 }: QuestionnaireFlowProps) {
   const [page, setPage] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -243,6 +260,8 @@ export function QuestionnaireFlow({
   const [parentData, setParentData] = useState<ParentData>(emptyParentData);
   const [childData, setChildData] = useState<ChildData>(emptyChildData);
   const transitionTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isLiteracy = variant === "literacy";
+  const answerOptions = options;
 
   // Every new questionnaire run collects parent + child details again.
   // Logged-in users skip only the account registration step.
@@ -278,12 +297,12 @@ export function QuestionnaireFlow({
     };
   }, [stage]);
 
-  const totalPages = Math.ceil(questions.length / PAGE_SIZE);
+  const totalPages = Math.ceil(questions.length / pageSize);
   const isLastPage = page === totalPages - 1;
 
   const pageQuestions = useMemo(
-    () => questions.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE),
-    [questions, page],
+    () => questions.slice(page * pageSize, page * pageSize + pageSize),
+    [questions, page, pageSize],
   );
 
   const allCurrentAnswered = pageQuestions.every((q) => answers[q.id]);
@@ -323,7 +342,7 @@ export function QuestionnaireFlow({
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  const headerSection = stage === "questions" && (
+  const headerSection = stage === "questions" && header && (
     <section className="w-full bg-cream py-5 md:py-6">
       <Container>{header}</Container>
     </section>
@@ -642,18 +661,32 @@ export function QuestionnaireFlow({
   return (
     <>
       {headerSection}
-      <section className="w-full bg-white py-16 md:py-24">
+      <section className={`w-full py-16 md:py-24 ${isLiteracy ? "bg-cream" : "bg-white"}`}>
         <Container>
-          <div className="mx-auto w-full max-w-[720px]">
+          <div
+            className={`mx-auto w-full ${isLiteracy ? "max-w-[640px]" : "max-w-[720px]"}`}
+          >
             <div className="flex flex-col gap-10">
-              <div>
-                <div className="mb-2 flex items-center justify-between text-[13px] font-bold uppercase text-primary-dark">
-                  <span>
-                    Стъпка {page + 1} от {totalPages}
-                  </span>
-                  <span>{progress}%</span>
+              <div className={isLiteracy ? "text-center" : undefined}>
+                <div
+                  className={`mb-2 flex items-center text-[13px] font-bold uppercase text-primary-dark ${
+                    isLiteracy ? "justify-center" : "justify-between"
+                  }`}
+                >
+                  {isLiteracy ? (
+                    <span>
+                      Въпрос {page * pageSize + 1} от {questions.length}
+                    </span>
+                  ) : (
+                    <>
+                      <span>
+                        Стъпка {page + 1} от {totalPages}
+                      </span>
+                      <span>{progress}%</span>
+                    </>
+                  )}
                 </div>
-                <div className="wave-progress-bar @container relative w-full">
+                <div className="wave-progress-bar @container relative mx-auto w-full">
                   <div className="wave-progress-track absolute inset-0 bg-cream-solid" />
                   <div
                     className="wave-progress-fill absolute inset-y-0 left-0 transition-[width] duration-500 ease-out"
@@ -663,44 +696,113 @@ export function QuestionnaireFlow({
               </div>
 
               <div className="flex flex-col">
-                {pageQuestions.map((q, index) => (
-                  <div
-                    key={q.id}
-                    className="flex flex-col gap-4 py-6 first:pt-0 last:pb-0"
-                  >
-                    <p className="max-w-[600px] text-[22px] font-bold leading-[1.3] text-primary-dark">
-                      <span className="text-primary">
-                        {page * PAGE_SIZE + index + 1}.{" "}
-                      </span>
-                      {q.text}
-                    </p>
-                    <div className="flex flex-wrap gap-3">
-                      {answerOptions.map((opt) => {
-                        const checked = answers[q.id] === opt.value;
-                        return (
-                          <label
-                            key={opt.value}
-                            className={`cursor-pointer rounded-full border-[1.5px] px-5 py-2.5 text-[14px] font-bold uppercase transition-colors duration-150 ease-out ${
-                              checked
-                                ? "border-primary bg-primary text-white"
-                                : "border-border-green bg-primary-light-solid text-primary-dark hover:border-primary"
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name={q.id}
-                              value={opt.value}
-                              checked={checked}
-                              onChange={() => handleAnswer(q.id, opt.value)}
-                              className="sr-only"
-                            />
-                            {opt.label}
-                          </label>
-                        );
-                      })}
+                {pageQuestions.map((q, index) => {
+                  const questionNumber = page * pageSize + index + 1;
+                  if (isLiteracy) {
+                    return (
+                      <div
+                        key={q.id}
+                        className="flex flex-col items-center gap-8 text-center"
+                      >
+                        {instruction ? (
+                          <p className="max-w-[520px] text-base leading-[1.4] text-primary-dark">
+                            {instruction}
+                          </p>
+                        ) : null}
+                        <p className="max-w-[560px] text-[22px] font-bold leading-[1.3] text-primary-dark md:text-[24px]">
+                          {q.text}
+                        </p>
+                        <div className="flex w-full max-w-[480px] flex-col gap-3">
+                          {answerOptions.map((opt) => {
+                            const checked = answers[q.id] === opt.value;
+                            return (
+                              <label
+                                key={opt.value}
+                                className={`flex cursor-pointer items-center gap-3 border-[1.5px] px-4 py-3.5 text-left text-[16px] font-medium transition-colors duration-150 ease-out ${
+                                  checked
+                                    ? "border-primary bg-primary-light-solid text-primary-dark"
+                                    : "border-border-green bg-white text-primary-dark hover:border-primary"
+                                }`}
+                              >
+                                <span
+                                  className={`flex h-7 w-7 shrink-0 items-center justify-center border-[1.5px] ${
+                                    checked
+                                      ? "border-primary bg-white"
+                                      : "border-border-green"
+                                  }`}
+                                  aria-hidden
+                                >
+                                  {checked ? (
+                                    <svg
+                                      viewBox="0 0 60.06 48.05"
+                                      className="h-[18px] w-[18px] text-primary"
+                                      aria-hidden
+                                    >
+                                      <polygon
+                                        fill="currentColor"
+                                        points="48.05 0 24.87 23.18 12.86 11.17 0 24.02 24.03 48.05 48.05 24.02 60.06 12.01 48.05 0"
+                                      />
+                                    </svg>
+                                  ) : null}
+                                </span>
+                                <input
+                                  type="radio"
+                                  name={q.id}
+                                  value={opt.value}
+                                  checked={checked}
+                                  onChange={() =>
+                                    handleAnswer(q.id, opt.value)
+                                  }
+                                  className="sr-only"
+                                />
+                                {opt.label}
+                              </label>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div
+                      key={q.id}
+                      className="flex flex-col gap-4 py-6 first:pt-0 last:pb-0"
+                    >
+                      <p className="max-w-[600px] text-[22px] font-bold leading-[1.3] text-primary-dark">
+                        <span className="text-primary">{questionNumber}. </span>
+                        {q.text}
+                      </p>
+                      <div className="flex flex-wrap gap-3">
+                        {answerOptions.map((opt) => {
+                          const checked = answers[q.id] === opt.value;
+                          return (
+                            <label
+                              key={opt.value}
+                              className={`cursor-pointer rounded-full border-[1.5px] px-5 py-2.5 text-[14px] font-bold uppercase transition-colors duration-150 ease-out ${
+                                checked
+                                  ? "border-primary bg-primary text-white"
+                                  : "border-border-green bg-primary-light-solid text-primary-dark hover:border-primary"
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name={q.id}
+                                value={opt.value}
+                                checked={checked}
+                                onChange={() =>
+                                  handleAnswer(q.id, opt.value)
+                                }
+                                className="sr-only"
+                              />
+                              {opt.label}
+                            </label>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="flex items-center justify-between gap-4">
@@ -708,18 +810,48 @@ export function QuestionnaireFlow({
                   type="button"
                   onClick={handleBack}
                   disabled={page === 0}
-                  className="text-[13px] font-bold uppercase text-primary-dark transition-opacity hover:opacity-70 disabled:pointer-events-none disabled:opacity-0"
+                  className={`inline-flex items-center gap-2 text-[13px] font-bold uppercase transition-opacity hover:opacity-70 disabled:pointer-events-none disabled:opacity-0 ${
+                    isLiteracy
+                      ? "rounded-full bg-primary-light-solid px-5 py-3 text-primary-dark"
+                      : "text-primary-dark"
+                  }`}
                 >
-                  Назад
+                  {isLiteracy ? (
+                    <>
+                      <Image
+                        src="/images/arrow-link.svg"
+                        alt=""
+                        width={12}
+                        height={18}
+                        className="rotate-180 opacity-70"
+                      />
+                      Назад
+                    </>
+                  ) : (
+                    "Назад"
+                  )}
                 </button>
 
                 <button
                   type="button"
                   onClick={handleNext}
                   disabled={!allCurrentAnswered}
-                  className="inline-flex items-center rounded-full bg-secondary px-6 py-3.5 text-[15px] font-bold uppercase text-primary-dark transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+                  className={`inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-[15px] font-bold uppercase transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 ${
+                    isLiteracy
+                      ? "bg-primary text-white"
+                      : "bg-secondary text-primary-dark"
+                  }`}
                 >
-                  {isLastPage ? "Завърши" : "Напред"}
+                  {isLastPage ? "Завърши" : isLiteracy ? "Следващ" : "Напред"}
+                  {isLiteracy && !isLastPage ? (
+                    <Image
+                      src="/images/arrow-link.svg"
+                      alt=""
+                      width={12}
+                      height={18}
+                      className="brightness-0 invert"
+                    />
+                  ) : null}
                 </button>
               </div>
             </div>

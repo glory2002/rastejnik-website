@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <!-- Nutrition + activity: geometric plate + motion arc -->
+  <!-- plate ring of diamonds -->
+  <polygon points="200,58 216,74 200,90 184,74" fill="#e9b063"/>
+  <polygon points="248,88 264,104 248,120 232,104" fill="#6d954b"/>
+  <polygon points="262,138 278,154 262,170 246,154" fill="#e9b063"/>
+  <polygon points="248,188 264,204 248,220 232,204" fill="#1f4fa1"/>
+  <polygon points="200,210 216,226 200,242 184,226" fill="#e9b063"/>
+  <polygon points="152,188 168,204 152,220 136,204" fill="#6d954b"/>
+  <polygon points="138,138 154,154 138,170 122,154" fill="#e9b063"/>
+  <polygon points="152,88 168,104 152,120 136,104" fill="#1f4fa1"/>
+  <!-- center "food" block -->
+  <rect x="186" y="126" width="28" height="28" fill="#6d954b" transform="rotate(45 200 140)"/>
+  <!-- motion hop -->
+  <rect x="300" y="70" width="18" height="18" fill="#f17996" transform="rotate(45 309 79)"/>
+  <rect x="322" y="98" width="18" height="18" fill="#e9b063" transform="rotate(45 331 107)"/>
+  <rect x="336" y="132" width="18" height="18" fill="#1f4fa1" transform="rotate(45 345 141)"/>
+</svg>

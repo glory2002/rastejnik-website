@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <!-- Speech: two overlapping geometric "bubbles" -->
+  <g transform="translate(70 55)">
+    <polygon points="90,20 130,60 90,100 50,60" fill="#1f4fa1"/>
+    <rect x="72" y="42" width="36" height="36" fill="#6d954b" transform="rotate(45 90 60)"/>
+    <polygon points="90,108 108,126 90,144 72,126" fill="#1f4fa1"/>
+  </g>
+  <g transform="translate(170 70)">
+    <polygon points="90,20 130,60 90,100 50,60" fill="#f17996"/>
+    <rect x="72" y="42" width="36" height="36" fill="#e9b063" transform="rotate(45 90 60)"/>
+    <polygon points="90,108 108,126 90,144 72,126" fill="#f17996"/>
+  </g>
+  <!-- connector dots -->
+  <polygon points="200,48 210,58 200,68 190,58" fill="#6d954b"/>
+  <polygon points="200,188 210,198 200,208 190,198" fill="#1f4fa1"/>
+</svg>

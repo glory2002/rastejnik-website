@@ -15,6 +15,7 @@ import {
   dashboardChildren as initialDashboardChildren,
   resultTierColor,
   resultTierColorLight,
+  updateDashboardChild,
   type DashboardCell,
   type DashboardChild,
   type DashboardTable,
@@ -150,16 +151,42 @@ function GuidancePopup({
   );
 }
 
+function PencilIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d="M13.586 2.586a2 2 0 0 1 2.828 2.828l-9.5 9.5L3 16l1.086-3.914 9.5-9.5Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12.5 3.5 16.5 7.5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 function ChildTabs({
   childList,
   activeId,
   onSelect,
   onAddChild,
+  onEditChild,
 }: {
   childList: DashboardChild[];
   activeId: string;
   onSelect: (id: string) => void;
   onAddChild: () => void;
+  onEditChild: () => void;
 }) {
   return (
     <div className="flex flex-wrap items-center gap-3">
@@ -175,24 +202,40 @@ function ChildTabs({
             : "border-accent-blue bg-white text-accent-blue";
         const Avatar = child.gender === "girl" ? GirlAvatar : BoyAvatar;
         return (
-          <button
+          <div
             key={child.id}
-            type="button"
-            onClick={() => onSelect(child.id)}
-            className={`group flex items-center gap-3 rounded-full border-[1.5px] py-2.5 pl-3.5 pr-6 transition-colors ${
+            className={`flex items-center rounded-full border-[1.5px] transition-colors ${
               isActive
                 ? activeColorClasses
                 : `border-border-green bg-white text-primary-dark ${accentHoverClasses}`
             }`}
           >
-            <Avatar className="baby-avatar-blink h-12 w-12 shrink-0" />
-            <span className="flex flex-col items-start leading-tight">
-              <span className="text-[19px] font-bold">{child.name}</span>
-              <span className="text-[15px] font-medium opacity-70">
-                {child.ageLabel}
+            <button
+              type="button"
+              onClick={() => onSelect(child.id)}
+              className={`group flex items-center gap-3 py-2.5 pl-3.5 ${
+                isActive ? "pr-2" : "pr-6"
+              }`}
+            >
+              <Avatar className="baby-avatar-blink h-12 w-12 shrink-0" />
+              <span className="flex flex-col items-start leading-tight">
+                <span className="text-[19px] font-bold">{child.name}</span>
+                <span className="text-[15px] font-medium opacity-70">
+                  {child.ageLabel}
+                </span>
               </span>
-            </span>
-          </button>
+            </button>
+            {isActive && (
+              <button
+                type="button"
+                onClick={onEditChild}
+                aria-label={`Редактирай ${child.name}`}
+                className="mr-2.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-opacity hover:opacity-70"
+              >
+                <PencilIcon className="h-[18px] w-[18px]" />
+              </button>
+            )}
+          </div>
         );
       })}
 
@@ -208,16 +251,22 @@ function ChildTabs({
   );
 }
 
-function AddChildModal({
+function ChildFormModal({
+  mode,
+  initial,
   onClose,
   onSave,
 }: {
+  mode: "add" | "edit";
+  initial?: DashboardChild;
   onClose: () => void;
   onSave: (child: DashboardChild) => void;
 }) {
-  const [name, setName] = useState("");
-  const [birthMonth, setBirthMonth] = useState("");
-  const [gender, setGender] = useState("");
+  const [name, setName] = useState(initial?.name ?? "");
+  const [birthMonth, setBirthMonth] = useState(initial?.birthMonth ?? "");
+  const [gender, setGender] = useState(
+    initial ? (initial.gender === "girl" ? "Момиче" : "Момче") : "",
+  );
   const [birthOrder, setBirthOrder] = useState("");
   const [fullTerm, setFullTerm] = useState("");
   const [childcare, setChildcare] = useState("");
@@ -242,14 +291,19 @@ function AddChildModal({
 
   function handleSave() {
     if (!canSave) return;
+    const input = {
+      name,
+      birthMonth,
+      gender: gender as "Момче" | "Момиче",
+    };
     onSave(
-      createDashboardChild({
-        name,
-        birthMonth,
-        gender: gender as "Момче" | "Момиче",
-      }),
+      mode === "edit" && initial
+        ? updateDashboardChild(initial, input)
+        : createDashboardChild(input),
     );
   }
+
+  const titleId = mode === "edit" ? "edit-child-title" : "add-child-title";
 
   return (
     <div
@@ -260,7 +314,7 @@ function AddChildModal({
       <div
         role="dialog"
         aria-modal="true"
-        aria-labelledby="add-child-title"
+        aria-labelledby={titleId}
         className="relative max-h-[min(90dvh,720px)] w-full max-w-[520px] overflow-y-auto bg-white p-6 shadow-[0_16px_48px_rgba(31,66,35,0.2)] md:p-8"
         onClick={(event) => event.stopPropagation()}
       >
@@ -276,14 +330,15 @@ function AddChildModal({
         <div className="flex flex-col gap-6 pr-4">
           <div className="flex flex-col gap-1">
             <h3
-              id="add-child-title"
+              id={titleId}
               className="text-[20px] font-bold leading-[1.2] text-primary md:text-[22px]"
             >
-              Добави дете
+              {mode === "edit" ? "Редактирай дете" : "Добави дете"}
             </h3>
             <p className="text-[15px] leading-[1.4] text-primary-dark/70">
-              Въведете данните за детето — после можете да попълвате тестове от
-              таблото.
+              {mode === "edit"
+                ? "Променете данните за детето — резултатите от тестовете се запазват."
+                : "Въведете данните за детето — после можете да попълвате тестове от таблото."}
             </p>
           </div>
 
@@ -1044,14 +1099,20 @@ function EarlyDevelopmentSection({
 export function DashboardView() {
   const [children, setChildren] = useState(initialDashboardChildren);
   const [activeId, setActiveId] = useState(initialDashboardChildren[0].id);
-  const [addOpen, setAddOpen] = useState(false);
+  const [formMode, setFormMode] = useState<"add" | "edit" | null>(null);
   const activeChild =
     children.find((child) => child.id === activeId) ?? children[0];
 
   function handleSaveChild(child: DashboardChild) {
-    setChildren((current) => [...current, child]);
-    setActiveId(child.id);
-    setAddOpen(false);
+    if (formMode === "edit") {
+      setChildren((current) =>
+        current.map((item) => (item.id === child.id ? child : item)),
+      );
+    } else {
+      setChildren((current) => [...current, child]);
+      setActiveId(child.id);
+    }
+    setFormMode(null);
   }
 
   return (
@@ -1060,7 +1121,8 @@ export function DashboardView() {
         childList={children}
         activeId={activeId}
         onSelect={setActiveId}
-        onAddChild={() => setAddOpen(true)}
+        onAddChild={() => setFormMode("add")}
+        onEditChild={() => setFormMode("edit")}
       />
       <div className="flex flex-col gap-4">
         <h2 className="text-[20px] font-bold leading-[1.2] text-primary md:text-[22px]">
@@ -1078,9 +1140,18 @@ export function DashboardView() {
         ))}
       </div>
 
-      {addOpen && (
-        <AddChildModal
-          onClose={() => setAddOpen(false)}
+      {formMode === "add" && (
+        <ChildFormModal
+          mode="add"
+          onClose={() => setFormMode(null)}
+          onSave={handleSaveChild}
+        />
+      )}
+      {formMode === "edit" && (
+        <ChildFormModal
+          mode="edit"
+          initial={activeChild}
+          onClose={() => setFormMode(null)}
           onSave={handleSaveChild}
         />
       )}

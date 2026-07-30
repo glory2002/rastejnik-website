@@ -11,7 +11,9 @@ import { FullWidth } from "./ui/Container";
 const navLinks = [
   { label: "За Нас", href: "/about" },
   { label: "Въпросници", href: "/questionnaires" },
-  { label: "Ресурси", href: "/#resources" },
+  { label: "Специалисти", href: "/specialists" },
+  { label: "Съвети", href: "/tips" },
+  { label: "Ресурси", href: "/resources" },
 ];
 
 function LogoMark({

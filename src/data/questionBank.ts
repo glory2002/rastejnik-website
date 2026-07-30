@@ -7,6 +7,8 @@ export interface QuestionnaireQuestion {
   id: string;
   domain: string;
   text: string;
+  /** For knowledge/literacy items — the scientifically supported choice. */
+  correctAnswer?: string;
 }
 
 export const answerOptions: QuestionAnswerOption[] = [
@@ -34,6 +36,11 @@ export interface DomainResult {
  * not a clinical assessment.
  */
 const domainFeedback: Record<string, { low: string; medium: string; high: string }> = {
+  "Родителска грамотност": {
+    low: "Има място да укрепите знанията си за ранното развитие. Кратките материали в „Полезни съвети“ и разговор с педиатър са добра следваща стъпка.",
+    medium: "Познавате основни факти, с отделни теми за доизясняване. Продължавайте да четете проверени източници и да наблюдавате детето си без сравнения.",
+    high: "Демонстрирате добра родителска грамотност по темите за ранно развитие. Продължавайте да се опирате на доказателства и да се доверявате на наблюденията си.",
+  },
   "Физическо развитие": {
     low: "Основните двигателни умения все още се изграждат. Отделяйте кратки, редовни моменти за свободна игра и движение на пода, за да подкрепите тази област.",
     medium: "Двигателните умения се развиват добре, с място за още практика. Продължавайте с редовна игра на пода и движение навън.",
@@ -117,7 +124,12 @@ export function getDomainResults(
       order.push(q.domain);
     }
     const entry = totals.get(q.domain)!;
-    entry.sum += answerScores[value] ?? 0;
+    if (q.correctAnswer) {
+      // Literacy / knowledge items: only the correct choice scores full marks.
+      entry.sum += value === q.correctAnswer ? 100 : 0;
+    } else {
+      entry.sum += answerScores[value] ?? 0;
+    }
     entry.count += 1;
   }
 

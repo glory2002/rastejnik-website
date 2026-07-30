@@ -13,6 +13,7 @@ const features = [
     title: "Въпросници",
     description:
       "Кратки валидирани оценки на развитието - какво работи в реалния живот: ритуали, граници, разговори, ежедневни.",
+    href: "/questionnaires",
   },
   {
     icon: "/images/icon-rub-02.svg",
@@ -21,6 +22,7 @@ const features = [
     title: "Новини",
     description:
       "Кратки валидирани оценки на развитието - какво работи в реалния живот: ритуали, граници, разговори, ежедневни.",
+    href: "#",
   },
   {
     icon: "/images/icon-rub-04.svg",
@@ -28,7 +30,8 @@ const features = [
     iconHeight: 110,
     title: "Полезни съвети",
     description:
-      "Кратки валидирани оценки на развитието - какво работи в реалния живот: ритуали, граници, разговори, ежедневни.",
+      "Кратки, практични идеи за сън, хранене, игра и връзка — на прост език за родителския ден.",
+    href: "/tips",
   },
   {
     icon: "/images/icon-rub-03.svg",
@@ -36,7 +39,8 @@ const features = [
     iconHeight: 109,
     title: "Специалисти и пространства",
     description:
-      "Кратки валидирани оценки на развитието - какво работи в реалния живот: ритуали, граници, разговори, ежедневни.",
+      "Препоръки към асоциации и отправни точки към практики и пространства, свързани с ранното детско развитие.",
+    href: "/specialists",
   },
 ];
 
@@ -110,10 +114,16 @@ export function FeaturesSection() {
                   </div>
 
                   <a
-                    href="#"
+                    href={feature.href}
                     className={`mt-auto inline-flex w-fit items-center gap-1.5 text-[15px] font-bold uppercase text-primary transition-opacity ${motion} hover:opacity-80`}
                   >
-                    Прочети Съвети
+                    {feature.href === "/specialists"
+                      ? "Виж асоциации"
+                      : feature.href === "/tips"
+                        ? "Прочети съвети"
+                        : feature.href === "/questionnaires"
+                          ? "Към въпросниците"
+                          : "Прочети"}
                     <Image
                       src="/images/arrow-link.svg"
                       alt=""

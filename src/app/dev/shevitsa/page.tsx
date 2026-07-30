@@ -8,7 +8,7 @@ export default function ShevitsaPreviewPage() {
   const [key, setKey] = useState(0);
 
   useEffect(() => {
-    const id = window.setInterval(() => setKey((k) => k + 1), 3800);
+    const id = window.setInterval(() => setKey((k) => k + 1), 6000);
     return () => window.clearInterval(id);
   }, []);
 

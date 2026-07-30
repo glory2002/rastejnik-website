@@ -6,8 +6,10 @@ import { FullWidth } from "./ui/Container";
 const navItems = [
   { label: "Програми", href: "#" },
   { label: "За нас", href: "/about" },
+  { label: "Специалисти", href: "/specialists" },
+  { label: "Полезни съвети", href: "/tips" },
+  { label: "Ресурси", href: "/resources" },
   { label: "Галерия", href: "#" },
-  { label: "Блог", href: "#" },
 ];
 
 const helpItems = [

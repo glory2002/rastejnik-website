@@ -113,6 +113,7 @@ export default function QuestionnairesPage() {
                     </div>
                   ) : (
                     <Button
+                      href={`/questionnaires/${category.slug}`}
                       className="mt-auto w-fit"
                       size="l"
                       hoverGroup={false}
