@@ -23,7 +23,7 @@ export function SectionLead({
 
   return (
     <p
-      className={`text-[20px] font-medium leading-[1.3] ${toneClass} ${className}`}
+      className={`text-lead font-medium ${toneClass} ${className}`}
       {...props}
     />
   );

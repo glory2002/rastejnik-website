@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState, type ReactNode } from "react";
 import type { FaqItem } from "@/data/faq";
+import { Body, Heading } from "@/components/ui/Typography";
 
 const motion = "duration-200 ease-out motion-reduce:transition-none";
 
@@ -26,11 +27,50 @@ export function FaqToggleIcon({ isOpen }: { isOpen: boolean }) {
   );
 }
 
-interface FaqListProps {
-  items: FaqItem[];
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-export function FaqList({ items }: FaqListProps) {
+/** Soft highlight of search matches — pale primary wash, keeps type intact. */
+function HighlightedText({
+  text,
+  query,
+}: {
+  text: string;
+  query: string;
+}): ReactNode {
+  const q = query.trim();
+  if (!q) return text;
+
+  const pattern = new RegExp(`(${escapeRegExp(q)})`, "gi");
+  const parts = text.split(pattern);
+  if (parts.length === 1) return text;
+
+  return parts.map((part, index) => {
+    const isMatch = part.toLocaleLowerCase("bg") === q.toLocaleLowerCase("bg");
+    if (!isMatch) return <Fragment key={index}>{part}</Fragment>;
+    return (
+      <span
+        key={index}
+        className="relative mx-[0.06em] inline-block px-[0.18em] align-baseline text-inherit"
+      >
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-[0.2em] bottom-[-0.04em] bg-primary/22"
+        />
+        <span className="relative z-[1]">{part}</span>
+      </span>
+    );
+  });
+}
+
+interface FaqListProps {
+  items: FaqItem[];
+  /** When set, matching substrings in question/answer are highlighted. */
+  highlightQuery?: string;
+}
+
+export function FaqList({ items, highlightQuery = "" }: FaqListProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
@@ -52,9 +92,9 @@ export function FaqList({ items }: FaqListProps) {
               className="flex w-full items-start gap-3 px-4 py-5 text-left md:gap-3.5 md:py-6"
             >
               <FaqToggleIcon isOpen={isOpen} />
-              <h3 className="flex-1 text-[22px] font-bold leading-[1.2] text-primary">
-                {item.question}
-              </h3>
+              <Heading className="flex-1">
+                <HighlightedText text={item.question} query={highlightQuery} />
+              </Heading>
             </button>
 
             <div
@@ -65,9 +105,9 @@ export function FaqList({ items }: FaqListProps) {
               <div className="overflow-hidden">
                 <div className="flex gap-3 px-4 pb-5 md:gap-3.5 md:pb-6">
                   <div className="w-[22px] shrink-0 md:w-[26px]" aria-hidden />
-                  <p className="flex-1 text-lg leading-[1.3] text-primary-dark">
-                    {item.answer}
-                  </p>
+                  <Body className="flex-1">
+                    <HighlightedText text={item.answer} query={highlightQuery} />
+                  </Body>
                 </div>
               </div>
             </div>

@@ -46,7 +46,7 @@ export function ProfileMenu() {
             Табло
           </Link>
           <Link
-            href="#"
+            href="/profile"
             onClick={() => setOpen(false)}
             className="block px-4 py-2.5 text-[15px] font-medium text-primary-dark transition-colors hover:bg-primary-light hover:text-primary"
           >

@@ -9,7 +9,7 @@ export function BabyCrawlIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 126.22 105.16" className={className} aria-hidden="true">
       <defs>
-        <style>{`.cls-1{fill:#f17996}.cls-2{fill:#f3ab53}.cls-3{fill:#1d8652}`}</style>
+        <style>{`.cls-1{fill:#f17996}.cls-2{fill:#f3ab53}.cls-3{fill:#6d954b}`}</style>
       </defs>
       <g className="baby-cube">
         <path

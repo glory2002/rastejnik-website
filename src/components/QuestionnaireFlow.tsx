@@ -16,6 +16,13 @@ import { TrafficLightIcon } from "@/components/icons/TrafficLightIcon";
 import { FaqToggleIcon } from "@/components/FaqList";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import {
+  Body,
+  Heading,
+  Label,
+  Meta,
+  Title,
+} from "@/components/ui/Typography";
 import { completeOnboarding, isLoggedIn } from "@/lib/authMock";
 
 const inputClassName =
@@ -31,7 +38,7 @@ function FormField({
 >) {
   return (
     <label className={`flex flex-col gap-2 ${className}`}>
-      <span className="text-[14px] font-bold text-primary-dark">{label}</span>
+      <Label>{label}</Label>
       <input {...props} className={inputClassName} />
     </label>
   );
@@ -49,7 +56,7 @@ function FormSelect({
 } & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "className">) {
   return (
     <label className={`flex flex-col gap-2 ${className}`}>
-      <span className="text-[14px] font-bold text-primary-dark">{label}</span>
+      <Label>{label}</Label>
       <select
         {...props}
         className="w-full border-[1.5px] border-border-green py-3 pl-4 pr-11 text-base text-primary-dark outline-none transition-colors focus:border-primary"
@@ -88,16 +95,10 @@ function OnboardStepShell({
           style={{ maxWidth }}
         >
           <div className="flex flex-col items-center gap-3 text-center">
-            <span className="text-[13px] font-bold uppercase tracking-wide text-primary-dark/70">
-              Стъпка {step} от 3
-            </span>
-            <h1 className="text-[clamp(1.75rem,3vw,2.25rem)] font-bold leading-[1.1] text-primary">
-              {title}
-            </h1>
+            <Meta tone="muted">Стъпка {step} от 3</Meta>
+            <Title as="h1">{title}</Title>
             {description && (
-              <p className="max-w-[440px] text-base leading-[1.4] text-primary-dark">
-                {description}
-              </p>
+              <Body className="max-w-[440px]">{description}</Body>
             )}
           </div>
           {children}
@@ -161,14 +162,14 @@ function TrafficLight({
           );
         })}
       </div>
-      <span className="text-[14px] font-bold text-primary-dark">{label}</span>
+      <Label>{label}</Label>
     </div>
   );
 }
 
 const PAGE_SIZE = 5;
-/** Piece anim ~2.35s + max delay ~0.76s + settle 0.75s + short hold. */
-const TRANSITION_DURATION_MS = 5600;
+/** Piece anim ~1.55s + max delay ~0.5s + settle 0.55s + short heartbeat hold. */
+const TRANSITION_DURATION_MS = 4000;
 type Stage =
   | "checking"
   | "register"
@@ -559,22 +560,18 @@ export function QuestionnaireFlow({
           <div className="mx-auto w-full max-w-[720px]">
             <div className="shevitsa-stage-enter flex flex-col items-center gap-10 text-center">
         <div className="flex flex-col items-center gap-4">
-          <h2 className="max-w-[560px] text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-[1.1] text-primary">
-            Поздравления!
-          </h2>
-          <p className="max-w-[480px] text-base leading-[1.5] text-primary-dark">
+          <Title className="max-w-[560px]">Поздравления!</Title>
+          <Body className="max-w-[480px]">
             Успешно завършихте оценката на развитието на вашето дете. Ето
             обобщените резултати и препоръки, които ще ви помогнат да
             подкрепите растежа му.
-          </p>
+          </Body>
         </div>
 
         {domainResults.length > 0 && (
           <div className="w-full bg-white p-6 text-left sm:p-8 md:p-10">
             <div className="flex flex-col items-center gap-12 text-center">
-              <h3 className="text-[20px] font-bold leading-[1.2] text-primary md:text-[22px]">
-                Обобщение на резултатите
-              </h3>
+              <Heading size="sm">Обобщение на резултатите</Heading>
               <TrafficLight level={overallStatus.level} label={overallStatus.label} />
             </div>
 
@@ -586,15 +583,18 @@ export function QuestionnaireFlow({
                 return (
                   <div key={result.domain} className="flex flex-col">
                     <div className="mb-1.5 flex items-baseline justify-between gap-3">
-                      <span className="text-[18px] font-bold text-primary-dark">
+                      <Heading as="span" size="sm" tone="dark">
                         {result.domain}
-                      </span>
-                      <span
-                        className="shrink-0 text-[18px] font-bold"
+                      </Heading>
+                      <Heading
+                        as="span"
+                        size="sm"
+                        tone="inherit"
+                        className="shrink-0"
                         style={{ color: tierColor }}
                       >
                         {result.percentage}%
-                      </span>
+                      </Heading>
                     </div>
 
                     <div className="wave-progress-bar @container relative w-full">
@@ -616,9 +616,7 @@ export function QuestionnaireFlow({
                       className="mt-2.5 flex items-center gap-2.5 self-start transition-opacity hover:opacity-70"
                     >
                       <FaqToggleIcon isOpen={isOpen} />
-                      <span className="text-[13px] font-bold uppercase text-primary">
-                        Насоки
-                      </span>
+                      <Meta as="span">Насоки</Meta>
                     </button>
 
                     <div
@@ -627,9 +625,7 @@ export function QuestionnaireFlow({
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <p className="pt-2 text-base leading-[1.4] text-primary-dark">
-                          {result.feedback}
-                        </p>
+                        <Body className="pt-2">{result.feedback}</Body>
                       </div>
                     </div>
                   </div>
@@ -638,12 +634,10 @@ export function QuestionnaireFlow({
             </div>
 
             <div className="mt-16 flex flex-col gap-3">
-              <h4 className="text-[18px] font-bold text-primary">
+              <Heading as="h4" size="sm">
                 Общи насоки
-              </h4>
-              <p className="text-base leading-[1.45] text-primary-dark">
-                {generalGuidance}
-              </p>
+              </Heading>
+              <Body>{generalGuidance}</Body>
             </div>
           </div>
         )}
@@ -668,8 +662,10 @@ export function QuestionnaireFlow({
           >
             <div className="flex flex-col gap-10">
               <div className={isLiteracy ? "text-center" : undefined}>
-                <div
-                  className={`mb-2 flex items-center text-[13px] font-bold uppercase text-primary-dark ${
+                <Meta
+                  as="div"
+                  tone="dark"
+                  className={`mb-2 flex items-center ${
                     isLiteracy ? "justify-center" : "justify-between"
                   }`}
                 >
@@ -685,7 +681,7 @@ export function QuestionnaireFlow({
                       <span>{progress}%</span>
                     </>
                   )}
-                </div>
+                </Meta>
                 <div className="wave-progress-bar @container relative mx-auto w-full">
                   <div className="wave-progress-track absolute inset-0 bg-cream-solid" />
                   <div
@@ -705,13 +701,16 @@ export function QuestionnaireFlow({
                         className="flex flex-col items-center gap-8 text-center"
                       >
                         {instruction ? (
-                          <p className="max-w-[520px] text-base leading-[1.4] text-primary-dark">
-                            {instruction}
-                          </p>
+                          <Body className="max-w-[520px]">{instruction}</Body>
                         ) : null}
-                        <p className="max-w-[560px] text-[22px] font-bold leading-[1.3] text-primary-dark md:text-[24px]">
+                        <Heading
+                          as="p"
+                          size="md"
+                          tone="dark"
+                          className="max-w-[560px] leading-[1.3]"
+                        >
                           {q.text}
-                        </p>
+                        </Heading>
                         <div className="flex w-full max-w-[480px] flex-col gap-3">
                           {answerOptions.map((opt) => {
                             const checked = answers[q.id] === opt.value;
@@ -769,10 +768,15 @@ export function QuestionnaireFlow({
                       key={q.id}
                       className="flex flex-col gap-4 py-6 first:pt-0 last:pb-0"
                     >
-                      <p className="max-w-[600px] text-[22px] font-bold leading-[1.3] text-primary-dark">
+                      <Heading
+                        as="p"
+                        size="md"
+                        tone="dark"
+                        className="max-w-[600px] leading-[1.3]"
+                      >
                         <span className="text-primary">{questionNumber}. </span>
                         {q.text}
-                      </p>
+                      </Heading>
                       <div className="flex flex-wrap gap-3">
                         {answerOptions.map((opt) => {
                           const checked = answers[q.id] === opt.value;

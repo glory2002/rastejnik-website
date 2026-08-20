@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLead } from "@/components/ui/SectionLead";
+import { Body, Display, Heading } from "@/components/ui/Typography";
 import {
   questionnaireCategories,
   type QuestionnaireAccent,
@@ -34,9 +35,7 @@ export default function QuestionnairesPage() {
         <Container>
           <div className="grid gap-6 lg:grid-cols-4">
             <div className="flex flex-col justify-start">
-              <h1 className="text-[clamp(2rem,4vw,3.5rem)] font-bold leading-[1.05] text-primary">
-                Въпросници
-              </h1>
+              <Display>Въпросници</Display>
               <SectionLead className="mt-6">
                 Кратки, валидирани въпросници, които ви помагат да разберете
                 по-добре себе си като родител и развитието на детето —
@@ -71,12 +70,10 @@ export default function QuestionnairesPage() {
                   </div>
 
                   <div className="flex flex-col gap-3">
-                    <h2 className="text-[24px] font-bold leading-[1.2] text-primary md:text-[28px]">
+                    <Heading as="h2" size="lg">
                       {category.title}
-                    </h2>
-                    <p className="max-w-[560px] text-lg leading-[1.3] text-primary-dark">
-                      {category.description}
-                    </p>
+                    </Heading>
+                    <Body className="max-w-[560px]">{category.description}</Body>
                   </div>
 
                   {hasSubcategories ? (
@@ -88,12 +85,10 @@ export default function QuestionnairesPage() {
                           className={`group flex flex-col gap-5 p-8 transition-colors duration-200 ease-out hover:bg-[#fefefc] ${accentClasses[sub.accent]}`}
                         >
                           <div className="flex flex-col gap-2">
-                            <h3 className="text-[17px] font-bold">
+                            <Heading as="h3" size="sm" tone="inherit">
                               {sub.title}
-                            </h3>
-                            <span className="text-base leading-[1.3] text-primary-dark">
-                              {sub.description}
-                            </span>
+                            </Heading>
+                            <Body as="span">{sub.description}</Body>
                           </div>
                           {/*
                             The whole card is already the clickable <Link>, so

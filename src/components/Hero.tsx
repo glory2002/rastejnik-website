@@ -3,6 +3,7 @@ import { Button } from "./ui/Button";
 import { Container } from "./ui/Container";
 import { Reveal } from "./ui/Reveal";
 import { SectionLead } from "./ui/SectionLead";
+import { DisplayHero } from "@/components/ui/Typography";
 
 const HERO_VIDEO = "/videos/hero-video.mp4";
 const HERO_POSTER = "/images/hero.jpg";
@@ -35,9 +36,9 @@ export function Hero() {
 
           <Container className="relative flex h-full flex-col items-start justify-center pb-10 text-left lg:pl-[130px]!">
             <Reveal className="flex flex-col items-start">
-              <h1 className="max-w-[600px] text-[clamp(2.5rem,6.4vw,88px)] font-medium leading-[1] text-white">
+              <DisplayHero className="max-w-[600px]">
                 Помагаме на децата да разцъфтят
-              </h1>
+              </DisplayHero>
               <SectionLead tone="light" className="mt-6 max-w-[440px]">
                 Кратки валидирани оценки на развитието - какво работи в
                 реалния живот: ритуали, граници, разговори, ежедневни.

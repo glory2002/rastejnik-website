@@ -12,6 +12,7 @@ const navLinks = [
   { label: "За Нас", href: "/about" },
   { label: "Въпросници", href: "/questionnaires" },
   { label: "Специалисти", href: "/specialists" },
+  { label: "Новини", href: "/news" },
   { label: "Съвети", href: "/tips" },
   { label: "Ресурси", href: "/resources" },
 ];
@@ -214,7 +215,7 @@ export function Header({
             <Link
               key={link.label}
               href={link.href}
-              className={`text-[21px] font-medium transition-colors hover:opacity-80 ${
+              className={`text-nav font-medium transition-colors hover:opacity-80 ${
                 isFramed
                   ? "text-primary"
                   : isLight

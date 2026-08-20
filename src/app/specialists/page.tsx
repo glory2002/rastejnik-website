@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { ContactTrigger } from "@/components/ContactModal";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Container } from "@/components/ui/Container";
+import { Action, Body, Display, Heading, Title } from "@/components/ui/Typography";
 import { associations } from "@/data/specialists";
 
 export const metadata: Metadata = {
@@ -19,28 +20,26 @@ export default function SpecialistsPage() {
 
       <section className="w-full bg-cream py-16 md:py-24">
         <Container>
-          <h1 className="max-w-[800px] text-[clamp(2rem,4vw,3.5rem)] font-bold leading-[1.05] text-primary">
+          <Display className="max-w-[800px]">
             Специалисти и пространства
-          </h1>
-          <p className="mt-6 max-w-[640px] text-lg leading-[1.3] text-primary-dark">
+          </Display>
+          <Body className="mt-6 max-w-[640px]">
             Растежник не замества медицински съвет. Списъкът е ориентир —
             асоциациите са мястото, откъдето можете да проверите
             правоспособност, да намерите регионални контакти и да стигнете до
             практики, свързани с ранно детско развитие и здравни грижи.
-          </p>
+          </Body>
         </Container>
       </section>
 
       <section className="w-full bg-white py-16 md:py-24">
         <Container>
-          <h2 className="max-w-[700px] text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-[1.08] text-primary">
-            Препоръчани асоциации
-          </h2>
-          <p className="mt-4 max-w-[620px] text-lg leading-[1.3] text-primary-dark">
+          <Title className="max-w-[700px]">Препоръчани асоциации</Title>
+          <Body className="mt-4 max-w-[620px]">
             Отворете картата на организацията — на сайта ѝ обикновено има
             регистър, регионални колегии или контакти към практики близо до
             вас.
-          </p>
+          </Body>
 
           <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             {associations.map((association) => (
@@ -68,15 +67,13 @@ export default function SpecialistsPage() {
                   </div>
 
                   <div className="flex flex-1 flex-col gap-3">
-                    <h3 className="text-[20px] font-bold leading-[1.2] text-primary md:text-[22px]">
-                      {association.name}
-                    </h3>
+                    <Heading size="sm">{association.name}</Heading>
                     <p className="text-base leading-[1.35] text-primary-dark">
                       {association.description}
                     </p>
                   </div>
 
-                  <span className="mt-auto inline-flex w-fit items-center gap-1.5 text-[15px] font-bold uppercase text-primary transition-opacity group-hover:opacity-80">
+                  <Action className="mt-auto inline-flex w-fit items-center gap-1.5 transition-opacity group-hover:opacity-80">
                     Към сайта
                     <Image
                       src="/images/arrow-link.svg"
@@ -85,7 +82,7 @@ export default function SpecialistsPage() {
                       height={22}
                       className="shrink-0 transition-transform group-hover:translate-x-1"
                     />
-                  </span>
+                  </Action>
                 </a>
               </li>
             ))}
@@ -95,22 +92,20 @@ export default function SpecialistsPage() {
 
       <section className="w-full bg-cream py-16 md:py-24">
         <Container>
-          <h2 className="max-w-[700px] text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-[1.08] text-primary">
-            Как да ползвате тази страница
-          </h2>
-          <div className="mt-6 flex max-w-[640px] flex-col gap-4 text-lg leading-[1.3] text-primary-dark">
+          <Title className="max-w-[700px]">Как да ползвате тази страница</Title>
+          <Body
+            as="div"
+            className="mt-6 flex max-w-[640px] flex-col gap-4"
+          >
             <p>
               Скоро ще добавим още организации. Ако познавате подходяща
               асоциация или пространство,{" "}
-              <Link
-                href="/#contact"
-                className="font-bold text-primary underline underline-offset-2 transition-opacity hover:opacity-80"
-              >
+              <ContactTrigger className="font-bold text-primary underline underline-offset-2 transition-opacity hover:opacity-80">
                 пишете ни
-              </Link>
+              </ContactTrigger>
               .
             </p>
-          </div>
+          </Body>
         </Container>
       </section>
 

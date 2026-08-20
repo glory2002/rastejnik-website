@@ -9,6 +9,7 @@ import { BabyRattleIcon } from "@/components/icons/BabyRattleIcon";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLead } from "@/components/ui/SectionLead";
+import { Action, Display, Heading, Meta } from "@/components/ui/Typography";
 import { getBabyIcons } from "@/lib/babyIcons";
 import {
   questionnaireCategories,
@@ -55,9 +56,10 @@ export default async function AgeQuestionnairePage({
 
       <section className="w-full bg-cream py-16 md:py-24">
         <Container>
-          <Link
+          <Action
+            as={Link}
             href="/questionnaires"
-            className="group mb-8 inline-flex items-center gap-1.5 text-[15px] font-bold uppercase text-primary transition-opacity hover:opacity-80"
+            className="group mb-8 inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
           >
             <Image
               src="/images/arrow-link.svg"
@@ -67,11 +69,9 @@ export default async function AgeQuestionnairePage({
               className="shrink-0 rotate-180"
             />
             Ранно детско развитие
-          </Link>
+          </Action>
 
-          <h1 className="max-w-[700px] text-[clamp(2rem,4vw,3.5rem)] font-bold leading-[1.05] text-primary">
-            {sub.title}
-          </h1>
+          <Display className="max-w-[700px]">{sub.title}</Display>
           <SectionLead className="mt-6 max-w-[560px]">
             {sub.description} Изберете конкретен етап по-долу, за да
             започнете съответния въпросник.
@@ -110,10 +110,14 @@ export default async function AgeQuestionnairePage({
                       )}
                     </div>
                   )}
-                  <span className="text-lg font-bold leading-[1.2] text-primary">
+                  <Heading as="span" size="sm">
                     {interval.label}
-                  </span>
-                  <span className="mt-auto inline-flex items-center gap-1.5 text-[13px] font-bold uppercase text-primary-dark transition-transform duration-200 ease-out group-hover:translate-x-1">
+                  </Heading>
+                  <Meta
+                    as="span"
+                    tone="dark"
+                    className="mt-auto inline-flex items-center gap-1.5 transition-transform duration-200 ease-out group-hover:translate-x-1"
+                  >
                     Започни
                     <Image
                       src="/images/arrow-link.svg"
@@ -122,7 +126,7 @@ export default async function AgeQuestionnairePage({
                       height={16}
                       className="shrink-0"
                     />
-                  </span>
+                  </Meta>
                 </Link>
               );
             })}

@@ -4,31 +4,16 @@ import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Container } from "@/components/ui/Container";
-import { Action, Body, Display, Heading } from "@/components/ui/Typography";
-import { tips } from "@/data/tips";
+import { Action, Body, Display, Heading, Meta } from "@/components/ui/Typography";
+import { news } from "@/data/news";
 
 export const metadata: Metadata = {
-  title: "Полезни съвети — Растежник",
+  title: "Новини — Растежник",
   description:
-    "Кратки, практични съвети за ежедневието с малко дете — на прост език, без паника и без сравнения.",
+    "Новини от Растежник — обновления на платформата, нови материали и теми около ранното детско развитие.",
 };
 
-/**
- * Shared fixed background for every card cover — the sukman stays still in
- * the viewport; each cream “window” only reveals the portion that aligns
- * with that card as you scroll (same idea as the home embroidery, but
- * masked to the image frames).
- */
-const sukmanCoverStyle = {
-  backgroundImage: "url(/images/sukman.png)",
-  backgroundAttachment: "fixed" as const,
-  backgroundRepeat: "no-repeat" as const,
-  backgroundPosition: "center center",
-  // Larger than the viewport so the figure reads big through the windows.
-  backgroundSize: "auto min(180vh, 1600px)",
-};
-
-export default function TipsListingPage() {
+export default function NewsListingPage() {
   return (
     <main>
       <Header variant="framed" />
@@ -43,48 +28,52 @@ export default function TipsListingPage() {
               Начало
             </Link>
             <span aria-hidden>/</span>
-            <span className="text-primary">Полезни съвети</span>
+            <span className="text-primary">Новини</span>
           </nav>
 
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
             <Image
-              src="/images/icon-rub-04.svg"
+              src="/images/icon-rub-02.svg"
               alt=""
-              width={165}
-              height={110}
+              width={128}
+              height={129}
               className="h-[70px] w-auto shrink-0 object-contain"
             />
             <div>
-              <Display className="max-w-[800px]">Полезни съвети</Display>
+              <Display className="max-w-[800px]">Новини</Display>
               <Body className="mt-4 max-w-[620px]">
-                Кратки, практични идеи за сън, хранене, игра и връзка —
-                написани за родителския ден, не за идеален свят.
+                Какво е ново в Растежник — обновления, материали и теми около
+                първите години с детето.
               </Body>
             </div>
           </div>
         </Container>
       </section>
 
-      <section id="tips-listing" className="w-full bg-white py-16 md:py-24">
+      <section id="news-listing" className="w-full bg-white py-16 md:py-24">
         <Container>
           <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
-            {tips.map((tip) => (
-              <li key={tip.slug}>
+            {news.map((item) => (
+              <li key={item.slug}>
                 <Link
-                  href={`/tips/${tip.slug}`}
+                  href={`/news/${item.slug}`}
                   className="group flex h-full flex-col transition-colors"
                 >
-                  <div
-                    className="aspect-[16/10] overflow-hidden bg-cream"
-                    style={sukmanCoverStyle}
-                    role="img"
-                    aria-hidden
-                  />
+                  <div className="relative aspect-[16/10] overflow-hidden bg-cream">
+                    <Image
+                      src={item.coverImage}
+                      alt=""
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-200 ease-out group-hover:scale-[1.03]"
+                    />
+                  </div>
 
                   <div className="flex flex-1 flex-col gap-3 pt-5">
-                    <Heading as="h2">{tip.title}</Heading>
+                    <Meta>{item.date}</Meta>
+                    <Heading as="h2">{item.title}</Heading>
                     <p className="text-base leading-[1.35] text-primary-dark">
-                      {tip.excerpt}
+                      {item.excerpt}
                     </p>
 
                     <div className="mt-auto flex items-center justify-start gap-4 pt-4">

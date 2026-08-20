@@ -36,6 +36,8 @@ interface ButtonProps {
   /** Only applies to the `<button>`/`<Link>` branches (not the decorative span). */
   onClick?: () => void;
   disabled?: boolean;
+  /** Native button type — ignored when rendering as a link. */
+  type?: "button" | "submit" | "reset";
 }
 
 /**
@@ -55,6 +57,7 @@ export function Button({
   hoverGroup = true,
   onClick,
   disabled = false,
+  type = "button",
 }: ButtonProps) {
   const sizeClasses = showArrow
     ? size === "xl"
@@ -159,7 +162,7 @@ export function Button({
 
   return (
     <button
-      type="button"
+      type={type}
       className={sharedClassName}
       onClick={onClick}
       disabled={disabled}

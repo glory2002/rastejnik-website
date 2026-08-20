@@ -8,7 +8,7 @@ export function BabyRattleIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 66.34 65.92" className={className} aria-hidden="true">
       <defs>
-        <style>{`.cls-1{fill:#f17996}.cls-2{fill:#f3ab53}.cls-3{fill:#1d8652}`}</style>
+        <style>{`.cls-1{fill:#f17996}.cls-2{fill:#f3ab53}.cls-3{fill:#6d954b}`}</style>
       </defs>
       <g>
         <path

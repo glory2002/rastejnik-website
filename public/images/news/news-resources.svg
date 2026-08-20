@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" fill="none">
+  <rect width="640" height="400" fill="#fdf8f0"/>
+  <!-- video frame -->
+  <rect x="120" y="100" width="220" height="140" fill="#6d954b"/>
+  <polygon points="200,140 200,200 250,170" fill="#fdf8f0"/>
+  <!-- book / PDF stack -->
+  <rect x="380" y="120" width="140" height="180" fill="#1f4fa1"/>
+  <rect x="394" y="134" width="112" height="152" fill="#fdf8f0"/>
+  <polygon points="450,170 478,198 450,226 422,198" fill="#e9b063"/>
+  <rect x="430" y="248" width="40" height="40" fill="#f17996" transform="rotate(45 450 268)"/>
+  <!-- accent tiles -->
+  <rect x="160" y="270" width="28" height="28" fill="#e9b063" transform="rotate(45 174 284)"/>
+  <rect x="220" y="270" width="28" height="28" fill="#f17996" transform="rotate(45 234 284)"/>
+</svg>

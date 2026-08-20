@@ -5,6 +5,7 @@ import { Reveal } from "./ui/Reveal";
 import { SectionLead } from "./ui/SectionLead";
 import { FaqList } from "./FaqList";
 import { faqQuestions, FAQ_PREVIEW_LIMIT } from "@/data/faq";
+import { Action, Display } from "@/components/ui/Typography";
 
 const motion = "duration-200 ease-out motion-reduce:transition-none";
 
@@ -16,9 +17,9 @@ export function FaqSection() {
       <Container>
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal className="lg:sticky lg:top-24 lg:self-start">
-            <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.04] text-primary">
+            <Display weight="medium" as="h2">
               Бързи отговори на най-честите въпроси
-            </h2>
+            </Display>
 
             <SectionLead className="mt-4 max-w-[360px]">
               Физическо и моторно развитие
@@ -30,16 +31,18 @@ export function FaqSection() {
 
             <Link
               href="/faq"
-              className={`group mt-20 inline-flex w-fit items-center gap-1.5 rounded-full border-[1.5px] border-secondary px-6 py-3.5 text-[15px] font-bold uppercase text-primary transition-colors ${motion} hover:border-primary`}
+              className={`group mt-20 inline-flex w-fit items-center gap-1.5 rounded-full border-[1.5px] border-secondary px-6 py-3.5 transition-colors ${motion} hover:border-primary`}
             >
-              Разгледай всички въпроси
-              <Image
-                src="/images/arrow-link.svg"
-                alt=""
-                width={14}
-                height={22}
-                className={`shrink-0 transition-transform ${motion} group-hover:translate-x-1`}
-              />
+              <Action className="inline-flex items-center gap-1.5">
+                Разгледай всички въпроси
+                <Image
+                  src="/images/arrow-link.svg"
+                  alt=""
+                  width={14}
+                  height={22}
+                  className={`shrink-0 transition-transform ${motion} group-hover:translate-x-1`}
+                />
+              </Action>
             </Link>
           </Reveal>
 

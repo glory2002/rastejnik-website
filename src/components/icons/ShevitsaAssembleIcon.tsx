@@ -28,7 +28,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "-520px",
             "--piece-dy": "2600px",
             "--piece-spin": "140deg",
-            animationDelay: "520ms",
+            animationDelay: "340ms",
           } as React.CSSProperties
         }
       >
@@ -48,7 +48,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "-1680px",
             "--piece-dy": "2100px",
             "--piece-spin": "-95deg",
-            animationDelay: "560ms",
+            animationDelay: "365ms",
           } as React.CSSProperties
         }
       >
@@ -68,7 +68,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "1900px",
             "--piece-dy": "2200px",
             "--piece-spin": "125deg",
-            animationDelay: "600ms",
+            animationDelay: "390ms",
           } as React.CSSProperties
         }
       >
@@ -88,7 +88,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "280px",
             "--piece-dy": "2400px",
             "--piece-spin": "-70deg",
-            animationDelay: "45ms",
+            animationDelay: "30ms",
           } as React.CSSProperties
         }
       >
@@ -107,7 +107,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "-2100px",
             "--piece-dy": "1800px",
             "--piece-spin": "160deg",
-            animationDelay: "90ms",
+            animationDelay: "60ms",
           } as React.CSSProperties
         }
       >
@@ -126,7 +126,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "1700px",
             "--piece-dy": "-1900px",
             "--piece-spin": "-130deg",
-            animationDelay: "360ms",
+            animationDelay: "235ms",
           } as React.CSSProperties
         }
         points="460.83 282.92 478.56 265.2 460.83 247.47 443.11 229.75 425.39 247.47 407.66 265.2 425.39 282.92 443.11 300.65 460.83 282.92"
@@ -140,7 +140,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "1950px",
             "--piece-dy": "900px",
             "--piece-spin": "85deg",
-            animationDelay: "400ms",
+            animationDelay: "260ms",
           } as React.CSSProperties
         }
         points="460.83 460.17 478.56 442.44 460.83 424.72 443.11 406.99 425.39 424.72 407.66 442.44 425.39 460.17 443.11 477.89 460.83 460.17"
@@ -154,7 +154,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "2300px",
             "--piece-dy": "1600px",
             "--piece-spin": "-150deg",
-            animationDelay: "640ms",
+            animationDelay: "415ms",
           } as React.CSSProperties
         }
         points="514.01 513.34 531.73 495.61 514.01 477.89 496.28 460.17 478.56 477.89 460.83 495.61 478.56 513.34 496.28 531.06 514.01 513.34"
@@ -168,7 +168,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "2200px",
             "--piece-dy": "-2100px",
             "--piece-spin": "100deg",
-            animationDelay: "680ms",
+            animationDelay: "440ms",
           } as React.CSSProperties
         }
         points="514.01 229.75 531.73 212.02 514.01 194.3 496.28 176.58 478.56 194.3 460.83 212.02 478.56 229.75 496.28 247.47 514.01 229.75"
@@ -182,7 +182,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "-2300px",
             "--piece-dy": "-2000px",
             "--piece-spin": "-115deg",
-            animationDelay: "720ms",
+            animationDelay: "470ms",
           } as React.CSSProperties
         }
         points="230.42 229.75 248.14 212.02 230.42 194.3 212.69 176.58 194.97 194.3 177.24 212.02 194.97 229.75 212.69 247.47 230.42 229.75"
@@ -196,7 +196,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "-2200px",
             "--piece-dy": "1700px",
             "--piece-spin": "75deg",
-            animationDelay: "760ms",
+            animationDelay: "495ms",
           } as React.CSSProperties
         }
         points="230.42 513.34 248.14 495.61 230.42 477.89 212.69 460.17 194.97 477.89 177.24 495.61 194.97 513.34 212.69 531.06 230.42 513.34"
@@ -210,7 +210,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "-1800px",
             "--piece-dy": "1100px",
             "--piece-spin": "-90deg",
-            animationDelay: "440ms",
+            animationDelay: "285ms",
           } as React.CSSProperties
         }
         points="283.59 460.17 301.32 442.44 283.59 424.72 265.87 406.99 248.14 424.72 230.42 442.44 248.14 460.17 265.87 477.89 283.59 460.17"
@@ -224,7 +224,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "-1750px",
             "--piece-dy": "-1750px",
             "--piece-spin": "135deg",
-            animationDelay: "480ms",
+            animationDelay: "310ms",
           } as React.CSSProperties
         }
         points="283.59 282.92 301.32 265.2 283.59 247.47 265.87 229.75 248.14 247.47 230.42 265.2 248.14 282.92 265.87 300.65 283.59 282.92"
@@ -238,7 +238,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "180px",
             "--piece-dy": "-2300px",
             "--piece-spin": "-160deg",
-            animationDelay: "135ms",
+            animationDelay: "90ms",
           } as React.CSSProperties
         }
         points="372.21 300.65 389.94 282.92 372.21 265.2 354.49 247.47 336.76 265.2 319.04 282.92 336.76 300.65 354.49 318.37 372.21 300.65"
@@ -252,7 +252,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "-900px",
             "--piece-dy": "-2500px",
             "--piece-spin": "55deg",
-            animationDelay: "180ms",
+            animationDelay: "115ms",
           } as React.CSSProperties
         }
         points="372.21 371.54 389.94 353.82 372.21 336.1 354.49 318.37 336.76 336.09 319.04 353.82 336.76 371.54 354.49 389.27 372.21 371.54"
@@ -266,7 +266,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "2100px",
             "--piece-dy": "-300px",
             "--piece-spin": "-45deg",
-            animationDelay: "225ms",
+            animationDelay: "145ms",
           } as React.CSSProperties
         }
         points="443.11 371.54 460.83 353.82 443.11 336.1 425.39 318.37 407.66 336.09 389.94 353.82 407.66 371.54 425.39 389.27 443.11 371.54"
@@ -280,7 +280,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "-2100px",
             "--piece-dy": "200px",
             "--piece-spin": "120deg",
-            animationDelay: "270ms",
+            animationDelay: "175ms",
           } as React.CSSProperties
         }
         points="301.32 371.54 319.04 353.82 301.32 336.1 283.59 318.37 265.87 336.09 248.14 353.82 265.87 371.54 283.59 389.27 301.32 371.54"
@@ -295,7 +295,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "2700px",
             "--piece-dy": "-400px",
             "--piece-spin": "-170deg",
-            animationDelay: "50ms",
+            animationDelay: "30ms",
           } as React.CSSProperties
         }
       >
@@ -333,7 +333,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
             "--piece-dx": "-2700px",
             "--piece-dy": "-350px",
             "--piece-spin": "-155deg",
-            animationDelay: "90ms",
+            animationDelay: "60ms",
           } as React.CSSProperties
         }
       >

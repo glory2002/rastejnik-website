@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" fill="none">
+  <rect width="640" height="400" fill="#fdf8f0"/>
+  <!-- checklist / literacy squares -->
+  <rect x="168" y="110" width="56" height="56" fill="#6d954b"/>
+  <polygon points="184,138 200,154 220,126" fill="#fdf8f0"/>
+  <rect x="248" y="110" width="56" height="56" fill="#e9b063"/>
+  <rect x="328" y="110" width="56" height="56" stroke="#6d954b" stroke-width="4" fill="none"/>
+  <rect x="408" y="110" width="56" height="56" fill="#f17996"/>
+  <polygon points="424,138 440,154 460,126" fill="#fdf8f0"/>
+  <!-- lower row -->
+  <rect x="208" y="200" width="56" height="56" stroke="#1f4fa1" stroke-width="4" fill="none"/>
+  <rect x="288" y="200" width="56" height="56" fill="#1f4fa1"/>
+  <polygon points="304,228 320,244 340,216" fill="#fdf8f0"/>
+  <rect x="368" y="200" width="56" height="56" fill="#6d954b"/>
+  <!-- diamond accents -->
+  <polygon points="320,292 344,316 320,340 296,316" fill="#e9b063"/>
+</svg>

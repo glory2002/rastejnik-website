@@ -5,6 +5,7 @@ import { FeaturesSection } from "@/components/FeaturesSection";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Container } from "@/components/ui/Container";
+import { Action, Body, Display, Heading, Meta } from "@/components/ui/Typography";
 import { resources, type ResourceItem } from "@/data/resources";
 
 export const metadata: Metadata = {
@@ -77,16 +78,12 @@ function ResourceCard({ item }: { item: ResourceItem }) {
       </div>
 
       <div className="flex flex-1 flex-col gap-3 pt-5">
-        <p className="text-[12px] font-bold uppercase tracking-[0.04em] text-primary/70">
-          {isVideo ? "Видео" : "PDF"}
-        </p>
-        <h3 className="text-[22px] font-bold leading-[1.2] text-primary md:text-[24px]">
-          {item.title}
-        </h3>
+        <Meta>{isVideo ? "Видео" : "PDF"}</Meta>
+        <Heading>{item.title}</Heading>
         <p className="text-base leading-[1.35] text-primary-dark">
           {item.excerpt}
         </p>
-        <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-[15px] font-bold uppercase text-primary transition-opacity group-hover:opacity-80">
+        <Action className="mt-auto inline-flex items-center gap-1.5 pt-4 transition-opacity group-hover:opacity-80">
           {isVideo ? "Гледай в YouTube" : "Отвори PDF"}
           <Image
             src="/images/arrow-link.svg"
@@ -95,7 +92,7 @@ function ResourceCard({ item }: { item: ResourceItem }) {
             height={22}
             className="shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-1"
           />
-        </span>
+        </Action>
       </div>
     </a>
   );
@@ -110,7 +107,7 @@ export default function ResourcesPage() {
         <Container>
           <nav
             aria-label="Пътека"
-            className="mb-6 flex flex-wrap items-center gap-2 text-[14px] font-medium text-primary-dark/60"
+            className="mb-6 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60"
           >
             <Link href="/" className="transition-opacity hover:opacity-80">
               Начало
@@ -120,13 +117,11 @@ export default function ResourcesPage() {
           </nav>
 
           <div>
-            <h1 className="max-w-[800px] text-[clamp(2rem,4vw,3.5rem)] font-bold leading-[1.05] text-primary">
-              Ресурси
-            </h1>
-            <p className="mt-4 max-w-[620px] text-lg leading-[1.3] text-primary-dark">
+            <Display className="max-w-[800px]">Ресурси</Display>
+            <Body className="mt-4 max-w-[620px]">
               Видеа и PDF материали за ежедневието с малко дете — отворете
               видеото в YouTube или изтеглете книгата.
-            </p>
+            </Body>
           </div>
         </Container>
       </section>

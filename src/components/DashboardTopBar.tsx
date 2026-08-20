@@ -13,6 +13,7 @@ const navLinks = [
   { label: "За Нас", href: "/about" },
   { label: "Въпросници", href: "/questionnaires" },
   { label: "Специалисти", href: "/specialists" },
+  { label: "Новини", href: "/news" },
   { label: "Съвети", href: "/tips" },
   { label: "Ресурси", href: "/resources" },
 ];
@@ -33,7 +34,7 @@ export function DashboardTopBar() {
             <Link
               key={link.label}
               href={link.href}
-              className="whitespace-nowrap text-[21px] font-medium text-primary transition-colors hover:opacity-80"
+              className="whitespace-nowrap text-nav font-medium text-primary transition-colors hover:opacity-80"
             >
               {link.label}
             </Link>

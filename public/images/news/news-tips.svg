@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" fill="none">
+  <rect width="640" height="400" fill="#f3f6f0"/>
+  <!-- speech / tip bubbles as diamond clusters -->
+  <g transform="translate(140 90)">
+    <polygon points="80,20 120,60 80,100 40,60" fill="#f17996"/>
+    <rect x="62" y="42" width="36" height="36" fill="#e9b063" transform="rotate(45 80 60)"/>
+    <polygon points="80,108 100,128 80,148 60,128" fill="#f17996"/>
+  </g>
+  <g transform="translate(340 130)">
+    <polygon points="90,20 130,60 90,100 50,60" fill="#1f4fa1"/>
+    <rect x="72" y="42" width="36" height="36" fill="#6d954b" transform="rotate(45 90 60)"/>
+    <polygon points="90,108 108,126 90,144 72,126" fill="#1f4fa1"/>
+  </g>
+  <polygon points="320,300 344,324 320,348 296,324" fill="#e9b063"/>
+  <rect x="200" y="290" width="22" height="22" fill="#6d954b" transform="rotate(45 211 301)"/>
+  <rect x="400" y="290" width="22" height="22" fill="#6d954b" transform="rotate(45 411 301)"/>
+</svg>

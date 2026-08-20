@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Container } from "./ui/Container";
 import { Reveal } from "./ui/Reveal";
+import { Action, Body, Display, Heading } from "@/components/ui/Typography";
 
 const features = [
   {
@@ -21,14 +23,14 @@ const features = [
     iconHeight: 129,
     title: "Новини",
     description:
-      "Кратки валидирани оценки на развитието - какво работи в реалния живот: ритуали, граници, разговори, ежедневни.",
-    href: "#",
+      "Обновления на платформата, нови материали и теми около ранното детско развитие — накратко и ясно.",
+    href: "/news",
   },
   {
     icon: "/images/icon-rub-04.svg",
     iconWidth: 165,
     iconHeight: 110,
-    title: "Полезни съвети",
+    title: "Полезна информация",
     description:
       "Кратки, практични идеи за сън, хранене, игра и връзка — на прост език за родителския ден.",
     href: "/tips",
@@ -53,8 +55,10 @@ export function FeaturesSection() {
   return (
     <section id="resources" className="w-full bg-cream py-20 md:py-32">
       <Container>
-        <Reveal as="h2" className="mb-16 max-w-[1000px] text-left text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.04] text-primary">
-          Нашите рубрики
+        <Reveal className="mb-16 max-w-[1000px] text-left">
+          <Display weight="medium" as="h2">
+            Нашите рубрики
+          </Display>
         </Reveal>
 
         {/*
@@ -76,10 +80,21 @@ export function FeaturesSection() {
           {features.map((feature, index) => {
             const isHovered = hovered === index;
             const basis = hovered === null ? 25 : isHovered ? 28 : 24;
+            const ctaLabel =
+              feature.href === "/specialists"
+                ? "Виж асоциации"
+                : feature.href === "/tips"
+                  ? "Прочети"
+                  : feature.href === "/news"
+                    ? "Към новините"
+                    : feature.href === "/questionnaires"
+                      ? "Към въпросниците"
+                      : "Прочети";
 
             return (
-              <div
+              <Link
                 key={feature.title}
+                href={feature.href}
                 onMouseEnter={() => setHovered(index)}
                 onMouseLeave={() => setHovered(null)}
                 onFocus={() => setHovered(index)}
@@ -105,25 +120,14 @@ export function FeaturesSection() {
 
                 <div className="relative z-10 flex flex-1 flex-col gap-6">
                   <div className="flex flex-col gap-2">
-                    <h3 className="text-[26px] font-bold leading-[1.2] text-primary md:text-[28px]">
-                      {feature.title}
-                    </h3>
-                    <p className="text-lg leading-[1.3] text-primary-dark">
-                      {feature.description}
-                    </p>
+                    <Heading size="lg">{feature.title}</Heading>
+                    <Body>{feature.description}</Body>
                   </div>
 
-                  <a
-                    href={feature.href}
-                    className={`mt-auto inline-flex w-fit items-center gap-1.5 text-[15px] font-bold uppercase text-primary transition-opacity ${motion} hover:opacity-80`}
+                  <Action
+                    className={`mt-auto inline-flex w-fit items-center gap-1.5 transition-opacity ${motion} group-hover:opacity-80`}
                   >
-                    {feature.href === "/specialists"
-                      ? "Виж асоциации"
-                      : feature.href === "/tips"
-                        ? "Прочети съвети"
-                        : feature.href === "/questionnaires"
-                          ? "Към въпросниците"
-                          : "Прочети"}
+                    {ctaLabel}
                     <Image
                       src="/images/arrow-link.svg"
                       alt=""
@@ -131,9 +135,9 @@ export function FeaturesSection() {
                       height={22}
                       className={`shrink-0 transition-transform ${motion} group-hover:translate-x-1`}
                     />
-                  </a>
+                  </Action>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </Reveal>

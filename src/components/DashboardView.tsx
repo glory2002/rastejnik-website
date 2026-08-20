@@ -29,6 +29,13 @@ import {
   GirlAvatar,
 } from "@/components/icons/ChildAvatarIcons";
 import { Button } from "@/components/ui/Button";
+import {
+  Action,
+  Body,
+  Heading,
+  Label,
+  Meta,
+} from "@/components/ui/Typography";
 
 const formInputClassName =
   "w-full border-[1.5px] border-border-green bg-white px-4 py-3 text-base text-primary-dark outline-none transition-colors focus:border-primary";
@@ -112,15 +119,10 @@ function GuidancePopup({
 
         <div className="flex flex-col gap-4 pr-6">
           <div className="flex flex-col gap-1">
-            <p className="text-[12px] font-bold uppercase tracking-[0.04em] text-primary/70">
-              {payload.intervalLabel}
-            </p>
-            <h3
-              id="guidance-popup-title"
-              className="text-[20px] font-bold leading-[1.2] text-primary-dark"
-            >
+            <Meta>{payload.intervalLabel}</Meta>
+            <Heading id="guidance-popup-title" size="sm" tone="dark">
               {payload.domain}
-            </h3>
+            </Heading>
           </div>
 
           <div
@@ -129,21 +131,21 @@ function GuidancePopup({
               backgroundColor: resultTierColorLight(payload.percentage),
             }}
           >
-            <span
-              className="text-[18px] font-bold"
+            <Heading
+              as="span"
+              size="sm"
+              tone="inherit"
               style={{ color: resultTierColor(payload.percentage) }}
             >
               {payload.percentage}%
-            </span>
+            </Heading>
           </div>
 
           <div className="flex flex-col gap-2">
-            <p className="text-[13px] font-bold uppercase text-primary">
-              Насоки
-            </p>
-            <p className="text-[15px] leading-[1.45] text-primary-dark">
+            <Meta as="p">Насоки</Meta>
+            <Body as="p" className="text-action leading-[1.45]">
               {feedback}
-            </p>
+            </Body>
           </div>
         </div>
       </div>
@@ -219,10 +221,12 @@ function ChildTabs({
             >
               <Avatar className="baby-avatar-blink h-12 w-12 shrink-0" />
               <span className="flex flex-col items-start leading-tight">
-                <span className="text-[19px] font-bold">{child.name}</span>
-                <span className="text-[15px] font-medium opacity-70">
+                <Heading as="span" size="sm" tone="inherit">
+                  {child.name}
+                </Heading>
+                <Action as="span" tone="inherit" className="font-medium normal-case opacity-70">
                   {child.ageLabel}
-                </span>
+                </Action>
               </span>
             </button>
             {isActive && (
@@ -329,24 +333,19 @@ function ChildFormModal({
 
         <div className="flex flex-col gap-6 pr-4">
           <div className="flex flex-col gap-1">
-            <h3
-              id={titleId}
-              className="text-[20px] font-bold leading-[1.2] text-primary md:text-[22px]"
-            >
+            <Heading id={titleId} size="sm">
               {mode === "edit" ? "Редактирай дете" : "Добави дете"}
-            </h3>
-            <p className="text-[15px] leading-[1.4] text-primary-dark/70">
+            </Heading>
+            <Body tone="muted" className="text-action leading-[1.4]">
               {mode === "edit"
                 ? "Променете данните за детето — резултатите от тестовете се запазват."
                 : "Въведете данните за детето — после можете да попълвате тестове от таблото."}
-            </p>
+            </Body>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="flex flex-col gap-2 sm:col-span-2">
-              <span className="text-[14px] font-bold text-primary-dark">
-                Име / псевдоним
-              </span>
+              <Label>Име / псевдоним</Label>
               <input
                 required
                 value={name}
@@ -355,9 +354,7 @@ function ChildFormModal({
               />
             </label>
             <label className="flex flex-col gap-2">
-              <span className="text-[14px] font-bold text-primary-dark">
-                Месец и година на раждане
-              </span>
+              <Label>Месец и година на раждане</Label>
               <input
                 required
                 type="month"
@@ -367,7 +364,7 @@ function ChildFormModal({
               />
             </label>
             <label className="flex flex-col gap-2">
-              <span className="text-[14px] font-bold text-primary-dark">Пол</span>
+              <Label>Пол</Label>
               <select
                 required
                 value={gender}
@@ -382,9 +379,7 @@ function ChildFormModal({
               </select>
             </label>
             <label className="flex flex-col gap-2">
-              <span className="text-[14px] font-bold text-primary-dark">
-                Кое поред дете
-              </span>
+              <Label>Кое поред дете</Label>
               <input
                 type="number"
                 min={1}
@@ -394,9 +389,7 @@ function ChildFormModal({
               />
             </label>
             <label className="flex flex-col gap-2">
-              <span className="text-[14px] font-bold text-primary-dark">
-                Родено на термин
-              </span>
+              <Label>Родено на термин</Label>
               <select
                 value={fullTerm}
                 onChange={(e) => setFullTerm(e.target.value)}
@@ -410,9 +403,7 @@ function ChildFormModal({
               </select>
             </label>
             <label className="flex flex-col gap-2 sm:col-span-2">
-              <span className="text-[14px] font-bold text-primary-dark">
-                Посещава ли детско заведение
-              </span>
+              <Label>Посещава ли детско заведение</Label>
               <select
                 value={childcare}
                 onChange={(e) => setChildcare(e.target.value)}
@@ -1017,9 +1008,9 @@ function ParentalQuestionnaireCard({
           className={`h-10 w-10 ${item.iconClass ?? ""}`}
         />
       </div>
-      <h2 className="min-w-0 flex-1 text-[20px] font-bold leading-[1.2] text-primary md:text-[22px]">
+      <Heading as="h2" size="sm" className="min-w-0 flex-1">
         {item.title}
-      </h2>
+      </Heading>
       <div className="shrink-0">
         <StatusCircle
           cell={item.cell}
@@ -1125,9 +1116,9 @@ export function DashboardView() {
         onEditChild={() => setFormMode("edit")}
       />
       <div className="flex flex-col gap-4">
-        <h2 className="text-[20px] font-bold leading-[1.2] text-primary md:text-[22px]">
+        <Heading as="h2" size="sm">
           Ранно детско развитие
-        </h2>
+        </Heading>
         <EarlyDevelopmentSection
           bands={activeChild.earlyDevelopmentBands}
           currentAgeGroupSlug={activeChild.currentAgeGroupSlug}

@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { BabyCrawlIcon } from "@/components/icons/BabyCrawlIcon";
 import { BabyRattleIcon } from "@/components/icons/BabyRattleIcon";
 import { QuestionnaireFlow } from "@/components/QuestionnaireFlow";
+import { Meta, Title } from "@/components/ui/Typography";
 import { defaultQuestions } from "@/data/questionBank";
 import { getBabyIcons } from "@/lib/babyIcons";
 import {
@@ -62,9 +63,11 @@ export default async function IntervalQuestionnairePage({
   const header = (
     <div className="flex flex-col items-center gap-4 text-center">
       {/* Breadcrumb: ancestors muted, current interval in active primary. */}
-      <nav
+      <Meta
+        as="nav"
         aria-label="Навигация във въпросника"
-        className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[13px] font-bold uppercase"
+        tone="inherit"
+        className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1"
       >
         <Link
           href="/questionnaires"
@@ -87,7 +90,7 @@ export default async function IntervalQuestionnairePage({
         <span className="text-primary" aria-current="page">
           {currentInterval.label}
         </span>
-      </nav>
+      </Meta>
 
       <div className="flex items-center gap-3.5">
         {icon && (
@@ -108,9 +111,9 @@ export default async function IntervalQuestionnairePage({
           </div>
         )}
 
-        <h1 className="max-w-[700px] text-[clamp(1.5rem,2.5vw,2rem)] font-bold leading-[1.05] text-primary">
+        <Title as="h1" className="max-w-[700px]">
           {currentInterval.label}
-        </h1>
+        </Title>
       </div>
     </div>
   );

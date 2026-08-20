@@ -11,36 +11,37 @@ import {
   Display,
   Heading,
   Label,
+  Meta,
   Title,
 } from "@/components/ui/Typography";
 import {
-  getRelatedTips,
-  getTipBySlug,
-  tips,
-  type TipBlock,
-} from "@/data/tips";
+  getNewsBySlug,
+  getRelatedNews,
+  news,
+  type NewsBlock,
+} from "@/data/news";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export function generateStaticParams() {
-  return tips.map((tip) => ({ slug: tip.slug }));
+  return news.map((item) => ({ slug: item.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const tip = getTipBySlug(slug);
-  if (!tip) return { title: "Съвет — Растежник" };
+  const article = getNewsBySlug(slug);
+  if (!article) return { title: "Новина — Растежник" };
   return {
-    title: `${tip.title} — Растежник`,
-    description: tip.excerpt,
+    title: `${article.title} — Растежник`,
+    description: article.excerpt,
   };
 }
 
-function TipBody({ blocks }: { blocks: TipBlock[] }) {
+function NewsBody({ blocks }: { blocks: NewsBlock[] }) {
   return (
     <Body as="div" size="relaxed" className="flex flex-col gap-6">
       {blocks.map((block, index) => {
@@ -81,12 +82,12 @@ function TipBody({ blocks }: { blocks: TipBlock[] }) {
   );
 }
 
-export default async function TipArticlePage({ params }: PageProps) {
+export default async function NewsArticlePage({ params }: PageProps) {
   const { slug } = await params;
-  const tip = getTipBySlug(slug);
-  if (!tip) notFound();
+  const article = getNewsBySlug(slug);
+  if (!article) notFound();
 
-  const related = getRelatedTips(tip.slug);
+  const related = getRelatedNews(article.slug);
 
   return (
     <main>
@@ -103,42 +104,37 @@ export default async function TipArticlePage({ params }: PageProps) {
             </Link>
             <span aria-hidden>/</span>
             <Link
-              href="/tips"
+              href="/news"
               className="transition-opacity hover:opacity-80"
             >
-              Полезни съвети
+              Новини
             </Link>
           </nav>
 
-          <Display className="max-w-[820px]">{tip.title}</Display>
+          <Meta className="mb-4">{article.date}</Meta>
+          <Display className="max-w-[820px]">{article.title}</Display>
         </Container>
       </section>
 
       <article className="w-full bg-white py-16 md:py-24">
         <Container>
           <div className="mx-auto max-w-[720px]">
-            <div className="relative mb-12 flex aspect-[16/9] items-center justify-center overflow-hidden bg-cream">
+            <div className="relative mb-12 aspect-[16/9] overflow-hidden bg-cream">
               <Image
-                src={tip.coverImage}
+                src={article.coverImage}
                 alt=""
-                width={420}
-                height={260}
-                className={`max-h-[75%] w-auto object-contain ${tip.coverClass ?? ""}`}
+                fill
+                sizes="(max-width: 720px) 100vw, 720px"
+                className="object-cover"
                 priority
               />
             </div>
 
-            <TipBody blocks={tip.body} />
-
-            <p className="mt-12 text-[15px] leading-[1.4] text-primary-dark/60">
-              Растежник не замества медицински или терапевтичен съвет. При
-              притеснение за здравето или развитието на детето се обърнете към
-              специалист.
-            </p>
+            <NewsBody blocks={article.body} />
 
             <div className="mt-10 border-t border-border-green pt-8">
               <Link
-                href="/tips"
+                href="/news"
                 className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
               >
                 <Image
@@ -148,7 +144,7 @@ export default async function TipArticlePage({ params }: PageProps) {
                   height={22}
                   className="shrink-0 rotate-180"
                 />
-                <Action>Към всички съвети</Action>
+                <Action>Към всички новини</Action>
               </Link>
             </div>
           </div>
@@ -158,24 +154,25 @@ export default async function TipArticlePage({ params }: PageProps) {
       {related.length > 0 ? (
         <section className="w-full bg-cream py-16 md:py-24">
           <Container>
-            <Title>Още съвети</Title>
+            <Title>Още новини</Title>
             <ul className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
               {related.map((item) => (
                 <li key={item.slug}>
                   <Link
-                    href={`/tips/${item.slug}`}
+                    href={`/news/${item.slug}`}
                     className="group flex h-full flex-col"
                   >
-                    <div className="relative flex aspect-[16/10] items-center justify-center overflow-hidden bg-white">
+                    <div className="relative aspect-[16/10] overflow-hidden bg-white">
                       <Image
                         src={item.coverImage}
                         alt=""
-                        width={220}
-                        height={140}
-                        className={`max-h-[65%] w-auto object-contain transition-transform duration-200 ease-out group-hover:scale-105 ${item.coverClass ?? ""}`}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 33vw"
+                        className="object-cover transition-transform duration-200 ease-out group-hover:scale-[1.03]"
                       />
                     </div>
                     <div className="flex flex-1 flex-col gap-2 pt-4">
+                      <Meta>{item.date}</Meta>
                       <Heading size="sm">{item.title}</Heading>
                       <Action className="mt-auto inline-flex items-center gap-1.5 pt-3 transition-opacity group-hover:opacity-80">
                         Прочети

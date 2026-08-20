@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" fill="none">
+  <rect width="640" height="400" fill="#f3f6f0"/>
+  <!-- network of diamonds = associations -->
+  <polygon points="320,70 352,102 320,134 288,102" fill="#1f4fa1"/>
+  <polygon points="210,150 238,178 210,206 182,178" fill="#6d954b"/>
+  <polygon points="430,150 458,178 430,206 402,178" fill="#6d954b"/>
+  <polygon points="150,250 174,274 150,298 126,274" fill="#e9b063"/>
+  <polygon points="320,220 356,256 320,292 284,256" fill="#f17996"/>
+  <polygon points="490,250 514,274 490,298 466,274" fill="#e9b063"/>
+  <polygon points="240,310 262,332 240,354 218,332" fill="#1f4fa1"/>
+  <polygon points="400,310 422,332 400,354 378,332" fill="#1f4fa1"/>
+  <!-- connectors -->
+  <rect x="248" y="168" width="48" height="6" fill="#e9b063"/>
+  <rect x="344" y="168" width="48" height="6" fill="#e9b063"/>
+  <rect x="317" y="134" width="6" height="48" fill="#e9b063"/>
+</svg>

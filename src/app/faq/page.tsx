@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { FaqBrowser } from "@/components/FaqBrowser";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Container } from "@/components/ui/Container";
+import { Body, Display } from "@/components/ui/Typography";
 
 export const metadata: Metadata = {
   title: "Всички въпроси — Растежник",
@@ -15,18 +17,33 @@ export default function FaqPage() {
     <main>
       <Header variant="framed" />
 
-      <section className="w-full bg-cream py-16 md:py-24">
-        <Container>
-          <h1 className="max-w-[700px] text-[clamp(2rem,4vw,3.5rem)] font-bold leading-[1.05] text-primary">
-            Всички въпроси
-          </h1>
-          <p className="mt-6 max-w-[560px] text-lg leading-[1.3] text-primary-dark">
-            Пълният списък с кратки, валидирани отговори на най-честите
-            въпроси на родители — филтрирай по тема или разгледай всичко.
-          </p>
+      <section className="relative w-full overflow-hidden bg-cream py-16 md:py-24">
+        {/* Quiet brand motif — sits in the wide-side margin, never over the text column. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-[8%] top-[12%] hidden w-[min(42vw,420px)] select-none opacity-[0.13] lg:block xl:-right-[4%] xl:w-[min(38vw,480px)]"
+        >
+          <Image
+            src="/images/embroidery-3.svg"
+            alt=""
+            width={709}
+            height={726}
+            className="h-auto w-full"
+            priority={false}
+          />
+        </div>
 
-          <div className="mt-14">
-            <FaqBrowser />
+        <Container className="relative z-10">
+          <div className="mx-auto w-full max-w-[720px]">
+            <Display>Всички въпроси</Display>
+            <Body className="mt-6 max-w-[560px]">
+              Пълният списък с кратки, валидирани отговори на най-честите
+              въпроси на родители — потърсете дума или разгледайте надолу.
+            </Body>
+
+            <div className="mt-14">
+              <FaqBrowser />
+            </div>
           </div>
         </Container>
       </section>

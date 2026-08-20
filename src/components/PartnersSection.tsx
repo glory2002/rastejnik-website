@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Display } from "@/components/ui/Typography";
 import { Container } from "./ui/Container";
 import { Reveal } from "./ui/Reveal";
 
@@ -27,11 +28,10 @@ export function PartnersSection() {
   return (
     <section className="w-full bg-[#fefefc] py-16 md:py-24">
       <Container>
-        <Reveal
-          as="h2"
-          className="mx-auto mb-16 max-w-[1000px] text-center text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.04] text-primary"
-        >
-          Партньори
+        <Reveal className="mx-auto mb-16 max-w-[1000px] text-center">
+          <Display weight="medium" as="h2">
+            Партньори
+          </Display>
         </Reveal>
 
         <div className="flex flex-wrap items-center justify-center gap-x-16 gap-y-10">

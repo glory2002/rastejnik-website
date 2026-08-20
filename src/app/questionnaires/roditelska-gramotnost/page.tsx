@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { QuestionnaireFlow } from "@/components/QuestionnaireFlow";
+import { Meta, Title } from "@/components/ui/Typography";
 import {
   literacyAnswerOptions,
   parentalLiteracyQuestions,
@@ -17,9 +18,11 @@ export const metadata: Metadata = {
 export default function ParentalLiteracyPage() {
   const header = (
     <div className="flex flex-col items-center gap-3 text-center">
-      <nav
+      <Meta
+        as="nav"
         aria-label="Навигация във въпросника"
-        className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[13px] font-bold uppercase"
+        tone="inherit"
+        className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1"
       >
         <Link
           href="/questionnaires"
@@ -33,10 +36,10 @@ export default function ParentalLiteracyPage() {
         <span className="text-primary" aria-current="page">
           Родителска грамотност
         </span>
-      </nav>
-      <h1 className="max-w-[700px] text-[clamp(1.5rem,2.5vw,2rem)] font-bold leading-[1.05] text-primary">
+      </Meta>
+      <Title as="h1" className="max-w-[700px]">
         Родителска грамотност
-      </h1>
+      </Title>
     </div>
   );
 

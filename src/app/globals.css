@@ -34,6 +34,45 @@
   --color-accent-green-light: rgba(109, 149, 75, 0.1);
   --color-accent-blue-light: rgba(71, 106, 191, 0.1);
   --font-sans: var(--font-adys), system-ui, sans-serif;
+
+  /*
+   * Typography scale — use via text-* utilities or Typography components
+   * in src/components/ui/Typography.tsx (preferred for headings/body).
+   */
+  --text-display: clamp(2rem, 4vw, 3.5rem);
+  --text-display--line-height: 1.05;
+  --text-display-hero: clamp(2.5rem, 6.4vw, 88px);
+  --text-display-hero--line-height: 1;
+  --text-display-banner: clamp(2rem, 4.6vw, 4.75rem);
+  --text-display-banner--line-height: 1.2;
+  --text-title: clamp(1.75rem, 3vw, 2.5rem);
+  --text-title--line-height: 1.08;
+  --text-heading: 1.375rem; /* 22px */
+  --text-heading--line-height: 1.2;
+  --text-heading-md: 1.5rem; /* 24px — pair with md:text-heading-md */
+  --text-heading-md--line-height: 1.2;
+  --text-heading-sm: 1.25rem; /* 20px */
+  --text-heading-sm--line-height: 1.2;
+  --text-heading-sm-md: 1.375rem; /* 22px */
+  --text-heading-sm-md--line-height: 1.2;
+  --text-heading-lg: 1.625rem; /* 26px */
+  --text-heading-lg--line-height: 1.2;
+  --text-heading-lg-md: 1.75rem; /* 28px */
+  --text-heading-lg-md--line-height: 1.2;
+  --text-lead: 1.25rem; /* 20px */
+  --text-lead--line-height: 1.3;
+  --text-body: 1.125rem; /* 18px / text-lg */
+  --text-body--line-height: 1.3;
+  --text-body-relaxed: 1.125rem;
+  --text-body-relaxed--line-height: 1.55;
+  --text-label: 0.875rem; /* 14px */
+  --text-label--line-height: 1.3;
+  --text-meta: 0.75rem; /* 12px */
+  --text-meta--line-height: 1.3;
+  --text-action: 0.9375rem; /* 15px */
+  --text-action--line-height: 1.3;
+  --text-nav: 1.3125rem; /* 21px */
+  --text-nav--line-height: 1.3;
 }
 
 html {
@@ -420,14 +459,14 @@ select {
   perspective: 1100px;
   perspective-origin: 50% 45%;
   transform-origin: center;
-  /* Heartbeat on the wrapper so it doesn't fight the SVG settle transform. */
-  animation: shevitsa-heartbeat 0.85s ease-in-out 3.4s infinite;
+  /* Single pulse after settle — once, not a repeating heartbeat. */
+  animation: shevitsa-heartbeat 0.38s ease-in-out 2.35s both;
 }
 
 .shevitsa-stage-space > svg {
   transform-style: preserve-3d;
   transform-origin: center;
-  animation: shevitsa-motif-settle 0.75s cubic-bezier(0.22, 1, 0.36, 1) 2.85s both;
+  animation: shevitsa-motif-settle 0.55s cubic-bezier(0.22, 1, 0.36, 1) 1.9s both;
 }
 
 .shevitsa-piece {
@@ -436,7 +475,7 @@ select {
   transform-style: preserve-3d;
   opacity: 0;
   will-change: transform, opacity, filter;
-  animation: shevitsa-piece-in 2.35s cubic-bezier(0.16, 0.84, 0.18, 1) both;
+  animation: shevitsa-piece-in 1.55s cubic-bezier(0.2, 0.9, 0.18, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -462,14 +501,14 @@ select {
       scale(var(--piece-scale, 1.55))
       rotate(var(--piece-spin, 110deg));
     opacity: 0;
-    filter: blur(1.6px);
+    filter: blur(1.2px);
   }
-  20% {
+  18% {
     opacity: 1;
-    filter: blur(0.5px);
+    filter: blur(0.35px);
   }
-  78% {
-    transform: translate3d(0, 0, 0) scale(1.035) rotate(0deg);
+  82% {
+    transform: translate3d(0, 0, 0) scale(1.025) rotate(0deg);
     opacity: 1;
     filter: blur(0);
   }
@@ -483,32 +522,25 @@ select {
 /* Whole motif eases into final size after pieces have landed. */
 @keyframes shevitsa-motif-settle {
   0% {
-    transform: scale(0.96);
+    transform: scale(0.97);
   }
-  70% {
-    transform: scale(1.02);
+  65% {
+    transform: scale(1.015);
   }
   100% {
     transform: scale(1);
   }
 }
 
-/* Quick heartbeat: double beat, then a longer rest (uneven rhythm). */
+/* One soft pulse after the motif settles. */
 @keyframes shevitsa-heartbeat {
-  0%,
-  100% {
+  0% {
     transform: scale(1);
-  }
-  8% {
-    transform: scale(1.1);
-  }
-  16% {
-    transform: scale(1);
-  }
-  28% {
-    transform: scale(1.16);
   }
   40% {
+    transform: scale(1.12);
+  }
+  100% {
     transform: scale(1);
   }
 }
@@ -523,5 +555,26 @@ select {
   }
   to {
     opacity: 1;
+  }
+}
+
+/* Soft ambient drift for decorative about-page embroidery motifs. */
+.about-shevitsa-drift {
+  animation: about-shevitsa-drift 16s ease-in-out infinite;
+}
+
+@keyframes about-shevitsa-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-shevitsa-drift {
+    animation: none;
   }
 }

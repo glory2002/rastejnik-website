@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { ContactProvider } from "@/components/ContactModal";
 import "./globals.css";
 
 const adys = localFont({
@@ -37,7 +38,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="bg" className={`${adys.variable} font-sans`}>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <ContactProvider>{children}</ContactProvider>
+      </body>
     </html>
   );
 }
