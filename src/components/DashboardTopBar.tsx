@@ -12,9 +12,6 @@ import { login, useMockAuth } from "@/lib/authMock";
 const navLinks = [
   { label: "За Нас", href: "/about" },
   { label: "Въпросници", href: "/questionnaires" },
-  { label: "Специалисти", href: "/specialists" },
-  { label: "Новини", href: "/news" },
-  { label: "Съвети", href: "/tips" },
   { label: "Ресурси", href: "/resources" },
 ];
 

@@ -50,8 +50,6 @@ const accentText = [
   "text-accent-blue",
 ] as const;
 
-const axis = ["родители", "деца", "специалисти"] as const;
-
 /** Quiet embroidery in the side margin — never over the text column. */
 function ShevitsaMotif({
   src,
@@ -125,7 +123,7 @@ export default function AboutPage() {
     <main>
       <Header variant="framed" />
 
-      {/* Hero — one composition: brand title, lead, axis */}
+      {/* Hero — title + lead */}
       <section className="relative w-full overflow-hidden bg-cream py-20 md:py-28">
         <div
           aria-hidden
@@ -139,32 +137,6 @@ export default function AboutPage() {
               Интердисциплинарен екип и инструмент за родителите и
               специалистите около първите години.
             </SectionLead>
-          </Reveal>
-
-          <Reveal delay={120} className="mt-14">
-            <p className="sr-only">Ос на връзката: родители, деца, специалисти</p>
-            <ul className="flex flex-wrap items-center gap-x-4 gap-y-3 md:gap-x-6">
-              {axis.map((label, index) => (
-                <li key={label} className="flex items-center gap-4 md:gap-6">
-                  <span className="flex items-center gap-2.5">
-                    <span
-                      aria-hidden
-                      className={`h-2.5 w-2.5 ${accentFills[index]}`}
-                      style={{ transform: "rotate(45deg)" }}
-                    />
-                    <Heading as="span" size="lg" tone="dark">
-                      {label}
-                    </Heading>
-                  </span>
-                  {index < axis.length - 1 ? (
-                    <span
-                      aria-hidden
-                      className="hidden h-px w-8 bg-primary/25 sm:block md:w-12"
-                    />
-                  ) : null}
-                </li>
-              ))}
-            </ul>
           </Reveal>
         </Container>
       </section>
