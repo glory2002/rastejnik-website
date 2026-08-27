@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import type { ReactNode } from "react";
 import { ContactTrigger } from "@/components/ContactModal";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -18,32 +19,55 @@ export const metadata: Metadata = {
 /**
  * Fixed side embroidery — desktop only. Opaque white association panels
  * scroll over it and fully cover the motif on that side.
+ * Same full-color motif on both sides (green, blue, red, pink, gold),
+ * fully in frame — not flipped.
  */
-function SideShevitsa({
-  side,
-  src,
-}: {
-  side: "left" | "right";
-  src: string;
-}) {
+function SideShevitsa({ side }: { side: "left" | "right" }) {
+  const isLeft = side === "left";
+
   return (
     <div
       aria-hidden
       className={[
-        "pointer-events-none fixed top-[72%] z-0 hidden w-[min(52vw,560px)] -translate-y-1/2 select-none lg:block",
-        side === "left"
-          ? "left-0 -translate-x-[32%]"
-          : "right-0 translate-x-[32%]",
+        "pointer-events-none fixed z-0 hidden w-[min(38vw,440px)] overflow-visible select-none lg:block",
+        isLeft
+          ? "left-10 top-[62%] xl:left-14"
+          : "right-10 top-[70%] xl:right-14",
       ].join(" ")}
+      style={{ transform: "translateY(-50%)" }}
     >
       <Image
-        src={src}
+        src="/images/embroidery-3.svg"
         alt=""
         width={709}
         height={726}
-        className={`h-auto w-full ${side === "left" ? "-scale-x-100" : ""}`}
+        className="h-auto w-full"
         priority={false}
       />
+    </div>
+  );
+}
+
+function AssociationPanel({
+  onLeft,
+  fullWidth = false,
+  children,
+}: {
+  onLeft: boolean;
+  fullWidth?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      className={[
+        "flex min-h-[28rem] flex-col justify-center bg-white py-16 sm:min-h-[32rem] sm:py-20 md:min-h-[36rem] md:py-28 lg:min-h-[40rem] lg:py-32",
+        fullWidth ? "w-full" : "w-full md:w-1/2 lg:w-[55%]",
+        onLeft
+          ? "pl-8 pr-8 sm:pl-12 sm:pr-12 md:pl-16 md:pr-16 lg:pl-24 lg:pr-12 xl:pl-32"
+          : "pl-8 pr-8 sm:pl-12 sm:pr-12 md:pl-16 md:pr-16 lg:pl-12 lg:pr-24 xl:pr-32",
+      ].join(" ")}
+    >
+      {children}
     </div>
   );
 }
@@ -102,7 +126,7 @@ function AssociationBlock({
 }) {
   return (
     <div
-      className={`mx-auto flex w-full max-w-[1800px] flex-col gap-4 sm:gap-5 ${
+      className={`mx-auto flex w-full max-w-[1800px] flex-col gap-5 sm:gap-7 ${
         onLeft
           ? "items-start text-left"
           : "items-start text-left md:items-end md:text-right"
@@ -124,8 +148,8 @@ export default function SpecialistsPage() {
     <main className="relative overflow-x-hidden bg-white">
       <Header variant="framed" />
 
-      <SideShevitsa side="left" src="/images/embroidery-3.svg" />
-      <SideShevitsa side="right" src="/images/embroidery-3.svg" />
+      <SideShevitsa side="left" />
+      <SideShevitsa side="right" />
 
       <section className="relative z-10 w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
@@ -165,24 +189,24 @@ export default function SpecialistsPage() {
                 className="relative z-10 flex w-full"
               >
                 {isLast ? (
-                  <div className="flex w-full flex-col justify-center bg-white px-2.5 py-10 sm:py-12 md:px-4 md:py-16 lg:px-8 lg:py-20">
+                  <AssociationPanel onLeft={onLeft} fullWidth>
                     <AssociationBlock
                       name={association.name}
                       description={association.description}
                       href={association.href}
                       onLeft={onLeft}
                     />
-                  </div>
+                  </AssociationPanel>
                 ) : onLeft ? (
                   <>
-                    <div className="flex w-full flex-col justify-center bg-white px-2.5 py-10 sm:py-12 md:w-1/2 md:px-4 md:py-16 lg:w-[55%] lg:px-8 lg:py-20">
+                    <AssociationPanel onLeft>
                       <AssociationBlock
                         name={association.name}
                         description={association.description}
                         href={association.href}
                         onLeft
                       />
-                    </div>
+                    </AssociationPanel>
                     <div
                       aria-hidden
                       className="hidden bg-transparent md:block md:w-1/2 lg:w-[45%]"
@@ -194,14 +218,14 @@ export default function SpecialistsPage() {
                       aria-hidden
                       className="hidden bg-transparent md:block md:w-1/2 lg:w-[45%]"
                     />
-                    <div className="flex w-full flex-col justify-center bg-white px-2.5 py-10 sm:py-12 md:w-1/2 md:px-4 md:py-16 lg:w-[55%] lg:px-8 lg:py-20">
+                    <AssociationPanel onLeft={false}>
                       <AssociationBlock
                         name={association.name}
                         description={association.description}
                         href={association.href}
                         onLeft={false}
                       />
-                    </div>
+                    </AssociationPanel>
                   </>
                 )}
               </Reveal>
