@@ -54,13 +54,12 @@ export default function TipsListingPage() {
       <section id="tips-listing" className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
           <ul className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
-            {tips.map((tip, index) => (
+            {tips.map((tip) => (
               <li key={tip.slug}>
                 <TipCard
                   href={`/tips/${tip.slug}`}
                   title={tip.title}
                   excerpt={tip.excerpt}
-                  index={index}
                 />
               </li>
             ))}

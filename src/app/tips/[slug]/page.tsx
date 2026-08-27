@@ -149,13 +149,12 @@ export default async function TipArticlePage({ params }: PageProps) {
           <Container>
             <Title>Още материали</Title>
             <ul className="mt-8 grid gap-5 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
-              {related.map((item, index) => (
+              {related.map((item) => (
                 <li key={item.slug}>
                   <TipCard
                     href={`/tips/${item.slug}`}
                     title={item.title}
                     excerpt={item.excerpt}
-                    index={index}
                   />
                 </li>
               ))}
