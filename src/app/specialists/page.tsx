@@ -16,8 +16,8 @@ export const metadata: Metadata = {
 };
 
 /**
- * Fixed side embroidery — stays in the viewport. Opaque white association
- * panels scroll over it and fully cover the motif on that side.
+ * Fixed side embroidery — desktop only. Opaque white association panels
+ * scroll over it and fully cover the motif on that side.
  */
 function SideShevitsa({
   side,
@@ -53,7 +53,7 @@ function AssociationCta({
   arrow,
 }: {
   href: string;
-  /** Arrow points toward page center. */
+  /** Arrow points toward page center on tablet/desktop zigzag. */
   arrow: "left" | "right";
 }) {
   return (
@@ -61,10 +61,10 @@ function AssociationCta({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group inline-flex"
+      className="group inline-flex max-w-full"
     >
       {arrow === "left" ? (
-        <span className="relative inline-flex h-[56px] items-center justify-center gap-2 overflow-hidden rounded-[50px] border-[1.5px] border-transparent bg-secondary px-6 py-3.5 text-[14px] font-bold uppercase text-primary-dark transition-colors duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:border-secondary group-hover:text-primary">
+        <span className="relative inline-flex h-[52px] max-w-full items-center justify-center gap-2 overflow-hidden rounded-[50px] border-[1.5px] border-transparent bg-secondary px-5 py-3 text-[13px] font-bold uppercase text-primary-dark transition-colors duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:border-secondary group-hover:text-primary sm:h-[56px] sm:px-6 sm:py-3.5 sm:text-[14px]">
           <span
             aria-hidden
             className="pointer-events-none absolute inset-0 z-0 rounded-[50px] bg-white transition-[clip-path] duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none [clip-path:circle(0px_at_38px_50%)] group-hover:[clip-path:circle(150%_at_38px_50%)]"
@@ -89,21 +89,51 @@ function AssociationCta({
   );
 }
 
+function AssociationBlock({
+  name,
+  description,
+  href,
+  onLeft,
+}: {
+  name: string;
+  description: string;
+  href: string;
+  onLeft: boolean;
+}) {
+  return (
+    <div
+      className={`mx-auto flex w-full max-w-[1800px] flex-col gap-4 sm:gap-5 ${
+        onLeft
+          ? "items-start text-left"
+          : "items-start text-left md:items-end md:text-right"
+      }`}
+    >
+      <Heading as="h3" size="lg" className="max-w-[420px] text-balance">
+        {name}
+      </Heading>
+      <Body className="max-w-[420px] text-base leading-[1.35]">
+        {description}
+      </Body>
+      <AssociationCta href={href} arrow={onLeft ? "right" : "left"} />
+    </div>
+  );
+}
+
 export default function SpecialistsPage() {
   return (
-    <main className="relative bg-white">
+    <main className="relative overflow-x-hidden bg-white">
       <Header variant="framed" />
 
       <SideShevitsa side="left" src="/images/embroidery-3.svg" />
       <SideShevitsa side="right" src="/images/embroidery-3.svg" />
 
-      <section className="relative z-10 w-full bg-[color-mix(in_srgb,var(--color-secondary)_9%,white)] py-16 md:py-24">
+      <section className="relative z-10 w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
           <Reveal>
-            <Display className="max-w-[800px]">
+            <Display className="max-w-[800px] text-balance">
               Специалисти и пространства
             </Display>
-            <Body className="mt-6 max-w-[640px]">
+            <Body className="mt-5 max-w-[640px] sm:mt-6">
               Растежник не замества медицински съвет. Списъкът е ориентир —
               асоциациите са мястото, откъдето можете да проверите
               правоспособност, да намерите регионални контакти и да стигнете до
@@ -117,9 +147,8 @@ export default function SpecialistsPage() {
       </section>
 
       {/*
-        Checkerboard zigzag: white half covers the shevitsa on that side;
-        the open half leaves the fixed motif visible. Items slide in from
-        their side on scroll.
+        Mobile: stacked full-width white cards, left-aligned.
+        Tablet+: zigzag halves; last row full-width white to seal shevitsas.
       */}
       <section className="relative z-10 w-full bg-transparent">
         <ul className="flex flex-col">
@@ -136,39 +165,23 @@ export default function SpecialistsPage() {
                 className="relative z-10 flex w-full"
               >
                 {isLast ? (
-                  <div className="flex w-full flex-col justify-center bg-white px-2.5 py-12 md:px-4 md:py-16 lg:px-8 lg:py-20">
-                    <div
-                      className={`mx-auto flex w-full max-w-[1800px] flex-col gap-5 ${
-                        onLeft ? "items-start" : "items-end text-right"
-                      }`}
-                    >
-                      <Heading as="h3" size="lg" className="max-w-[420px]">
-                        {association.name}
-                      </Heading>
-                      <Body className="max-w-[420px] text-base leading-[1.35]">
-                        {association.description}
-                      </Body>
-                      <AssociationCta
-                        href={association.href}
-                        arrow={onLeft ? "right" : "left"}
-                      />
-                    </div>
+                  <div className="flex w-full flex-col justify-center bg-white px-2.5 py-10 sm:py-12 md:px-4 md:py-16 lg:px-8 lg:py-20">
+                    <AssociationBlock
+                      name={association.name}
+                      description={association.description}
+                      href={association.href}
+                      onLeft={onLeft}
+                    />
                   </div>
                 ) : onLeft ? (
                   <>
-                    <div className="flex w-full flex-col justify-center bg-white px-2.5 py-12 md:w-1/2 md:px-4 md:py-16 lg:w-[55%] lg:px-8 lg:py-20">
-                      <div className="mx-auto flex w-full max-w-[1800px] flex-col items-start gap-5">
-                        <Heading as="h3" size="lg" className="max-w-[420px]">
-                          {association.name}
-                        </Heading>
-                        <Body className="max-w-[420px] text-base leading-[1.35]">
-                          {association.description}
-                        </Body>
-                        <AssociationCta
-                          href={association.href}
-                          arrow="right"
-                        />
-                      </div>
+                    <div className="flex w-full flex-col justify-center bg-white px-2.5 py-10 sm:py-12 md:w-1/2 md:px-4 md:py-16 lg:w-[55%] lg:px-8 lg:py-20">
+                      <AssociationBlock
+                        name={association.name}
+                        description={association.description}
+                        href={association.href}
+                        onLeft
+                      />
                     </div>
                     <div
                       aria-hidden
@@ -181,19 +194,13 @@ export default function SpecialistsPage() {
                       aria-hidden
                       className="hidden bg-transparent md:block md:w-1/2 lg:w-[45%]"
                     />
-                    <div className="flex w-full flex-col justify-center bg-white px-2.5 py-12 md:w-1/2 md:px-4 md:py-16 lg:w-[55%] lg:px-8 lg:py-20">
-                      <div className="mx-auto flex w-full max-w-[1800px] flex-col items-end gap-5 text-right">
-                        <Heading as="h3" size="lg" className="max-w-[420px]">
-                          {association.name}
-                        </Heading>
-                        <Body className="max-w-[420px] text-base leading-[1.35]">
-                          {association.description}
-                        </Body>
-                        <AssociationCta
-                          href={association.href}
-                          arrow="left"
-                        />
-                      </div>
+                    <div className="flex w-full flex-col justify-center bg-white px-2.5 py-10 sm:py-12 md:w-1/2 md:px-4 md:py-16 lg:w-[55%] lg:px-8 lg:py-20">
+                      <AssociationBlock
+                        name={association.name}
+                        description={association.description}
+                        href={association.href}
+                        onLeft={false}
+                      />
                     </div>
                   </>
                 )}
@@ -202,11 +209,14 @@ export default function SpecialistsPage() {
           })}
         </ul>
       </section>
-      <section className="relative z-10 w-full bg-[color-mix(in_srgb,var(--color-secondary)_9%,white)] py-16 md:py-24">
+
+      <section className="relative z-10 w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
           <Reveal>
-            <Title className="max-w-[700px]">Как да ползвате тази страница</Title>
-            <Body as="div" className="mt-6 flex max-w-[640px] flex-col gap-4">
+            <Title className="max-w-[700px] text-balance">
+              Как да ползвате тази страница
+            </Title>
+            <Body as="div" className="mt-5 flex max-w-[640px] flex-col gap-4 sm:mt-6">
               <p>
                 Скоро ще добавим още организации. Ако познавате подходяща
                 асоциация или пространство,{" "}

@@ -16,11 +16,11 @@ export default function ProfilePage() {
     <main>
       <Header variant="framed" />
 
-      <section className="w-full bg-cream py-16 md:py-24">
+      <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
           <nav
             aria-label="Пътека"
-            className="mb-6 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60"
+            className="mb-5 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60 sm:mb-6"
           >
             <Link href="/" className="transition-opacity hover:opacity-80">
               Начало
@@ -30,14 +30,14 @@ export default function ProfilePage() {
           </nav>
 
           <Display className="max-w-[700px]">Профил</Display>
-          <Body className="mt-6 max-w-[560px]">
+          <Body className="mt-5 max-w-[560px] sm:mt-6">
             Данните за родителя — може да ги обновите по всяко време. Децата се
             управляват от таблото.
           </Body>
         </Container>
       </section>
 
-      <section className="w-full bg-white py-16 md:py-24">
+      <section className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <div className="mx-auto w-full max-w-[720px]">
             <ProfileView />

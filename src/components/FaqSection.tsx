@@ -13,11 +13,11 @@ export function FaqSection() {
   const visibleQuestions = faqQuestions.slice(0, FAQ_PREVIEW_LIMIT);
 
   return (
-    <section id="questionnaires" className="w-full bg-cream py-20 md:py-32">
+    <section id="questionnaires" className="w-full bg-cream py-12 sm:py-16 md:py-32">
       <Container>
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal className="lg:sticky lg:top-24 lg:self-start">
-            <Display weight="medium" as="h2">
+            <Display weight="medium" as="h2" className="text-balance">
               Бързи отговори на най-честите въпроси
             </Display>
 
@@ -31,7 +31,7 @@ export function FaqSection() {
 
             <Link
               href="/faq"
-              className={`group mt-20 inline-flex w-fit items-center gap-1.5 rounded-full border-[1.5px] border-secondary px-6 py-3.5 transition-colors ${motion} hover:border-primary`}
+              className={`group mt-8 inline-flex w-fit max-w-full items-center gap-1.5 rounded-full border-[1.5px] border-secondary px-5 py-3 transition-colors sm:mt-12 sm:px-6 sm:py-3.5 md:mt-20 ${motion} hover:border-primary`}
             >
               <Action className="inline-flex items-center gap-1.5">
                 Разгледай всички въпроси

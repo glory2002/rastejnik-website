@@ -16,11 +16,11 @@ export default function CookiesPage() {
     <main>
       <Header variant="framed" />
 
-      <section className="w-full bg-cream py-16 md:py-24">
+      <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
           <nav
             aria-label="Пътека"
-            className="mb-6 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60"
+            className="mb-5 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60 sm:mb-6"
           >
             <Link href="/" className="transition-opacity hover:opacity-80">
               Начало
@@ -30,14 +30,14 @@ export default function CookiesPage() {
           </nav>
 
           <Display className="max-w-[800px]">Бисквитки</Display>
-          <Body className="mt-6 max-w-[620px]">
+          <Body className="mt-5 max-w-[620px] sm:mt-6">
             Кратка информация кои бисквитки ползваме и защо. Финалният текст и
             банерът за съгласие ще се добавят преди публичен старт.
           </Body>
         </Container>
       </section>
 
-      <section className="w-full bg-white py-16 md:py-24">
+      <section className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <Body
             as="div"

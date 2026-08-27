@@ -5,7 +5,7 @@ import { FullWidth } from "./ui/Container";
 
 const platformItems = [
   { label: "Въпросници", href: "/questionnaires" },
-  { label: "Полезни съвети", href: "/tips" },
+  { label: "Полезна информация", href: "/tips" },
   { label: "Ресурси", href: "/resources" },
   { label: "Специалисти", href: "/specialists" },
 ];
@@ -24,19 +24,19 @@ const legalItems = [
 export function Footer() {
   return (
     <footer className="w-full bg-primary-dark">
-      <FullWidth className="py-16 md:py-24">
-        <div className="flex flex-col gap-12 lg:flex-row lg:justify-between">
+      <FullWidth className="py-12 sm:py-16 md:py-24">
+        <div className="flex flex-col gap-10 sm:gap-12 lg:flex-row lg:justify-between">
           <div className="max-w-[400px]">
             <Link href="/" aria-label="Растежник начало" className="inline-block">
               <Logo variant="footer" />
             </Link>
-            <p className="mt-6 text-base leading-[1.4] text-footer-text">
+            <p className="mt-5 text-base leading-[1.4] text-footer-text sm:mt-6">
               Образователна платформа за родители и специалисти, посветени на
               първите години от живота на детето.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-16 lg:gap-30">
+          <div className="flex flex-wrap gap-x-12 gap-y-10 sm:gap-16 lg:gap-30">
             <div>
               <h3 className="text-lg font-bold text-white">Платформа</h3>
               <ul className="mt-6 flex flex-col gap-3">
@@ -76,7 +76,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-20 flex flex-col items-start justify-between gap-4 border-t border-[rgba(255,255,255,0.13)] pt-10 sm:flex-row sm:items-center">
+        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-[rgba(255,255,255,0.13)] pt-8 sm:mt-16 sm:flex-row sm:items-center sm:pt-10 md:mt-20">
           <p className="text-sm text-footer-text">
             © 2024 Растежник. Всички права запазени.
           </p>

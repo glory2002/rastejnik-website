@@ -61,8 +61,8 @@ export function Button({
 }: ButtonProps) {
   const sizeClasses = showArrow
     ? size === "xl"
-      ? "h-[73px] gap-2.5 px-8 py-5 text-[15px]"
-      : "h-[56px] gap-2 px-6 py-3.5 text-[14px]"
+      ? "min-h-[56px] gap-2 px-5 py-3.5 text-[13px] sm:h-[73px] sm:gap-2.5 sm:px-8 sm:py-5 sm:text-[15px]"
+      : "h-[56px] gap-2 px-5 py-3.5 text-[13px] sm:px-6 sm:text-[14px]"
     : "gap-1.5 px-5 py-3.5 text-[15px]";
 
   const iconOnLeft = showArrow && iconSide === "left";

@@ -103,11 +103,11 @@ export default function ResourcesPage() {
     <main>
       <Header variant="framed" />
 
-      <section className="w-full bg-cream py-16 md:py-24">
+      <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
           <nav
             aria-label="Пътека"
-            className="mb-6 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60"
+            className="mb-5 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60 sm:mb-6"
           >
             <Link href="/" className="transition-opacity hover:opacity-80">
               Начало
@@ -126,7 +126,7 @@ export default function ResourcesPage() {
         </Container>
       </section>
 
-      <section className="w-full bg-white py-16 md:py-24">
+      <section className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
             {resources.map((item) => (

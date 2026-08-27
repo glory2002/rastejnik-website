@@ -58,7 +58,7 @@ export default async function AgeQuestionnairePage({
         <Container>
           <Action
             as={Link}
-            href="/questionnaires"
+            href="/questionnaires/ranno-detsko-razvitie"
             className="group mb-8 inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
           >
             <Image

@@ -17,11 +17,11 @@ export default function PrivacyPage() {
     <main>
       <Header variant="framed" />
 
-      <section className="w-full bg-cream py-16 md:py-24">
+      <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
           <nav
             aria-label="Пътека"
-            className="mb-6 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60"
+            className="mb-5 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60 sm:mb-6"
           >
             <Link href="/" className="transition-opacity hover:opacity-80">
               Начало
@@ -31,14 +31,14 @@ export default function PrivacyPage() {
           </nav>
 
           <Display className="max-w-[800px]">Поверителност</Display>
-          <Body className="mt-6 max-w-[620px]">
+          <Body className="mt-5 max-w-[620px] sm:mt-6">
             Тук ще опишем какви данни събираме, защо и как ги пазим. Текстът е
             чернова — ще се допълни с финална политика преди публичен старт.
           </Body>
         </Container>
       </section>
 
-      <section className="w-full bg-white py-16 md:py-24">
+      <section className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <Body
             as="div"

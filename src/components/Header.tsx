@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ProfileMenu } from "@/components/ProfileMenu";
@@ -98,7 +98,9 @@ function Logo({
   return (
     <div
       className={`relative shrink-0 ${toneClass} ${
-        isHeader ? "h-[33px] w-[194px]" : "h-[42px] w-[246px]"
+        isHeader
+          ? "h-[28px] w-[164px] sm:h-[33px] sm:w-[194px]"
+          : "h-[36px] w-[210px] sm:h-[42px] sm:w-[246px]"
       }`}
     >
       <LogoMark
@@ -125,37 +127,42 @@ export function Header({
   const loggedIn = useMockAuth();
   const router = useRouter();
 
-  // Scroll-away header: hides while scrolling down, reappears (with a
-  // solid white surface) on the slightest scroll up. Only the "overlay"
-  // variant needs this — static variants already sit on a solid surface.
+  // Hide on scroll down, show on the first scroll up — while the bar
+  // keeps the same in-flow slot at the top of the page (spacer + fixed).
   const [hidden, setHidden] = useState(false);
   const [elevated, setElevated] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (isStatic) return;
+    if (!isStatic) return;
+    const el = headerRef.current;
+    if (!el) return;
+    const sync = () => setHeaderHeight(el.offsetHeight);
+    sync();
+    const observer = new ResizeObserver(sync);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [isStatic]);
 
-    // A show/hide decision only fires once scroll has moved a deliberate
-    // amount past the last decision point — this hysteresis is what keeps
-    // the header still during momentum-scroll micro-jitter instead of
-    // flickering back and forth every frame.
-    const THRESHOLD = 8;
-    let anchorY = window.scrollY;
+  useEffect(() => {
+    let lastY = window.scrollY;
     let ticking = false;
 
     function update() {
-      const y = window.scrollY;
+      const y = Math.max(0, window.scrollY);
+      const delta = y - lastY;
+      lastY = y;
 
       setElevated(y > 40);
 
-      if (y < 10) {
+      if (y < 8) {
         setHidden(false);
-        anchorY = y;
-      } else if (y - anchorY > THRESHOLD) {
+      } else if (delta > 0) {
         setHidden(true);
-        anchorY = y;
-      } else if (anchorY - y > THRESHOLD) {
+      } else if (delta < 0) {
         setHidden(false);
-        anchorY = y;
       }
 
       ticking = false;
@@ -169,42 +176,68 @@ export function Header({
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isStatic]);
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [menuOpen]);
 
   const isWhiteSurface = !isStatic && elevated;
+  const logoTone = isFramed
+    ? "green"
+    : isLight
+      ? "dark"
+      : isWhiteSurface || menuOpen
+        ? "green"
+        : "light";
+  const linkTone = isFramed
+    ? "text-primary"
+    : isLight
+      ? "text-primary-dark"
+      : isWhiteSurface || menuOpen
+        ? "text-primary"
+        : "text-white";
+  const burgerTone = isFramed
+    ? "bg-primary"
+    : isLight
+      ? "bg-primary-dark"
+      : isWhiteSurface || menuOpen
+        ? "bg-primary"
+        : "bg-white";
+
+  function closeMenu() {
+    setMenuOpen(false);
+  }
+
+  const hideClass =
+    hidden && !menuOpen
+      ? "-translate-y-full pointer-events-none duration-200 ease-out"
+      : "translate-y-0 duration-200 ease-out";
 
   return (
-    <header
-      className={
-        isStatic
-          ? `relative w-full ${
-              isFramed
-                ? "bg-cream"
-                : "border-b border-border-green bg-primary-light"
-            }`
-          : `fixed inset-x-0 top-0 z-50 w-full transition-[background-color,transform,opacity,box-shadow] will-change-transform ${
-              isWhiteSurface ? "bg-white shadow-sm" : "bg-transparent"
-            } ${
-              hidden
-                ? "-translate-y-4 opacity-0 pointer-events-none duration-[250ms] ease-[cubic-bezier(0.4,0,1,1)]"
-                : "translate-y-0 opacity-100 duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-            }`
-      }
-    >
-      <FullWidth className="flex items-center justify-between py-3">
-        <Link href="/" aria-label="Растежник начало">
-          <Logo
-            variant="header"
-            tone={
-              isFramed
-                ? "green"
-                : isLight
-                  ? "dark"
-                  : isWhiteSurface
-                    ? "green"
-                    : "light"
-            }
-          />
+    <>
+      <header
+        ref={headerRef}
+        className={
+          isStatic
+            ? `fixed inset-x-0 top-0 z-50 w-full transition-transform will-change-transform ${
+                isFramed
+                  ? "bg-cream"
+                  : "border-b border-border-green bg-primary-light"
+              } ${hideClass}`
+            : `fixed inset-x-0 top-0 z-50 w-full transition-[background-color,transform,box-shadow] will-change-transform ${
+                isWhiteSurface || menuOpen ? "bg-white shadow-sm" : "bg-transparent"
+              } ${hideClass}`
+        }
+      >
+      <FullWidth className="flex items-center justify-between gap-3 py-3">
+        <Link href="/" aria-label="Растежник начало" className="min-w-0 shrink">
+          <Logo variant="header" tone={logoTone} />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex lg:gap-11">
@@ -212,15 +245,7 @@ export function Header({
             <Link
               key={link.label}
               href={link.href}
-              className={`text-nav font-medium transition-colors hover:opacity-80 ${
-                isFramed
-                  ? "text-primary"
-                  : isLight
-                    ? "text-primary-dark"
-                    : isWhiteSurface
-                      ? "text-primary"
-                      : "text-white"
-              }`}
+              className={`text-nav font-medium transition-colors hover:opacity-80 ${linkTone}`}
             >
               {link.label}
             </Link>
@@ -238,17 +263,114 @@ export function Header({
               >
                 Вход
               </Button>
-              <Button
-                showArrow={false}
-                href="/questionnaires"
-              >
+              <Button showArrow={false} href="/questionnaires">
                 Регистрация
               </Button>
             </div>
           )}
         </nav>
+
+        <button
+          type="button"
+          className="relative z-50 flex h-11 w-11 shrink-0 items-center justify-center md:hidden"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav"
+          aria-label={menuOpen ? "Затвори менюто" : "Отвори менюто"}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span className="sr-only">Меню</span>
+          <span className="relative block h-4 w-5" aria-hidden>
+            <span
+              className={`absolute left-0 top-0 block h-0.5 w-5 transition-transform duration-200 ${burgerTone} ${
+                menuOpen ? "translate-y-[7px] rotate-45" : ""
+              }`}
+            />
+            <span
+              className={`absolute left-0 top-[7px] block h-0.5 w-5 transition-opacity duration-200 ${burgerTone} ${
+                menuOpen ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <span
+              className={`absolute left-0 top-[14px] block h-0.5 w-5 transition-transform duration-200 ${burgerTone} ${
+                menuOpen ? "-translate-y-[7px] -rotate-45" : ""
+              }`}
+            />
+          </span>
+        </button>
       </FullWidth>
+
+      <div
+        id="mobile-nav"
+        className={`md:hidden ${
+          menuOpen ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+        aria-hidden={!menuOpen}
+        inert={!menuOpen ? true : undefined}
+      >
+        <button
+          type="button"
+          aria-label="Затвори менюто"
+          className={`fixed inset-0 z-40 bg-primary-dark/25 transition-opacity duration-200 ${
+            menuOpen ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={closeMenu}
+        />
+        <nav
+          className={`absolute inset-x-0 top-full z-50 border-t border-border-green bg-white px-2.5 py-6 shadow-[0_16px_40px_rgba(31,66,35,0.12)] transition-[opacity,transform] duration-200 md:px-4 lg:px-8 ${
+            menuOpen
+              ? "translate-y-0 opacity-100"
+              : "-translate-y-2 opacity-0"
+          }`}
+        >
+          <ul className="flex flex-col gap-1">
+            {navLinks.map((link) => (
+              <li key={link.label}>
+                <Link
+                  href={link.href}
+                  onClick={closeMenu}
+                  className="block px-2 py-3 text-nav font-medium text-primary transition-opacity hover:opacity-80"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-5 flex flex-col gap-3 border-t border-border-green pt-5 sm:flex-row">
+            {loggedIn ? (
+              <div onClick={closeMenu}>
+                <ProfileMenu />
+              </div>
+            ) : (
+              <>
+                <Button
+                  showArrow={false}
+                  className="w-full sm:w-auto"
+                  onClick={() => {
+                    closeMenu();
+                    login();
+                    router.push("/dashboard");
+                  }}
+                >
+                  Вход
+                </Button>
+                <Button
+                  showArrow={false}
+                  href="/questionnaires"
+                  className="w-full sm:w-auto"
+                  onClick={closeMenu}
+                >
+                  Регистрация
+                </Button>
+              </>
+            )}
+          </div>
+        </nav>
+      </div>
     </header>
+      {isStatic ? (
+        <div aria-hidden className="w-full" style={{ height: headerHeight }} />
+      ) : null}
+    </>
   );
 }
 

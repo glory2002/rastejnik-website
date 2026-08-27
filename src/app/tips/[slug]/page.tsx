@@ -4,12 +4,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { TipCard } from "@/components/TipCard";
 import { Container } from "@/components/ui/Container";
 import {
   Action,
   Body,
   Display,
-  Heading,
   Label,
   Title,
 } from "@/components/ui/Typography";
@@ -92,11 +92,11 @@ export default async function TipArticlePage({ params }: PageProps) {
     <main>
       <Header variant="framed" />
 
-      <section className="w-full bg-cream py-16 md:py-24">
+      <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container className="flex flex-col items-center text-center">
           <nav
             aria-label="Пътека"
-            className="mb-8 flex flex-wrap items-center justify-center gap-2 text-label font-medium text-primary-dark/60"
+            className="mb-6 flex flex-wrap items-center justify-center gap-2 text-label font-medium text-primary-dark/60 sm:mb-8"
           >
             <Link href="/" className="transition-opacity hover:opacity-80">
               Начало
@@ -106,37 +106,26 @@ export default async function TipArticlePage({ params }: PageProps) {
               href="/tips"
               className="transition-opacity hover:opacity-80"
             >
-              Полезни съвети
+              Полезна информация
             </Link>
           </nav>
 
-          <Display className="max-w-[820px]">{tip.title}</Display>
+          <Display className="max-w-[820px] text-balance">{tip.title}</Display>
         </Container>
       </section>
 
-      <article className="w-full bg-white py-16 md:py-24">
+      <article className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <div className="mx-auto max-w-[720px]">
-            <div className="relative mb-12 flex aspect-[16/9] items-center justify-center overflow-hidden bg-cream">
-              <Image
-                src={tip.coverImage}
-                alt=""
-                width={420}
-                height={260}
-                className={`max-h-[75%] w-auto object-contain ${tip.coverClass ?? ""}`}
-                priority
-              />
-            </div>
-
             <TipBody blocks={tip.body} />
 
-            <p className="mt-12 text-[15px] leading-[1.4] text-primary-dark/60">
+            <p className="mt-10 text-[15px] leading-[1.4] text-primary-dark/60 sm:mt-12">
               Растежник не замества медицински или терапевтичен съвет. При
               притеснение за здравето или развитието на детето се обърнете към
               специалист.
             </p>
 
-            <div className="mt-10 border-t border-border-green pt-8">
+            <div className="mt-8 border-t border-border-green pt-6 sm:mt-10 sm:pt-8">
               <Link
                 href="/tips"
                 className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
@@ -148,7 +137,7 @@ export default async function TipArticlePage({ params }: PageProps) {
                   height={22}
                   className="shrink-0 rotate-180"
                 />
-                <Action>Към всички съвети</Action>
+                <Action>Към полезната информация</Action>
               </Link>
             </div>
           </div>
@@ -156,39 +145,18 @@ export default async function TipArticlePage({ params }: PageProps) {
       </article>
 
       {related.length > 0 ? (
-        <section className="w-full bg-cream py-16 md:py-24">
+        <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
           <Container>
-            <Title>Още съвети</Title>
-            <ul className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-              {related.map((item) => (
+            <Title>Още материали</Title>
+            <ul className="mt-8 grid gap-5 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
+              {related.map((item, index) => (
                 <li key={item.slug}>
-                  <Link
+                  <TipCard
                     href={`/tips/${item.slug}`}
-                    className="group flex h-full flex-col"
-                  >
-                    <div className="relative flex aspect-[16/10] items-center justify-center overflow-hidden bg-white">
-                      <Image
-                        src={item.coverImage}
-                        alt=""
-                        width={220}
-                        height={140}
-                        className={`max-h-[65%] w-auto object-contain transition-transform duration-200 ease-out group-hover:scale-105 ${item.coverClass ?? ""}`}
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col gap-2 pt-4">
-                      <Heading size="sm">{item.title}</Heading>
-                      <Action className="mt-auto inline-flex items-center gap-1.5 pt-3 transition-opacity group-hover:opacity-80">
-                        Прочети
-                        <Image
-                          src="/images/arrow-link.svg"
-                          alt=""
-                          width={14}
-                          height={22}
-                          className="shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-1"
-                        />
-                      </Action>
-                    </div>
-                  </Link>
+                    title={item.title}
+                    excerpt={item.excerpt}
+                    index={index}
+                  />
                 </li>
               ))}
             </ul>

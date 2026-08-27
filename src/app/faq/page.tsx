@@ -17,7 +17,7 @@ export default function FaqPage() {
     <main>
       <Header variant="framed" />
 
-      <section className="relative w-full overflow-hidden bg-cream py-16 md:py-24">
+      <section className="relative w-full overflow-hidden bg-cream py-12 sm:py-16 md:py-24">
         {/* Quiet brand motif — sits in the wide-side margin, never over the text column. */}
         <div
           aria-hidden
@@ -36,12 +36,12 @@ export default function FaqPage() {
         <Container className="relative z-10">
           <div className="mx-auto w-full max-w-[720px]">
             <Display>Всички въпроси</Display>
-            <Body className="mt-6 max-w-[560px]">
+            <Body className="mt-5 max-w-[560px] sm:mt-6">
               Пълният списък с кратки, валидирани отговори на най-честите
               въпроси на родители — потърсете дума или разгледайте надолу.
             </Body>
 
-            <div className="mt-14">
+            <div className="mt-10 sm:mt-14">
               <FaqBrowser />
             </div>
           </div>

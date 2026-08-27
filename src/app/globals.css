@@ -7,11 +7,11 @@
   /* Solid match of primary-light over white — for sticky/opaque surfaces. */
   --color-primary-light-solid: #f3f6f0;
   --color-secondary: #e9b063;
-  --color-cream: rgba(233, 176, 99, 0.09);
+  /* Solid wash of secondary over white — same look as 9% yellow, no alpha. */
+  --color-cream: color-mix(in srgb, var(--color-secondary) 9%, white);
   /*
    * Stronger solid cream for masked patterns (wave track). The page cream
-   * is only 9% secondary over white — fine as a section wash, too faint
-   * when used as a repeating glyph fill.
+   * is a faint wash of secondary over white — too light as a repeating glyph fill.
    */
   --color-cream-solid: #f3dfc5;
   --color-footer-text: #e6ebe6;
@@ -575,6 +575,28 @@ select {
 
 @media (prefers-reduced-motion: reduce) {
   .about-shevitsa-drift {
+    animation: none;
+  }
+}
+
+/* Soft enter when switching About page tabs */
+.about-tab-panel {
+  animation: about-tab-fade 0.28s ease-out both;
+}
+
+@keyframes about-tab-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-tab-panel {
     animation: none;
   }
 }

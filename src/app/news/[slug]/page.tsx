@@ -93,11 +93,11 @@ export default async function NewsArticlePage({ params }: PageProps) {
     <main>
       <Header variant="framed" />
 
-      <section className="w-full bg-cream py-16 md:py-24">
+      <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container className="flex flex-col items-center text-center">
           <nav
             aria-label="Пътека"
-            className="mb-8 flex flex-wrap items-center justify-center gap-2 text-label font-medium text-primary-dark/60"
+            className="mb-6 flex flex-wrap items-center justify-center gap-2 text-label font-medium text-primary-dark/60 sm:mb-8"
           >
             <Link href="/" className="transition-opacity hover:opacity-80">
               Начало
@@ -112,14 +112,14 @@ export default async function NewsArticlePage({ params }: PageProps) {
           </nav>
 
           <Meta className="mb-4">{article.date}</Meta>
-          <Display className="max-w-[820px]">{article.title}</Display>
+          <Display className="max-w-[820px] text-balance">{article.title}</Display>
         </Container>
       </section>
 
-      <article className="w-full bg-white py-16 md:py-24">
+      <article className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <div className="mx-auto max-w-[720px]">
-            <div className="relative mb-12 aspect-[16/9] overflow-hidden bg-cream">
+            <div className="relative mb-8 aspect-[16/9] overflow-hidden bg-cream sm:mb-12">
               <Image
                 src={article.coverImage}
                 alt=""
@@ -132,7 +132,7 @@ export default async function NewsArticlePage({ params }: PageProps) {
 
             <NewsBody blocks={article.body} />
 
-            <div className="mt-10 border-t border-border-green pt-8">
+            <div className="mt-8 border-t border-border-green pt-6 sm:mt-10 sm:pt-8">
               <Link
                 href="/news"
                 className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
@@ -152,10 +152,10 @@ export default async function NewsArticlePage({ params }: PageProps) {
       </article>
 
       {related.length > 0 ? (
-        <section className="w-full bg-cream py-16 md:py-24">
+        <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
           <Container>
             <Title>Още новини</Title>
-            <ul className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            <ul className="mt-8 grid gap-8 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
               {related.map((item) => (
                 <li key={item.slug}>
                   <Link

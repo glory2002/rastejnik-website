@@ -60,31 +60,28 @@ const quarterlyIntervals = (startYear: number): AgeInterval[] =>
 export const questionnaireCategories: QuestionnaireCategory[] = [
   {
     slug: "roditelska-gramotnost",
-    icon: "/images/icon-pink.svg",
-    iconClass: "rotate-90",
+    icon: "/images/parent-2.svg",
     title: "Родителска грамотност",
     description:
       "Проверете доколко разпознавате мит от научен факт в най-често срещаните теми за отглеждане и развитие на дете.",
   },
   {
     slug: "roditelska-kompetentnost",
-    icon: "/images/icon-green.svg",
+    icon: "/images/parent.svg",
     title: "Родителска компетентност",
     description:
       "Кратка самооценка на увереността и уменията ви да отговаряте на нуждите на детето във всекидневни ситуации.",
   },
   {
     slug: "roditel-specialist",
-    icon: "/images/icon-blue.svg",
-    iconClass: "-rotate-90",
+    icon: "/images/parent-specialist.svg",
     title: "Взаимоотношения родител-специалист",
     description:
       "Оценете комуникацията, доверието и удовлетвореността от съвместната работа с педиатри, логопеди и други специалисти.",
   },
   {
     slug: "ranno-detsko-razvitie",
-    icon: "/images/icon-orange.svg",
-    iconClass: "rotate-90",
+    icon: "/images/early-child.svg",
     title: "Ранно детско развитие",
     description:
       "Валидирани оценки на развитието на детето по възрастови групи до 4-годишна възраст — изберете възрастта на детето, за да започнете.",

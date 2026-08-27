@@ -246,7 +246,7 @@ function ChildTabs({
       <Button
         size="l"
         iconSide="left"
-        className="ml-auto"
+        className="w-full sm:ml-auto sm:w-auto"
         onClick={onAddChild}
       >
         Добави дете
@@ -998,7 +998,7 @@ function ParentalQuestionnaireCard({
   const [guidance, setGuidance] = useState<GuidancePayload | null>(null);
 
   return (
-    <div className="flex h-full items-center gap-3 border-[1.5px] border-border-green bg-white px-4 py-4">
+    <div className="flex h-full min-w-0 items-center gap-3 border-[1.5px] border-border-green bg-white px-3 py-3 sm:px-4 sm:py-4">
       <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
         <Image
           src={item.icon}
@@ -1008,7 +1008,7 @@ function ParentalQuestionnaireCard({
           className={`h-10 w-10 ${item.iconClass ?? ""}`}
         />
       </div>
-      <Heading as="h2" size="sm" className="min-w-0 flex-1">
+      <Heading as="h2" size="sm" className="min-w-0 flex-1 text-balance">
         {item.title}
       </Heading>
       <div className="shrink-0">

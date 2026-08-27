@@ -53,9 +53,9 @@ export function FeaturesSection() {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section id="resources" className="w-full bg-cream py-20 md:py-32">
+    <section id="resources" className="w-full bg-cream py-12 sm:py-16 md:py-32">
       <Container>
-        <Reveal className="mb-16 max-w-[1000px] text-left">
+        <Reveal className="mb-10 max-w-[1000px] text-left sm:mb-12 md:mb-16">
           <Display weight="medium" as="h2">
             Нашите рубрики
           </Display>
@@ -100,7 +100,7 @@ export function FeaturesSection() {
                 onFocus={() => setHovered(index)}
                 onBlur={() => setHovered(null)}
                 style={{ ["--col-basis" as string]: `${basis}%` }}
-                className={`group relative flex min-w-0 flex-col gap-8 overflow-hidden p-8 transition-[flex-basis,background-color] md:p-10 xl:grow-0 xl:shrink-0 xl:basis-[var(--col-basis)] ${motion} ${
+                className={`group relative flex min-w-0 flex-col gap-6 overflow-hidden px-0 py-8 transition-[flex-basis,background-color] sm:gap-8 sm:p-8 md:p-10 xl:grow-0 xl:shrink-0 xl:basis-[var(--col-basis)] ${motion} ${
                   isHovered ? "bg-[#fefefc]" : "bg-transparent"
                 }`}
               >

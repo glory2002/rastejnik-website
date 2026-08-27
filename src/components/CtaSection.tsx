@@ -6,7 +6,7 @@ export function CtaSection() {
   return (
     <section
       id="cta-section"
-      className="relative w-full overflow-hidden bg-primary py-24 md:py-40"
+      className="relative w-full overflow-hidden bg-primary py-14 sm:py-20 md:py-40"
     >
       <Container className="relative z-20">
         <Reveal className="max-w-[950px] text-left">

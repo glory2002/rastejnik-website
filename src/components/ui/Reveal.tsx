@@ -23,9 +23,9 @@ interface RevealProps extends HTMLAttributes<HTMLElement> {
 }
 
 const hiddenTransform: Record<RevealFrom, string> = {
-  up: "opacity-0 translate-y-8",
-  left: "opacity-0 -translate-x-16 md:-translate-x-24",
-  right: "opacity-0 translate-x-16 md:translate-x-24",
+  up: "opacity-0 translate-y-6 sm:translate-y-8",
+  left: "opacity-0 -translate-x-8 sm:-translate-x-16 md:-translate-x-24",
+  right: "opacity-0 translate-x-8 sm:translate-x-16 md:translate-x-24",
 };
 
 /**

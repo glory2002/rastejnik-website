@@ -88,10 +88,10 @@ function OnboardStepShell({
   children: React.ReactNode;
 }) {
   return (
-    <section className="w-full bg-white py-16 md:py-24">
+    <section className="w-full bg-white py-12 sm:py-16 md:py-24">
       <Container>
         <div
-          className="shevitsa-stage-enter mx-auto flex w-full flex-col gap-10"
+          className="shevitsa-stage-enter mx-auto flex w-full flex-col gap-8 sm:gap-10"
           style={{ maxWidth }}
         >
           <div className="flex flex-col items-center gap-3 text-center">
@@ -143,7 +143,7 @@ function TrafficLight({
 }) {
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-3 sm:gap-5">
         {trafficLightOrder.map((dot) => {
           const isActive = dot === level;
           return (
@@ -540,7 +540,7 @@ export function QuestionnaireFlow({
   if (stage === "transition") {
     return (
       <div
-        className="shevitsa-stage-enter fixed inset-0 z-[100] overflow-hidden bg-[color-mix(in_srgb,var(--color-secondary)_9%,white)]"
+        className="shevitsa-stage-enter fixed inset-0 z-[100] overflow-hidden bg-cream"
         aria-hidden="true"
       >
         <div className="shevitsa-stage-space absolute left-1/2 top-1/2 w-[min(52vw,400px)] -translate-x-1/2 -translate-y-1/2 sm:w-[min(46vw,460px)]">
@@ -555,12 +555,12 @@ export function QuestionnaireFlow({
     const overallStatus = getOverallStatus(domainResults);
 
     return (
-      <section className="w-full bg-white py-16 md:py-24">
+      <section className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <div className="mx-auto w-full max-w-[720px]">
-            <div className="shevitsa-stage-enter flex flex-col items-center gap-10 text-center">
+            <div className="shevitsa-stage-enter flex flex-col items-center gap-8 text-center sm:gap-10">
         <div className="flex flex-col items-center gap-4">
-          <Title className="max-w-[560px]">Поздравления!</Title>
+          <Title className="max-w-[560px] text-balance">Поздравления!</Title>
           <Body className="max-w-[480px]">
             Успешно завършихте оценката на развитието на вашето дете. Ето
             обобщените резултати и препоръки, които ще ви помогнат да
@@ -576,7 +576,7 @@ export function QuestionnaireFlow({
             </div>
 
             {/* Large gap between domain groups; tight spacing inside each group. */}
-            <div className="mt-16 flex flex-col gap-16">
+            <div className="mt-10 flex flex-col gap-10 sm:mt-16 sm:gap-16">
               {domainResults.map((result, index) => {
                 const tierColor = domainTierColor(result.percentage);
                 const isOpen = openDomain === index;
@@ -633,7 +633,7 @@ export function QuestionnaireFlow({
               })}
             </div>
 
-            <div className="mt-16 flex flex-col gap-3">
+            <div className="mt-10 flex flex-col gap-3 sm:mt-16">
               <Heading as="h4" size="sm">
                 Общи насоки
               </Heading>
@@ -655,12 +655,12 @@ export function QuestionnaireFlow({
   return (
     <>
       {headerSection}
-      <section className={`w-full py-16 md:py-24 ${isLiteracy ? "bg-cream" : "bg-white"}`}>
+      <section className={`w-full py-12 sm:py-16 md:py-24 ${isLiteracy ? "bg-cream" : "bg-white"}`}>
         <Container>
           <div
             className={`mx-auto w-full ${isLiteracy ? "max-w-[640px]" : "max-w-[720px]"}`}
           >
-            <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-8 sm:gap-10">
               <div className={isLiteracy ? "text-center" : undefined}>
                 <Meta
                   as="div"

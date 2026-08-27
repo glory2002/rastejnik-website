@@ -70,7 +70,7 @@ export default async function IntervalQuestionnairePage({
         className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1"
       >
         <Link
-          href="/questionnaires"
+          href="/questionnaires/ranno-detsko-razvitie"
           className="text-primary/40 transition-colors hover:text-primary/70"
         >
           {parentCategory.title}

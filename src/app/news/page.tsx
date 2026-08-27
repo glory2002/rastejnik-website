@@ -18,11 +18,11 @@ export default function NewsListingPage() {
     <main>
       <Header variant="framed" />
 
-      <section className="w-full bg-cream py-16 md:py-24">
+      <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
           <nav
             aria-label="Пътека"
-            className="mb-6 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60"
+            className="mb-5 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60 sm:mb-6"
           >
             <Link href="/" className="transition-opacity hover:opacity-80">
               Начало
@@ -31,13 +31,13 @@ export default function NewsListingPage() {
             <span className="text-primary">Новини</span>
           </nav>
 
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
             <Image
               src="/images/icon-rub-02.svg"
               alt=""
               width={128}
               height={129}
-              className="h-[70px] w-auto shrink-0 object-contain"
+              className="h-[56px] w-auto shrink-0 object-contain sm:h-[70px]"
             />
             <div>
               <Display className="max-w-[800px]">Новини</Display>
@@ -50,7 +50,7 @@ export default function NewsListingPage() {
         </Container>
       </section>
 
-      <section id="news-listing" className="w-full bg-white py-16 md:py-24">
+      <section id="news-listing" className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
             {news.map((item) => (
