@@ -1,7 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { LogoSprout } from "@/components/icons/LogoSprout";
+import { InfoMark } from "@/components/icons/InfoMark";
 import { Action, Title } from "@/components/ui/Typography";
+
+const hoverIconColor = [
+  "group-hover:text-accent-pink",
+  "group-hover:text-primary",
+  "group-hover:text-accent-blue",
+] as const;
 
 /**
  * Typography-led tip card — no cover image.
@@ -11,17 +17,23 @@ export function TipCard({
   href,
   title,
   excerpt,
+  index = 0,
 }: {
   href: string;
   title: string;
   excerpt: string;
+  index?: number;
 }) {
+  const iconHover = hoverIconColor[index % hoverIconColor.length];
+
   return (
     <Link
       href={href}
       className="group flex h-full min-h-[280px] flex-col bg-white p-6 transition-colors sm:min-h-[320px] sm:p-8 lg:min-h-[360px]"
     >
-      <LogoSprout className="mb-5 h-9 w-9 shrink-0 sm:mb-6" />
+      <InfoMark
+        className={`mb-5 h-9 w-9 shrink-0 origin-center rotate-180 text-secondary transition-[transform,color] duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none group-hover:scale-125 sm:mb-6 ${iconHover}`}
+      />
 
       <p className="text-base leading-[1.4] text-primary-dark/75">{excerpt}</p>
 
