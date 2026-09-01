@@ -27,6 +27,9 @@ export function TaglineSection() {
               </span>
             ))}
           </p>
+          <p className="mt-6 text-[clamp(1rem,1.8vw,1.25rem)] font-medium leading-none text-primary sm:mt-8">
+            Г.Ангелова
+          </p>
         </Reveal>
       </Container>
     </section>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AboutView, PanelCta } from "@/components/AboutView";
 import { CtaSection } from "@/components/CtaSection";
+import { EmbroideryOverlay } from "@/components/EmbroideryOverlay";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
@@ -12,19 +13,22 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="overflow-x-hidden">
-      <Header variant="framed" />
+    <>
+      <main className="overflow-x-clip">
+        <Header variant="framed" />
 
-      <AboutView />
+        <AboutView />
 
-      <CtaSection />
+        <CtaSection />
 
-      <PanelCta
-        title="Готови ли сте да започнете?"
-        body="Разгледайте въпросниците — крачка към по-ясна картина за развитието на детето."
-      />
+        <PanelCta
+          title="Готови ли сте да започнете?"
+          body="Разгледайте въпросниците — крачка към по-ясна картина за развитието на детето."
+        />
 
-      <Footer />
-    </main>
+        <Footer />
+      </main>
+      <EmbroideryOverlay />
+    </>
   );
 }

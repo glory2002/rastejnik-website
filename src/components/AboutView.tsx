@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -126,18 +126,20 @@ function NumberedList({
 function BulletList({
   items,
   columns = false,
+  className = "mt-6 sm:mt-8",
 }: {
   items: string[];
   /** Two columns from tablet up — for denser advantage lists. */
   columns?: boolean;
+  className?: string;
 }) {
   return (
     <ul
-      className={`mt-6 gap-x-10 gap-y-3 sm:mt-8 sm:gap-y-4 ${
+      className={`gap-x-10 gap-y-3 sm:gap-y-4 ${
         columns
           ? "grid max-w-[960px] sm:grid-cols-2"
           : "flex max-w-[720px] flex-col"
-      }`}
+      } ${className}`}
     >
       {items.map((item, index) => (
         <Reveal key={item} delay={Math.min(index * 30, 180)} as="li">
@@ -173,6 +175,22 @@ function ParagraphStack({
         <p key={paragraph}>{paragraph}</p>
       ))}
     </Body>
+  );
+}
+
+/** Same split as „Кои сме ние?“ / „Екипът“ — title column, then body. */
+const aboutSplit =
+  "grid gap-10 sm:gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.4fr)] lg:gap-20";
+
+/**
+ * Sticky title column. Sticky lives on this wrapper — not on Reveal —
+ * because transform on Reveal would cancel position:sticky.
+ */
+function AboutSplitTitle({ children }: { children: ReactNode }) {
+  return (
+    <div className="lg:sticky lg:top-36 lg:self-start">
+      <Reveal>{children}</Reveal>
+    </div>
   );
 }
 
@@ -217,10 +235,10 @@ function TeamPanel() {
     <>
       <section className="w-full bg-white py-12 sm:py-16 md:py-28">
         <Container>
-          <div className="grid gap-10 sm:gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.4fr)] lg:gap-20">
-            <Reveal className="lg:sticky lg:top-36 lg:self-start">
+          <div className={aboutSplit}>
+            <AboutSplitTitle>
               <Title>Кои сме ние?</Title>
-              <div className="mt-6 flex items-baseline gap-3 sm:mt-8">
+              <div className="mt-6 flex items-center gap-3 sm:mt-8">
                 <span className="text-display font-medium leading-none text-primary">
                   08
                 </span>
@@ -228,7 +246,7 @@ function TeamPanel() {
                   години работа с деца и семейства
                 </Body>
               </div>
-            </Reveal>
+            </AboutSplitTitle>
 
             <div className="flex min-w-0 max-w-[44rem] flex-col gap-12 sm:gap-14 md:gap-16">
               <Reveal delay={60}>
@@ -295,13 +313,13 @@ function TeamPanel() {
         </Container>
       </section>
 
-      <section className="relative w-full overflow-hidden bg-cream py-12 sm:py-16 md:py-28">
+      <section className="relative w-full overflow-x-clip bg-cream py-12 sm:py-16 md:py-28">
         <Container>
-          <div className="grid gap-10 sm:gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.4fr)] lg:gap-20">
-            <Reveal>
+          <div className={aboutSplit}>
+            <AboutSplitTitle>
               <Title>Как я постигаме?</Title>
               <Body className="mt-5 max-w-[560px]">{aboutHowWeAchieveLead}</Body>
-            </Reveal>
+            </AboutSplitTitle>
             <NumberedList items={aboutHowWeAchieve} />
           </div>
         </Container>
@@ -313,11 +331,14 @@ function TeamPanel() {
 function PlatformPanel() {
   return (
     <>
-      <section className="relative w-full overflow-hidden bg-white py-12 sm:py-16 md:py-28">
+      <section className="relative w-full overflow-x-clip bg-white py-12 sm:py-16 md:py-28">
         <Container>
-          <div className="grid items-start gap-8 sm:gap-12 lg:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] lg:gap-16">
-            <Reveal>
-              <div className="flex flex-col gap-2">
+          <div className={aboutSplit}>
+            <AboutSplitTitle>
+              <Title className="text-balance">
+                За кого е предназначена тази платформа?
+              </Title>
+              <div className="mt-6 flex items-baseline gap-3 sm:mt-8">
                 <span className="text-display-banner font-medium leading-none text-primary">
                   0–4
                 </span>
@@ -325,13 +346,11 @@ function PlatformPanel() {
                   години
                 </Meta>
               </div>
-            </Reveal>
-            <Reveal delay={80} className="min-w-0 max-w-[52rem]">
-              <Title className="text-balance">
-                За кого е предназначена тази платформа?
-              </Title>
+            </AboutSplitTitle>
+            <Reveal delay={80} className="min-w-0 max-w-[44rem]">
               <ParagraphStack
                 paragraphs={aboutForWhom}
+                className="mt-0"
                 maxWidthClass="max-w-none"
               />
             </Reveal>
@@ -343,7 +362,7 @@ function PlatformPanel() {
         <ShevitsaMotif
           src="/images/embroidery-2.svg"
           side="right"
-          topClass="top-16 md:top-24"
+          topClass="top-8 md:top-12"
         />
         <Container className="relative z-10">
           <Reveal className="max-w-[760px]">
@@ -360,64 +379,74 @@ function PlatformPanel() {
 
       <section className="w-full bg-white py-12 sm:py-16 md:py-28">
         <Container>
-          <Reveal className="max-w-[960px]">
-            <Title className="text-balance">
-              Кои са предимствата на платформата?
-            </Title>
-          </Reveal>
-          <BulletList items={aboutAdvantages} columns />
+          <div className={aboutSplit}>
+            <AboutSplitTitle>
+              <Title className="text-balance">
+                Кои са предимствата на платформата?
+              </Title>
+            </AboutSplitTitle>
+            <BulletList items={aboutAdvantages} className="" />
+          </div>
         </Container>
       </section>
 
-      <section className="relative w-full overflow-hidden bg-cream py-12 sm:py-16 md:py-28">
-        <ShevitsaMotif src="/images/embroidery-3.svg" side="left" />
-        <Container className="relative z-10">
-          <Reveal>
-            <Title className="max-w-[700px] text-balance">
-              Как да се използват получените резултати?
-            </Title>
-          </Reveal>
-          <NumberedList items={aboutHowResults} className="mt-8 sm:mt-10" />
+      <section className="w-full bg-cream py-12 sm:py-16 md:py-28">
+        <Container>
+          <div className={aboutSplit}>
+            <AboutSplitTitle>
+              <Title className="max-w-[700px] text-balance">
+                Как да се използват получените резултати?
+              </Title>
+            </AboutSplitTitle>
+            <NumberedList items={aboutHowResults} />
+          </div>
         </Container>
       </section>
 
-      <section className="relative w-full overflow-hidden bg-white py-12 sm:py-16 md:py-28">
-        <ShevitsaMotif src="/images/embroidery-2.svg" side="right" />
-        <Container className="relative z-10">
-          <Reveal className="max-w-[880px]">
-            <Meta as="p">Подкрепата</Meta>
-            <DisplayBanner as="p" className="mt-4 text-balance sm:mt-5">
-              {aboutSupportLead}
-            </DisplayBanner>
-            <Heading as="h3" size="sm" className="mt-8 sm:mt-10">
-              Тя е като невидима, но здрава връзка между:
-            </Heading>
-          </Reveal>
-          <BulletList items={aboutSupportLinks} />
+      <section className="w-full bg-white py-12 sm:py-16 md:py-28">
+        <Container>
+          <div className={aboutSplit}>
+            <AboutSplitTitle>
+              <Meta as="p">Подкрепата</Meta>
+              <DisplayBanner as="p" className="mt-4 text-balance sm:mt-5">
+                {aboutSupportLead}
+              </DisplayBanner>
+            </AboutSplitTitle>
 
-          <Reveal className="mt-12 max-w-[720px] sm:mt-16">
-            <Heading as="h3" size="sm">
-              {aboutSupportUsageLead}
-            </Heading>
-          </Reveal>
-          <BulletList items={aboutSupportUsage} />
+            <div className="flex min-w-0 flex-col gap-12 sm:gap-16 md:gap-20">
+              <Reveal>
+                <Heading as="h3" size="sm">
+                  Тя е като невидима, но здрава връзка между:
+                </Heading>
+                <BulletList items={aboutSupportLinks} />
+              </Reveal>
 
-          <Reveal delay={60} className="mt-12 max-w-[720px] sm:mt-16">
-            <Heading as="h3" size="sm">
-              Успешното приложение на въпросниците в практиката
-            </Heading>
-            <ParagraphStack
-              paragraphs={aboutSupportPractice}
-              className="mt-5"
-            />
-          </Reveal>
+              <Reveal delay={40}>
+                <Heading as="h3" size="sm">
+                  {aboutSupportUsageLead}
+                </Heading>
+                <BulletList items={aboutSupportUsage} />
+              </Reveal>
 
-          <Reveal className="mt-12 max-w-[720px] sm:mt-16">
-            <Heading as="h3" size="sm">
-              {aboutSupportOpportunitiesLead}
-            </Heading>
-          </Reveal>
-          <BulletList items={aboutSupportOpportunities} />
+              <Reveal delay={60}>
+                <Heading as="h3" size="sm">
+                  Успешното приложение на въпросниците в практиката
+                </Heading>
+                <ParagraphStack
+                  paragraphs={aboutSupportPractice}
+                  className="mt-5"
+                  maxWidthClass="max-w-none"
+                />
+              </Reveal>
+
+              <Reveal delay={80}>
+                <Heading as="h3" size="sm">
+                  {aboutSupportOpportunitiesLead}
+                </Heading>
+                <BulletList items={aboutSupportOpportunities} />
+              </Reveal>
+            </div>
+          </div>
         </Container>
       </section>
     </>

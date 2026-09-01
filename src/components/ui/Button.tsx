@@ -6,6 +6,9 @@ interface ButtonProps {
   className?: string;
   showArrow?: boolean;
   href?: string;
+  /** Passed through when `href` is set — for external association sites. */
+  target?: string;
+  rel?: string;
   /**
    * "xl" is the hero-scale CTA — reserved for the homepage hero button.
    * "l" is the same button family sized down for denser contexts (cards,
@@ -51,6 +54,8 @@ export function Button({
   className = "",
   showArrow = true,
   href,
+  target,
+  rel,
   size = "xl",
   iconSide = "right",
   interactive = true,
@@ -148,7 +153,13 @@ export function Button({
 
   if (href) {
     return (
-      <Link href={href} className={sharedClassName} onClick={onClick}>
+      <Link
+        href={href}
+        className={sharedClassName}
+        onClick={onClick}
+        target={target}
+        rel={rel}
+      >
         {/*
           The reveal circle is clip-path based (not a scaled fixed-size box):
           a percentage radius always covers the full rectangle no matter how
