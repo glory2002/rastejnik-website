@@ -558,27 +558,6 @@ select {
   }
 }
 
-/* Soft ambient drift for decorative about-page embroidery motifs. */
-.about-shevitsa-drift {
-  animation: about-shevitsa-drift 16s ease-in-out infinite;
-}
-
-@keyframes about-shevitsa-drift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, -14px, 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .about-shevitsa-drift {
-    animation: none;
-  }
-}
-
 /* Soft enter when switching About page tabs */
 .about-tab-panel {
   animation: about-tab-fade 0.28s ease-out both;

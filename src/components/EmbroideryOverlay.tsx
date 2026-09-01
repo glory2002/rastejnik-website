@@ -12,10 +12,24 @@ type PatternState = {
   parallaxY: number;
 };
 
+type EmbroideryBand = {
+  sectionId: string;
+  src: string;
+};
+
 const MIN_SCALE = 0.65;
 const MAX_SCALE = 1;
 const PARALLAX_MAX_PX = 10;
 const FADE_BAND = 0.18;
+
+const BANDS: readonly EmbroideryBand[] = [
+  { sectionId: "cta-section", src: "/images/embroidery-4.svg" },
+  { sectionId: "tagline-section", src: "/images/embroidery-3.svg" },
+  {
+    sectionId: "why-questionnaires-section",
+    src: "/images/embroidery-3.svg",
+  },
+];
 
 const HIDDEN: PatternState = {
   visible: false,
@@ -41,9 +55,9 @@ function opacityFromProgress(progress: number): number {
 }
 
 /**
- * Fixed embroidery on the viewport’s right edge. CTA (green) and tagline
- * (cream) scroll “behind” it; each colorway is clipped to that section’s
- * on-screen box.
+ * Fixed embroidery on the viewport’s right edge. Each band’s colorway is
+ * clipped to that section’s on-screen box so the motif appears to sit
+ * inside the strip as it scrolls past.
  *
  * Clip / transform / opacity are written straight to the DOM in the same
  * animation frame as scroll — no React state — so fast scrolling can’t
@@ -51,20 +65,12 @@ function opacityFromProgress(progress: number): number {
  */
 export function EmbroideryOverlay() {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const ctaClipRef = useRef<HTMLDivElement>(null);
-  const ctaMotifRef = useRef<HTMLDivElement>(null);
-  const taglineClipRef = useRef<HTMLDivElement>(null);
-  const taglineMotifRef = useRef<HTMLDivElement>(null);
+  const clipRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const motifRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
-    const ctaClip = ctaClipRef.current;
-    const ctaMotif = ctaMotifRef.current;
-    const taglineClip = taglineClipRef.current;
-    const taglineMotif = taglineMotifRef.current;
-    if (!wrapper || !ctaClip || !ctaMotif || !taglineClip || !taglineMotif) {
-      return;
-    }
+    if (!wrapper) return;
 
     let frame = 0;
 
@@ -123,8 +129,12 @@ export function EmbroideryOverlay() {
 
     function update() {
       frame = 0;
-      apply(ctaClip!, ctaMotif!, computeState("cta-section"));
-      apply(taglineClip!, taglineMotif!, computeState("tagline-section"));
+      BANDS.forEach((band, index) => {
+        const clip = clipRefs.current[index];
+        const motif = motifRefs.current[index];
+        if (!clip || !motif) return;
+        apply(clip, motif, computeState(band.sectionId));
+      });
     }
 
     function onScroll() {
@@ -135,9 +145,13 @@ export function EmbroideryOverlay() {
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+    window.addEventListener("hashchange", onScroll);
+    window.addEventListener("embroidery-overlay-sync", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      window.removeEventListener("hashchange", onScroll);
+      window.removeEventListener("embroidery-overlay-sync", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
@@ -149,42 +163,31 @@ export function EmbroideryOverlay() {
       className="pointer-events-none fixed right-0 top-1/2 z-10 hidden w-[364px] -translate-y-1/2 translate-x-[30%] sm:block sm:w-[440px] md:w-[743px] lg:w-[874px]"
     >
       <div className="relative aspect-[708.98/726.03] w-full">
-        <div
-          ref={ctaClipRef}
-          className="absolute inset-0"
-          style={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
-        >
+        {BANDS.map((band, index) => (
           <div
-            ref={ctaMotifRef}
-            className="absolute inset-0 origin-bottom will-change-transform"
+            key={band.sectionId}
+            ref={(node) => {
+              clipRefs.current[index] = node;
+            }}
+            className="absolute inset-0"
+            style={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
           >
-            <Image
-              src="/images/embroidery-4.svg"
-              alt=""
-              fill
-              className="object-contain"
-              sizes="874px"
-            />
+            <div
+              ref={(node) => {
+                motifRefs.current[index] = node;
+              }}
+              className="absolute inset-0 origin-bottom will-change-transform"
+            >
+              <Image
+                src={band.src}
+                alt=""
+                fill
+                className="object-contain"
+                sizes="874px"
+              />
+            </div>
           </div>
-        </div>
-        <div
-          ref={taglineClipRef}
-          className="absolute inset-0"
-          style={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
-        >
-          <div
-            ref={taglineMotifRef}
-            className="absolute inset-0 origin-bottom will-change-transform"
-          >
-            <Image
-              src="/images/embroidery-3.svg"
-              alt=""
-              fill
-              className="object-contain"
-              sizes="874px"
-            />
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

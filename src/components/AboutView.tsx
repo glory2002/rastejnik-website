@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { ListShevitsa } from "@/components/icons/ListShevitsa";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLead } from "@/components/ui/SectionLead";
 import {
@@ -41,13 +41,6 @@ const tabs: { id: AboutTab; hash: string; label: string }[] = [
   { id: "rastejnik", hash: "za-rastejnik", label: "За Растежник" },
 ];
 
-const accentText = [
-  "text-accent-pink",
-  "text-accent-orange",
-  "text-primary",
-  "text-accent-blue",
-] as const;
-
 const accentFills = [
   "bg-accent-pink",
   "bg-accent-orange",
@@ -58,44 +51,6 @@ const accentFills = [
 function tabFromHash(hash: string): AboutTab {
   if (hash === "#za-rastejnik" || hash === "za-rastejnik") return "rastejnik";
   return "nas";
-}
-
-function ShevitsaMotif({
-  src,
-  side = "right",
-  className = "",
-  opacityClass = "opacity-[0.12]",
-  topClass = "top-0",
-}: {
-  src: string;
-  side?: "left" | "right";
-  className?: string;
-  opacityClass?: string;
-  topClass?: string;
-}) {
-  return (
-    <div
-      aria-hidden
-      className={[
-        "pointer-events-none absolute hidden w-[min(36vw,340px)] select-none lg:block",
-        topClass,
-        opacityClass,
-        "about-shevitsa-drift",
-        side === "right"
-          ? "-right-[8%] xl:-right-[3%]"
-          : "-left-[8%] xl:-left-[3%]",
-        className,
-      ].join(" ")}
-    >
-      <Image
-        src={src}
-        alt=""
-        width={709}
-        height={726}
-        className={`h-auto w-full ${side === "left" ? "-scale-x-100" : ""}`}
-      />
-    </div>
-  );
 }
 
 function NumberedList({
@@ -111,10 +66,10 @@ function NumberedList({
     >
       {items.map((item, index) => (
         <Reveal key={item} delay={Math.min(index * 40, 200)} as="li">
-          <div className="grid gap-2 sm:grid-cols-[3.5rem_minmax(0,1fr)] sm:gap-6">
-            <Meta as="span" tone="inherit" className={accentText[index % 4]}>
-              {String(index + 1).padStart(2, "0")}
-            </Meta>
+          <div className="grid grid-cols-[2.5rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-5">
+            <span className="mt-0.5 inline-flex justify-start">
+              <ListShevitsa pair={(index % 2) as 0 | 1} />
+            </span>
             <Body as="span">{item}</Body>
           </div>
         </Reveal>
@@ -358,13 +313,11 @@ function PlatformPanel() {
         </Container>
       </section>
 
-      <section className="relative w-full overflow-hidden bg-cream py-12 sm:py-16 md:py-28">
-        <ShevitsaMotif
-          src="/images/embroidery-2.svg"
-          side="right"
-          topClass="top-8 md:top-12"
-        />
-        <Container className="relative z-10">
+      <section
+        id="why-questionnaires-section"
+        className="relative w-full overflow-hidden bg-cream py-14 sm:py-20 md:py-40"
+      >
+        <Container className="relative z-20">
           <Reveal className="max-w-[760px]">
             <Title className="max-w-[700px] text-balance">
               Защо да направя въпросниците в тази платформа?
@@ -465,6 +418,10 @@ export function AboutView() {
     window.addEventListener("hashchange", syncFromHash);
     return () => window.removeEventListener("hashchange", syncFromHash);
   }, []);
+
+  useEffect(() => {
+    window.dispatchEvent(new Event("embroidery-overlay-sync"));
+  }, [active]);
 
   function selectTab(tab: AboutTab) {
     const entry = tabs.find((item) => item.id === tab);
