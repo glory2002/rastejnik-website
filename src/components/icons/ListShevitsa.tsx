@@ -4,14 +4,20 @@ const PAIRS = [
 ] as const;
 
 /** Contact-pattern shevitsa, rotated 45° into a diamond list mark. */
-export function ListShevitsa({ pair }: { pair: 0 | 1 }) {
+export function ListShevitsa({
+  pair,
+  className = "h-8 w-8 shrink-0 sm:h-9 sm:w-9",
+}: {
+  pair: 0 | 1;
+  className?: string;
+}) {
   const { a, b } = PAIRS[pair];
 
   return (
     <svg
       aria-hidden
       viewBox="-32 -32 211 212"
-      className="h-8 w-8 shrink-0 sm:h-9 sm:w-9"
+      className={className}
     >
       <g transform="rotate(45 73.3 73.757)">
         <path d="M146.607 147.228V130.965H130.443V147.228H146.607Z" fill={a} />

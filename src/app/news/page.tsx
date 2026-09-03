@@ -3,8 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { NewsCard } from "@/components/NewsCard";
 import { Container } from "@/components/ui/Container";
-import { Action, Body, Display, Heading, Meta } from "@/components/ui/Typography";
+import { Body, Display } from "@/components/ui/Typography";
 import { news } from "@/data/news";
 
 export const metadata: Metadata = {
@@ -53,43 +54,15 @@ export default function NewsListingPage() {
       <section id="news-listing" className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
-            {news.map((item) => (
+            {news.map((item, index) => (
               <li key={item.slug}>
-                <Link
+                <NewsCard
                   href={`/news/${item.slug}`}
-                  className="group flex h-full flex-col transition-colors"
-                >
-                  <div className="relative aspect-[16/10] overflow-hidden bg-cream">
-                    <Image
-                      src={item.coverImage}
-                      alt=""
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-200 ease-out group-hover:scale-[1.03]"
-                    />
-                  </div>
-
-                  <div className="flex flex-1 flex-col gap-3 pt-5">
-                    <Meta>{item.date}</Meta>
-                    <Heading as="h2">{item.title}</Heading>
-                    <p className="text-base leading-[1.35] text-primary-dark">
-                      {item.excerpt}
-                    </p>
-
-                    <div className="mt-auto flex items-center justify-start gap-4 pt-4">
-                      <Action className="inline-flex items-center gap-1.5 transition-opacity group-hover:opacity-80">
-                        Прочети
-                        <Image
-                          src="/images/arrow-link.svg"
-                          alt=""
-                          width={14}
-                          height={22}
-                          className="shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-1"
-                        />
-                      </Action>
-                    </div>
-                  </div>
-                </Link>
+                  date={item.date}
+                  title={item.title}
+                  excerpt={item.excerpt}
+                  index={index}
+                />
               </li>
             ))}
           </ul>

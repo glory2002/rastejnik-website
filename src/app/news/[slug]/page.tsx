@@ -4,12 +4,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { NewsCard } from "@/components/NewsCard";
 import { Container } from "@/components/ui/Container";
 import {
   Action,
   Body,
   Display,
-  Heading,
   Label,
   Meta,
   Title,
@@ -152,40 +152,19 @@ export default async function NewsArticlePage({ params }: PageProps) {
       </article>
 
       {related.length > 0 ? (
-        <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
+        <section className="w-full bg-white py-12 sm:py-16 md:py-24">
           <Container>
             <Title>Още новини</Title>
             <ul className="mt-8 grid gap-8 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-              {related.map((item) => (
+              {related.map((item, index) => (
                 <li key={item.slug}>
-                  <Link
+                  <NewsCard
                     href={`/news/${item.slug}`}
-                    className="group flex h-full flex-col"
-                  >
-                    <div className="relative aspect-[16/10] overflow-hidden bg-white">
-                      <Image
-                        src={item.coverImage}
-                        alt=""
-                        fill
-                        sizes="(max-width: 640px) 100vw, 33vw"
-                        className="object-cover transition-transform duration-200 ease-out group-hover:scale-[1.03]"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col gap-2 pt-4">
-                      <Meta>{item.date}</Meta>
-                      <Heading size="sm">{item.title}</Heading>
-                      <Action className="mt-auto inline-flex items-center gap-1.5 pt-3 transition-opacity group-hover:opacity-80">
-                        Прочети
-                        <Image
-                          src="/images/arrow-link.svg"
-                          alt=""
-                          width={14}
-                          height={22}
-                          className="shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-1"
-                        />
-                      </Action>
-                    </div>
-                  </Link>
+                    date={item.date}
+                    title={item.title}
+                    excerpt={item.excerpt}
+                    index={index}
+                  />
                 </li>
               ))}
             </ul>

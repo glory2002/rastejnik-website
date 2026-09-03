@@ -17,29 +17,25 @@ export default function FaqPage() {
     <main>
       <Header variant="framed" />
 
-      <section className="relative w-full overflow-hidden bg-cream py-12 sm:py-16 md:py-24">
-        {/* Quiet brand motif — sits in the wide-side margin, never over the text column. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-[8%] top-[12%] hidden w-[min(42vw,420px)] select-none opacity-[0.13] lg:block xl:-right-[4%] xl:w-[min(38vw,480px)]"
-        >
-          <Image
-            src="/images/embroidery-3.svg"
-            alt=""
-            width={709}
-            height={726}
-            className="h-auto w-full"
-            priority={false}
-          />
-        </div>
-
-        <Container className="relative z-10">
+      <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
+        <Container>
           <div className="mx-auto w-full max-w-[720px]">
-            <Display>Всички въпроси</Display>
-            <Body className="mt-5 max-w-[560px] sm:mt-6">
-              Пълният списък с кратки, валидирани отговори на най-честите
-              въпроси на родители — потърсете дума или разгледайте надолу.
-            </Body>
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
+              <Image
+                src="/images/pattern-contact-2.svg"
+                alt=""
+                width={147}
+                height={148}
+                className="h-[56px] w-[56px] shrink-0 object-contain sm:h-[70px] sm:w-[70px]"
+              />
+              <div>
+                <Display>Всички въпроси</Display>
+                <Body className="mt-4 max-w-[560px] sm:mt-5">
+                  Пълният списък с кратки, валидирани отговори на най-честите
+                  въпроси на родители — потърсете дума или разгледайте надолу.
+                </Body>
+              </div>
+            </div>
 
             <div className="mt-10 sm:mt-14">
               <FaqBrowser />

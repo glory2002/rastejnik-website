@@ -577,3 +577,51 @@ select {
     animation: none;
   }
 }
+
+/*
+ * News card shevitsa: a square motif in the top-right. Two colorways
+ * alternate per card. Hover rotates it 45° (square → diamond) and fades.
+ */
+.news-envelope {
+  --news-shevitsa: 2.75rem;
+}
+
+@media (min-width: 640px) {
+  .news-envelope {
+    --news-shevitsa: 3.25rem;
+  }
+}
+
+.news-shevitsa {
+  width: var(--news-shevitsa);
+  height: var(--news-shevitsa);
+  background-image: url("/images/pattern-contact-2.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  transform: rotate(0deg);
+  transform-origin: center;
+  opacity: 1;
+  transition:
+    transform 700ms cubic-bezier(0.33, 1, 0.68, 1),
+    opacity 700ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.news-shevitsa--alt {
+  background-image: url("/images/pattern-contact-1.svg");
+}
+
+.news-envelope:is(:hover, :focus-visible) .news-shevitsa {
+  transform: rotate(45deg);
+  opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news-shevitsa {
+    transition: opacity 700ms cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .news-envelope:is(:hover, :focus-visible) .news-shevitsa {
+    transform: none;
+  }
+}
