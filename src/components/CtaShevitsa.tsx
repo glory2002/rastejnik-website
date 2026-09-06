@@ -23,9 +23,9 @@ export function CtaShevitsa() {
 
   useEffect(() => {
     const field = ref.current;
-    const motif = motifRef.current;
-    const section = document.getElementById("cta-section");
-    if (!field || !motif || !section) return;
+    const motifEl = motifRef.current;
+    const band = document.getElementById("cta-section");
+    if (!field || !motifEl || !band) return;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -36,16 +36,16 @@ export function CtaShevitsa() {
 
     function applyParallax() {
       frame = 0;
-      if (!assembled || reduceMotion) return;
+      if (!assembled || reduceMotion || !band || !motifEl) return;
 
-      const sectionRect = section.getBoundingClientRect();
+      const sectionRect = band.getBoundingClientRect();
       const travelDistance = window.innerHeight + sectionRect.height;
       const progress = clamp01(
         (window.innerHeight - sectionRect.top) / travelDistance,
       );
       const scale = MIN_SCALE + (MAX_SCALE - MIN_SCALE) * progress;
       const parallaxY = (0.5 - progress) * 2 * PARALLAX_MAX_PX;
-      motif.style.transform = `translateY(${parallaxY}px) scale(${scale})`;
+      motifEl.style.transform = `translateY(${parallaxY}px) scale(${scale})`;
     }
 
     const observer = new IntersectionObserver(
@@ -59,7 +59,7 @@ export function CtaShevitsa() {
       { threshold: 0.22, rootMargin: "0px 0px -8% 0px" },
     );
 
-    observer.observe(section);
+    observer.observe(band);
 
     function onScroll() {
       if (frame || !assembled) return;
