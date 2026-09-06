@@ -3,10 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { TokenIcon } from "@/components/icons/TokenIcon";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
-import { SectionLead } from "@/components/ui/SectionLead";
-import { Body, Display, Heading } from "@/components/ui/Typography";
+import { cardSurfaceClass } from "@/components/ui/cardSurface";
+import { Body, Heading, Meta } from "@/components/ui/Typography";
 import type {
   QuestionnaireAccent,
   QuestionnaireCategory,
@@ -58,20 +59,21 @@ function CategoryIcon({
   hoverScale = false,
 }: {
   category: QuestionnaireCategory;
-  hoverScale?: boolean;
+  hoverScale?: boolean | "except-links";
 }) {
+  const scaleClass =
+    hoverScale === "except-links"
+      ? "transition-transform duration-200 ease-out motion-reduce:transition-none"
+      : hoverScale
+        ? "transition-transform duration-200 ease-out motion-reduce:transition-none group-hover:scale-[1.3]"
+        : "";
+
   return (
     <div className="relative flex h-[70px] w-[110px] shrink-0 items-center justify-start">
-      <Image
+      <TokenIcon
         src={category.icon}
-        alt=""
-        width={110}
-        height={70}
-        className={`h-[70px] w-auto max-h-[70px] object-contain object-left origin-center ${
-          hoverScale
-            ? "transition-transform duration-200 ease-out motion-reduce:transition-none group-hover:scale-[1.3]"
-            : ""
-        } ${category.iconClass ?? ""}`}
+        accent={category.accent}
+        className={`h-[70px] w-[110px] origin-center ${scaleClass}`}
       />
     </div>
   );
@@ -108,17 +110,63 @@ export function QuestionnairesBrowse({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid gap-6 lg:grid-cols-4">
-        <div className="flex flex-col justify-start">
-          <Display>Въпросници</Display>
-          <SectionLead className="mt-5 sm:mt-6">
-            Кратки, валидирани въпросници, които ви помагат да разберете
-            по-добре себе си като родител и развитието на детето — изберете
-            категория по-долу.
-          </SectionLead>
+      <div>
+        <div className="min-w-0">
+          <div className="overflow-hidden">
+            <div
+              className={`flex ${
+                isCarousel
+                  ? "transition-transform duration-300 ease-out motion-reduce:transition-none"
+                  : "flex-col sm:flex-row"
+              }`}
+              style={
+                isCarousel
+                  ? {
+                      width: `${trackWidthPct}%`,
+                      transform: `translate3d(-${translatePct}%, 0, 0)`,
+                    }
+                  : undefined
+              }
+            >
+              {categories.map((category, cardIndex) => (
+                <Reveal
+                  key={category.slug}
+                  delay={cardIndex * 60}
+                  className={`group ${cardSurfaceClass} flex flex-col gap-5 bg-transparent px-0 py-6 transition-colors duration-200 ease-out hover:bg-white sm:gap-6 sm:p-8 md:p-10 ${
+                    isCarousel ? "shrink-0" : "sm:flex-1"
+                  }`}
+                  style={
+                    isCarousel ? { width: `${slideWidthPct}%` } : undefined
+                  }
+                >
+                  <CategoryIcon category={category} hoverScale />
 
-          {isCarousel ? (
-            <div className="mt-8 flex items-center gap-3 sm:mt-10">
+                  <div className="flex flex-col gap-3">
+                    <Heading as="h2" size="lg">
+                      {category.title}
+                    </Heading>
+                    <Body className="max-w-[560px]">
+                      {category.description}
+                    </Body>
+                  </div>
+
+                  <Button
+                    href={categoryHref(category)}
+                    className="mt-auto w-fit"
+                    size="l"
+                    hoverGroup={false}
+                  >
+                    Към въпросника
+                  </Button>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {isCarousel ? (
+          <div className="mt-4 flex items-center justify-between gap-3 sm:mt-6">
+            <div className="flex items-center gap-3">
               <button
                 type="button"
                 aria-label="Предишни въпросници"
@@ -150,70 +198,21 @@ export function QuestionnairesBrowse({
                 />
               </button>
             </div>
-          ) : null}
-        </div>
-
-        <div className="min-w-0 lg:col-span-3">
-          <div className="overflow-hidden">
-            <div
-              className={`flex ${
-                isCarousel
-                  ? "transition-transform duration-300 ease-out motion-reduce:transition-none"
-                  : "flex-col sm:flex-row"
-              }`}
-              style={
-                isCarousel
-                  ? {
-                      width: `${trackWidthPct}%`,
-                      transform: `translate3d(-${translatePct}%, 0, 0)`,
-                    }
-                  : undefined
-              }
-            >
-              {categories.map((category, cardIndex) => (
-                <Reveal
-                  key={category.slug}
-                  delay={cardIndex * 60}
-                  className={`group flex flex-col gap-5 bg-transparent px-0 py-6 transition-colors duration-200 ease-out hover:bg-[#fefefc] sm:gap-6 sm:p-8 md:p-10 ${
-                    isCarousel ? "shrink-0" : "sm:flex-1"
-                  }`}
-                  style={
-                    isCarousel ? { width: `${slideWidthPct}%` } : undefined
-                  }
-                >
-                  <CategoryIcon category={category} hoverScale />
-
-                  <div className="flex flex-col gap-3">
-                    <Heading as="h2" size="lg">
-                      {category.title}
-                    </Heading>
-                    <Body className="max-w-[560px]">
-                      {category.description}
-                    </Body>
-                  </div>
-
-                  <Button
-                    href={categoryHref(category)}
-                    className="mt-auto w-fit"
-                    size="l"
-                    hoverGroup={false}
-                  >
-                    Към въпросника
-                  </Button>
-                </Reveal>
-              ))}
-            </div>
+            <Meta as="p" aria-live="polite" aria-atomic="true">
+              <span className="sr-only">Карта </span>
+              {index + 1} / {categories.length}
+            </Meta>
           </div>
-        </div>
+        ) : null}
       </div>
 
       {expandedCategories.map((category) => (
         <Reveal
           key={`${category.slug}-expanded`}
           id={category.slug}
-          className="scroll-mt-8 flex flex-col gap-5 bg-transparent px-0 py-6 sm:gap-6 sm:py-8 md:py-10"
+          className="questionnaire-cluster scroll-mt-8 flex flex-col gap-5 bg-transparent px-0 py-6 transition-colors duration-200 ease-out sm:gap-6 sm:p-8 md:p-10"
         >
-          <CategoryIcon category={category} />
+          <CategoryIcon category={category} hoverScale="except-links" />
 
           <div className="flex flex-col gap-3">
             <Heading as="h2" size="lg">
@@ -222,14 +221,14 @@ export function QuestionnairesBrowse({
             <Body className="max-w-[560px]">{category.description}</Body>
           </div>
 
-          <div className="mt-2 grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+          <div className="mt-2 grid grid-cols-1 gap-card sm:grid-cols-2 lg:grid-cols-4">
             {category.subcategories!.map((sub) => (
               <Link
                 key={sub.slug}
                 href={`/questionnaires/${category.slug}/${sub.slug}`}
-                className={`group flex flex-col gap-4 p-5 transition-colors duration-200 ease-out hover:bg-[#fefefc] sm:gap-5 sm:p-8 ${accentClasses[sub.accent]}`}
+                className={`group/subcard questionnaire-subcard ${cardSurfaceClass} flex flex-col gap-cluster p-cluster transition-colors duration-200 ease-out hover:bg-white focus-visible:bg-white ${accentClasses[sub.accent]}`}
               >
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-stack">
                   <Heading as="h3" size="sm" tone="inherit">
                     {sub.title}
                   </Heading>
@@ -239,6 +238,8 @@ export function QuestionnairesBrowse({
                   className="mt-auto w-fit"
                   size="l"
                   interactive={false}
+                  hoverGroup={false}
+                  groupName="subcard"
                 >
                   Към въпросника
                 </Button>

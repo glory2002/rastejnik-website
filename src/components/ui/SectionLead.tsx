@@ -3,6 +3,8 @@ import type { ComponentPropsWithoutRef } from "react";
 interface SectionLeadProps extends ComponentPropsWithoutRef<"p"> {
   /** Text color for the lead paragraph. Use "light" over dark/video backgrounds. */
   tone?: "primary" | "light";
+  /** "hero" is the homepage deck — larger, more open than the default lead. */
+  size?: "default" | "hero";
 }
 
 /**
@@ -17,13 +19,15 @@ interface SectionLeadProps extends ComponentPropsWithoutRef<"p"> {
 export function SectionLead({
   className = "",
   tone = "primary",
+  size = "default",
   ...props
 }: SectionLeadProps) {
   const toneClass = tone === "light" ? "text-white/85" : "text-primary";
+  const sizeClass = size === "hero" ? "text-lead-hero" : "text-lead";
 
   return (
     <p
-      className={`text-lead font-medium ${toneClass} ${className}`}
+      className={`${sizeClass} font-medium ${toneClass} ${className}`}
       {...props}
     />
   );

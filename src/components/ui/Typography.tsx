@@ -116,6 +116,7 @@ export function Heading<T extends ElementType = "h3">({
   const Tag = as ?? "h3";
   return (
     <Tag
+      data-card-title=""
       className={cx(
         headingSizeClass[size],
         "font-bold",

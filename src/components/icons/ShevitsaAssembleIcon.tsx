@@ -6,7 +6,20 @@
  * keyframes in globals.css. Choreography: large green/red arms first, then
  * orange, then pink/blue accents (via animationDelay on each piece).
  */
-export function ShevitsaAssembleIcon({ className }: { className?: string }) {
+const PALETTE = {
+  cream:
+    ".cls-1{fill:#e19826}.cls-2{fill:#6d954b}.cls-3{fill:#ee3c42}.cls-4{fill:#f17996}.cls-5{fill:#1f4fa1}",
+  onPrimary:
+    ".cls-1{fill:#e19826}.cls-2{fill:#fff;fill-opacity:.35}.cls-3{fill:#ee3c42}.cls-4{fill:#f17996}.cls-5{fill:#1f4fa1}",
+} as const;
+
+export function ShevitsaAssembleIcon({
+  className,
+  tone = "cream",
+}: {
+  className?: string;
+  tone?: keyof typeof PALETTE;
+}) {
   return (
     <svg
       viewBox="0 0 708.98 726.03"
@@ -15,8 +28,7 @@ export function ShevitsaAssembleIcon({ className }: { className?: string }) {
       overflow="visible"
     >
       <defs>
-        {/* Same palette as embroidery-3.svg (light-background variant). */}
-        <style>{`.cls-1{fill:#e19826}.cls-2{fill:#6d954b}.cls-3{fill:#ee3c42}.cls-4{fill:#f17996}.cls-5{fill:#1f4fa1}`}</style>
+        <style>{PALETTE[tone]}</style>
       </defs>
 
       <g

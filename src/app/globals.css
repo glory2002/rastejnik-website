@@ -61,11 +61,57 @@
   --text-heading-lg-md--line-height: 1.2;
   --text-lead: 1.25rem; /* 20px */
   --text-lead--line-height: 1.3;
-  --text-body: 1.125rem; /* 18px / text-lg */
+  /* Hero deck — larger than lead, still clearly below DisplayHero. */
+  --text-lead-hero: clamp(1.1875rem, 0.35vw + 1.12rem, 1.4375rem);
+  --text-lead-hero--line-height: 1.5;
+
+  /*
+   * Layout measures — editorial widths and hero field sizing.
+   * Use via max-w-*, h-*, min-h-*, ml-*, pb-* (no ad-hoc px in components).
+   */
+  --max-width-hero-copy: 36rem;
+  --max-width-hero-display: 13ch;
+  --max-width-hero-lead: 32rem;
+  /* Modest left offset — keeps the lockup in the quiet left field. */
+  --spacing-hero-inset: 3rem;
+  --spacing-hero-block: 2.5rem;
+  --spacing-hero-block-md: 3rem;
+  --spacing-hero-block-lg: 4rem;
+
+  /*
+   * Page vertical rhythm — same three weights from mobile to desktop.
+   * section: standard bands · emphasis: quote / green pause · quiet: supporting
+   * block: heading → content · stack: related text · cluster: copy → action
+   */
+  --spacing-section: clamp(3rem, 1rem + 8vw, 8rem);
+  --spacing-section-emphasis: clamp(3.5rem, 1rem + 10vw, 10rem);
+  --spacing-section-quiet: clamp(3rem, 1.25rem + 5.5vw, 6rem);
+  --spacing-block: clamp(2.5rem, 1.25rem + 3vw, 4rem);
+  --spacing-stack: clamp(1rem, 0.75rem + 0.8vw, 1.5rem);
+  --spacing-cluster: clamp(2rem, 1.5rem + 1.2vw, 3rem);
+  /*
+   * Card-to-card gutters — use gap-card / gap-card-compact on any
+   * grid, flex, or list of sibling cards. Do not set local gap/margin.
+   * card: standard tiles · card-compact: dense nested / many-up tiles
+   */
+  --spacing-card: clamp(2rem, 1.5rem + 1.2vw, 3rem);
+  --spacing-card-compact: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
+
+  /* Pictogram frame — one square, centered, used by rubric marks. */
+  --size-mark: 6.5rem;
+  --aspect-ratio-mark: 1 / 1;
+  --scale-mark: 1.014;
+  --scale-mark-hover: 1.16;
+  --height-hero: min(85dvh, 53.75rem);
+  --min-height-hero: 26.25rem;
+  --min-height-hero-sm: 32.5rem;
+  --min-height-hero-md: 35rem;
+
+  --text-body: 1.25rem; /* 20px */
   --text-body--line-height: 1.3;
-  --text-body-relaxed: 1.125rem;
+  --text-body-relaxed: 1.25rem;
   --text-body-relaxed--line-height: 1.55;
-  --text-label: 0.875rem; /* 14px */
+  --text-label: 1rem; /* 16px */
   --text-label--line-height: 1.3;
   --text-meta: 0.75rem; /* 12px */
   --text-meta--line-height: 1.3;
@@ -421,6 +467,92 @@ select {
   height: calc(var(--wave-tile) * 6389 / 7454);
 }
 
+/*
+ * Color an SVG mark with a design-system token. The file is only a
+ * silhouette — fill comes from currentColor (text-accent-* / text-primary).
+ */
+/*
+ * Shared hover/focus for cards whose surface goes white.
+ * Title color uses the existing primary-dark token and inherits the
+ * card's transition duration / easing so both shift together.
+ */
+.card-surface {
+  --card-surface-duration: var(--tw-duration, 200ms);
+  --card-surface-ease: var(--tw-ease, ease-out);
+}
+
+.card-surface :is(h1, h2, h3, h4, [data-card-title]) {
+  transition-property: color;
+  transition-duration: var(--card-surface-duration);
+  transition-timing-function: var(--card-surface-ease);
+}
+
+.card-surface:hover :is(h1, h2, h3, h4, [data-card-title]),
+.card-surface:focus-visible :is(h1, h2, h3, h4, [data-card-title]),
+.card-surface:has(:focus-visible) :is(h1, h2, h3, h4, [data-card-title]),
+.card-surface:has([aria-expanded="true"]) :is(h1, h2, h3, h4, [data-card-title]) {
+  color: var(--color-primary-dark);
+}
+
+.card-surface:focus-visible,
+.card-surface:has(:focus-visible),
+.card-surface:has([aria-expanded="true"]) {
+  background-color: var(--color-white, white);
+}
+
+/*
+ * Cluster card: white + icon scale only when the pointer is on the
+ * frame, not on an inner age-group link — those hover on their own.
+ */
+.questionnaire-cluster {
+  --card-surface-duration: var(--tw-duration, 200ms);
+  --card-surface-ease: var(--tw-ease, ease-out);
+}
+
+.questionnaire-cluster > :not(:has(.questionnaire-subcard)) :is(h1, h2, h3, h4, [data-card-title]) {
+  transition-property: color;
+  transition-duration: var(--card-surface-duration);
+  transition-timing-function: var(--card-surface-ease);
+}
+
+.questionnaire-cluster:hover:not(:has(.questionnaire-subcard:hover)):not(:has(.questionnaire-subcard:focus-visible)) {
+  background-color: var(--color-white, white);
+}
+
+.questionnaire-cluster:hover:not(:has(.questionnaire-subcard:hover)):not(:has(.questionnaire-subcard:focus-visible)) .icon-token {
+  transform: scale(1.3);
+}
+
+.questionnaire-cluster:hover:not(:has(.questionnaire-subcard:hover)):not(:has(.questionnaire-subcard:focus-visible))
+  > :not(:has(.questionnaire-subcard))
+  :is(h1, h2, h3, h4, [data-card-title]) {
+  color: var(--color-primary-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-surface :is(h1, h2, h3, h4, [data-card-title]),
+  .questionnaire-cluster > :not(:has(.questionnaire-subcard)) :is(h1, h2, h3, h4, [data-card-title]) {
+    transition: none;
+  }
+
+  .questionnaire-cluster .icon-token {
+    transform: none;
+  }
+}
+
+.icon-token {
+  display: block;
+  background-color: currentColor;
+  -webkit-mask-image: var(--icon-token);
+  mask-image: var(--icon-token);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: var(--icon-token-position, left center);
+  mask-position: var(--icon-token-position, left center);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
 .wave-progress-track,
 .wave-progress-fill {
   -webkit-mask-image: url("/images/wave.svg");
@@ -437,14 +569,14 @@ select {
 .wave-progress-fill {
   background-image: repeating-linear-gradient(
     to right,
-    #f27a97 0,
-    #f27a97 calc(var(--wave-tile) * 3),
-    #6d954b calc(var(--wave-tile) * 3),
-    #6d954b calc(var(--wave-tile) * 6),
-    #e9b063 calc(var(--wave-tile) * 6),
-    #e9b063 calc(var(--wave-tile) * 9),
-    #476abf calc(var(--wave-tile) * 9),
-    #476abf calc(var(--wave-tile) * 12)
+    var(--color-accent-pink) 0,
+    var(--color-accent-pink) calc(var(--wave-tile) * 3),
+    var(--color-accent-green) calc(var(--wave-tile) * 3),
+    var(--color-accent-green) calc(var(--wave-tile) * 6),
+    var(--color-accent-orange) calc(var(--wave-tile) * 6),
+    var(--color-accent-orange) calc(var(--wave-tile) * 9),
+    var(--color-accent-blue) calc(var(--wave-tile) * 9),
+    var(--color-accent-blue) calc(var(--wave-tile) * 12)
   );
   background-position: left center;
 }
@@ -473,9 +605,57 @@ select {
   transform-box: fill-box;
   transform-origin: center;
   transform-style: preserve-3d;
-  opacity: 0;
   will-change: transform, opacity, filter;
+}
+
+.shevitsa-stage-space .shevitsa-piece {
+  opacity: 0;
   animation: shevitsa-piece-in 1.55s cubic-bezier(0.2, 0.9, 0.18, 1) both;
+}
+
+/*
+ * CTA overlay: pieces sit nearby and chaotic, then click into the
+ * embroidery-4 form the first time the green band scrolls into view.
+ */
+.shevitsa-cta-scatter {
+  --shevitsa-scatter: 0.09;
+  --shevitsa-spin: 0.32;
+}
+
+.shevitsa-cta-scatter .shevitsa-piece {
+  filter: none;
+  animation: none;
+  transform: translate3d(
+      calc(var(--piece-dx) * var(--shevitsa-scatter)),
+      calc(var(--piece-dy) * var(--shevitsa-scatter)),
+      0
+    )
+    rotate(calc(var(--piece-spin) * var(--shevitsa-spin)))
+    scale(1);
+}
+
+.shevitsa-cta-scatter.is-assembled .shevitsa-piece {
+  animation: shevitsa-cta-assemble 1.05s cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+
+@keyframes shevitsa-cta-assemble {
+  from {
+    transform: translate3d(
+        calc(var(--piece-dx) * var(--shevitsa-scatter)),
+        calc(var(--piece-dy) * var(--shevitsa-scatter)),
+        0
+      )
+      rotate(calc(var(--piece-spin) * var(--shevitsa-spin)))
+      scale(1);
+  }
+  to {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+}
+
+.shevitsa-cluster {
+  --shevitsa-scatter: 1;
+  --shevitsa-spin: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -483,6 +663,7 @@ select {
     animation: none;
     opacity: 1;
     filter: none;
+    transform: none;
   }
 
   .shevitsa-stage-space,
@@ -578,50 +759,176 @@ select {
   }
 }
 
+@keyframes partners-marquee {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.partners-marquee {
+  animation: partners-marquee 36s linear infinite;
+}
+
+.partners-marquee:has(img:hover) {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partners-marquee {
+    animation: none;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    transform: none;
+  }
+
+  .partners-marquee__copy {
+    display: none;
+  }
+}
+
 /*
- * News card shevitsa: a square motif in the top-right. Two colorways
- * alternate per card. Hover rotates it 45° (square → diamond) and fades.
+ * News card shevitsa: a square motif in the top-right, split into four
+ * quadrants. At rest the pieces sit apart; hover snaps them together.
+ * Two colorways alternate per card.
  */
 .news-envelope {
   --news-shevitsa: 2.75rem;
+  --news-shevitsa-spread: 0.5rem;
 }
 
 @media (min-width: 640px) {
   .news-envelope {
     --news-shevitsa: 3.25rem;
+    --news-shevitsa-spread: 0.62rem;
   }
 }
 
 .news-shevitsa {
+  display: block;
   width: var(--news-shevitsa);
   height: var(--news-shevitsa);
+  overflow: visible;
+}
+
+.news-shevitsa__piece {
+  position: absolute;
+  inset: 0;
   background-image: url("/images/pattern-contact-2.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% 100%;
-  transform: rotate(0deg);
-  transform-origin: center;
-  opacity: 1;
-  transition:
-    transform 700ms cubic-bezier(0.33, 1, 0.68, 1),
-    opacity 700ms cubic-bezier(0.33, 1, 0.68, 1);
+  transition: transform 700ms cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.news-shevitsa--alt {
+.news-shevitsa--alt .news-shevitsa__piece {
   background-image: url("/images/pattern-contact-1.svg");
 }
 
-.news-envelope:is(:hover, :focus-visible) .news-shevitsa {
-  transform: rotate(45deg);
-  opacity: 0.4;
+.news-shevitsa__piece--tl {
+  clip-path: inset(0 50% 50% 0);
+  transform: translate(
+    calc(-1 * var(--news-shevitsa-spread)),
+    calc(-1 * var(--news-shevitsa-spread))
+  );
+}
+
+.news-shevitsa__piece--tr {
+  clip-path: inset(0 0 50% 50%);
+  transform: translate(
+    var(--news-shevitsa-spread),
+    calc(-1 * var(--news-shevitsa-spread))
+  );
+}
+
+.news-shevitsa__piece--bl {
+  clip-path: inset(50% 50% 0 0);
+  transform: translate(
+    calc(-1 * var(--news-shevitsa-spread)),
+    var(--news-shevitsa-spread)
+  );
+}
+
+.news-shevitsa__piece--br {
+  clip-path: inset(50% 0 0 50%);
+  transform: translate(
+    var(--news-shevitsa-spread),
+    var(--news-shevitsa-spread)
+  );
+}
+
+.news-envelope:is(:hover, :focus-visible) .news-shevitsa__piece {
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .news-shevitsa {
-    transition: opacity 700ms cubic-bezier(0.33, 1, 0.68, 1);
-  }
-
-  .news-envelope:is(:hover, :focus-visible) .news-shevitsa {
+  .news-shevitsa__piece {
+    transition: none;
     transform: none;
   }
+}
+
+/*
+ * Hero video scrim — warm forest wash, strongest behind the copy,
+ * fading toward the park and the children on the right.
+ */
+.hero-video-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      48% 56% at 16% 78%,
+      rgb(38 40 20 / 0.66) 0%,
+      rgb(31 66 35 / 0.4) 34%,
+      rgb(31 66 35 / 0.12) 56%,
+      transparent 74%
+    ),
+    linear-gradient(
+      90deg,
+      rgb(38 40 20 / 0.4) 0%,
+      rgb(31 66 35 / 0.18) 24%,
+      rgb(31 66 35 / 0.04) 44%,
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 42%,
+      rgb(38 40 20 / 0.1) 68%,
+      rgb(31 66 35 / 0.22) 100%
+    );
+}
+
+@media (max-width: 639px) {
+  /* Copy sits at the bottom on small screens. */
+  .hero-video-scrim {
+    background:
+      linear-gradient(
+        180deg,
+        transparent 22%,
+        rgb(38 40 20 / 0.08) 46%,
+        rgb(31 66 35 / 0.38) 74%,
+        rgb(38 40 20 / 0.58) 100%
+      ),
+      radial-gradient(
+        78% 52% at 22% 88%,
+        rgb(38 40 20 / 0.52) 0%,
+        rgb(31 66 35 / 0.16) 50%,
+        transparent 74%
+      ),
+      linear-gradient(
+        90deg,
+        rgb(31 66 35 / 0.28) 0%,
+        rgb(31 66 35 / 0.08) 46%,
+        transparent 68%
+      );
+  }
+}
+
+.hero-lead {
+  color: rgb(255 255 255 / 0.92);
+  text-wrap: pretty;
 }

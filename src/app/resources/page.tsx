@@ -128,7 +128,7 @@ export default function ResourcesPage() {
 
       <section className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
-          <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
+          <ul className="grid gap-card sm:grid-cols-2 lg:grid-cols-3">
             {resources.map((item) => (
               <li key={item.id}>
                 <ResourceCard item={item} />

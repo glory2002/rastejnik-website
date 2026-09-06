@@ -20,7 +20,8 @@ export interface QuestionnaireSubcategory {
 export interface QuestionnaireCategory {
   slug: string;
   icon: string;
-  iconClass?: string;
+  /** Shared accent token that tints the icon mark. */
+  accent: QuestionnaireAccent;
   title: string;
   description: string;
   subcategories?: QuestionnaireSubcategory[];
@@ -61,6 +62,7 @@ export const questionnaireCategories: QuestionnaireCategory[] = [
   {
     slug: "roditelska-gramotnost",
     icon: "/images/parent-2.svg",
+    accent: "blue",
     title: "Родителска грамотност",
     description:
       "Проверете доколко разпознавате мит от научен факт в най-често срещаните теми за отглеждане и развитие на дете.",
@@ -68,6 +70,7 @@ export const questionnaireCategories: QuestionnaireCategory[] = [
   {
     slug: "roditelska-kompetentnost",
     icon: "/images/parent.svg",
+    accent: "orange",
     title: "Родителска компетентност",
     description:
       "Кратка самооценка на увереността и уменията ви да отговаряте на нуждите на детето във всекидневни ситуации.",
@@ -75,6 +78,7 @@ export const questionnaireCategories: QuestionnaireCategory[] = [
   {
     slug: "roditel-specialist",
     icon: "/images/parent-specialist.svg",
+    accent: "pink",
     title: "Взаимоотношения родител-специалист",
     description:
       "Оценете комуникацията, доверието и удовлетвореността от съвместната работа с педиатри, логопеди и други специалисти.",
@@ -82,6 +86,7 @@ export const questionnaireCategories: QuestionnaireCategory[] = [
   {
     slug: "ranno-detsko-razvitie",
     icon: "/images/early-child.svg",
+    accent: "green",
     title: "Ранно детско развитие",
     description:
       "Валидирани оценки на развитието на детето по възрастови групи до 4-годишна възраст — изберете възрастта на детето, за да започнете.",

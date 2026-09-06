@@ -9,6 +9,7 @@ import { BabyRattleIcon } from "@/components/icons/BabyRattleIcon";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLead } from "@/components/ui/SectionLead";
+import { cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Action, Display, Heading, Meta } from "@/components/ui/Typography";
 import { getBabyIcons } from "@/lib/babyIcons";
 import {
@@ -81,7 +82,7 @@ export default async function AgeQuestionnairePage({
 
       <section className="w-full bg-white py-16 md:py-24">
         <Container>
-          <Reveal className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+          <Reveal className="grid gap-card-compact sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
             {sub.intervals.map((interval, index) => {
               const icon = babyIcons[index % babyIcons.length];
               const isRattleBaby = icon === "/images/baby-1.svg";
@@ -91,7 +92,7 @@ export default async function AgeQuestionnairePage({
                 <Link
                   key={interval.label}
                   href={`/questionnaires/ranno-detsko-razvitie/${sub.slug}/${interval.slug}`}
-                  className="group relative flex aspect-square flex-col items-center gap-4 bg-cream p-6 text-center transition-colors duration-200 ease-out hover:bg-[#fefefc]"
+                  className={`group ${cardSurfaceClass} relative flex aspect-square flex-col items-center gap-4 bg-cream p-6 text-center transition-colors duration-200 ease-out hover:bg-white`}
                 >
                   {babyIcons.length > 0 && (
                     <div className="relative flex h-[112px] w-[112px] shrink-0 items-center justify-center">

@@ -1,25 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
+import { cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Action, Heading, Meta } from "@/components/ui/Typography";
 
 /**
  * Square shevitsa in the corner. Pair 0 = gold/blue, pair 1 = green/pink.
- * On hover the square rotates 45° into a diamond and fades.
+ * Four quadrants sit apart at rest and click together on card hover.
  */
 function ShevitsaMark({ pair }: { pair: 0 | 1 }) {
   return (
     <span
       aria-hidden
-      className={`news-shevitsa pointer-events-none absolute top-6 right-6 z-[2] block sm:top-8 sm:right-8${
+      className={`news-shevitsa pointer-events-none absolute top-6 right-6 z-[2] sm:top-8 sm:right-8${
         pair === 1 ? " news-shevitsa--alt" : ""
       }`}
-    />
+    >
+      <span className="news-shevitsa__piece news-shevitsa__piece--tl" />
+      <span className="news-shevitsa__piece news-shevitsa__piece--tr" />
+      <span className="news-shevitsa__piece news-shevitsa__piece--bl" />
+      <span className="news-shevitsa__piece news-shevitsa__piece--br" />
+    </span>
   );
 }
 
 /**
  * Text-led news card — no cover image.
- * Light yellow at rest, white on hover. Corner shevitsa rotates on hover.
+ * Cream at rest, white on hover. Corner shevitsa assembles on hover.
  */
 export function NewsCard({
   href,
@@ -39,7 +45,7 @@ export function NewsCard({
   return (
     <Link
       href={href}
-      className="news-envelope group relative z-0 flex h-full flex-col overflow-visible bg-cream p-6 pr-[4.75rem] transition-colors duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] hover:z-10 hover:bg-white motion-reduce:transition-none sm:p-8 sm:pr-[5.5rem]"
+      className={`news-envelope group ${cardSurfaceClass} relative z-0 flex h-full flex-col overflow-visible bg-cream p-6 pr-[4.75rem] transition-colors duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] hover:z-10 hover:bg-white motion-reduce:transition-none sm:p-8 sm:pr-[5.5rem]`}
     >
       <ShevitsaMark pair={pair} />
       <Meta>{date}</Meta>

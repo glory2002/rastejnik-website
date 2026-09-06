@@ -59,7 +59,7 @@ function FormSelect({
       <Label>{label}</Label>
       <select
         {...props}
-        className="w-full border-[1.5px] border-border-green py-3 pl-4 pr-11 text-base text-primary-dark outline-none transition-colors focus:border-primary"
+        className="w-full border-[1.5px] border-border-green bg-white py-3 pl-4 pr-11 text-base text-primary-dark outline-none transition-colors focus:border-primary"
       >
         <option value="" disabled hidden>
           Изберете&hellip;
@@ -88,7 +88,7 @@ function OnboardStepShell({
   children: React.ReactNode;
 }) {
   return (
-    <section className="w-full bg-white py-12 sm:py-16 md:py-24">
+    <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
       <Container>
         <div
           className="shevitsa-stage-enter mx-auto flex w-full flex-col gap-8 sm:gap-10"

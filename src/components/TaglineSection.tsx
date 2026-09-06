@@ -16,7 +16,7 @@ export function TaglineSection() {
   return (
     <section
       id="tagline-section"
-      className="relative w-full overflow-hidden bg-cream py-14 sm:py-20 md:py-40"
+      className="relative w-full overflow-hidden bg-cream py-section-emphasis"
     >
       <Container className="relative z-20">
         <Reveal className="max-w-[1100px]">
@@ -27,7 +27,7 @@ export function TaglineSection() {
               </span>
             ))}
           </p>
-          <p className="mt-6 text-[clamp(1rem,1.8vw,1.25rem)] font-medium leading-none text-primary sm:mt-8">
+          <p className="mt-cluster text-[clamp(1rem,1.8vw,1.25rem)] font-medium leading-none text-primary">
             Г.Ангелова
           </p>
         </Reveal>

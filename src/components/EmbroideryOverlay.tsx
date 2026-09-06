@@ -6,7 +6,9 @@ import { useEffect, useRef } from "react";
 type PatternState = {
   visible: boolean;
   clipTop: number;
+  clipRight: number;
   clipBottom: number;
+  clipLeft: number;
   scale: number;
   opacity: number;
   parallaxY: number;
@@ -15,6 +17,7 @@ type PatternState = {
 type EmbroideryBand = {
   sectionId: string;
   src: string;
+  assemble?: boolean;
 };
 
 const MIN_SCALE = 0.65;
@@ -23,7 +26,6 @@ const PARALLAX_MAX_PX = 10;
 const FADE_BAND = 0.18;
 
 const BANDS: readonly EmbroideryBand[] = [
-  { sectionId: "cta-section", src: "/images/embroidery-4.svg" },
   { sectionId: "tagline-section", src: "/images/embroidery-3.svg" },
   {
     sectionId: "why-questionnaires-section",
@@ -34,7 +36,9 @@ const BANDS: readonly EmbroideryBand[] = [
 const HIDDEN: PatternState = {
   visible: false,
   clipTop: 0,
+  clipRight: 0,
   clipBottom: 0,
+  clipLeft: 0,
   scale: MIN_SCALE,
   opacity: 0,
   parallaxY: 0,
@@ -90,8 +94,11 @@ export function EmbroideryOverlay() {
 
       // +0.5px inset hides subpixel compositor bleed on the section edge.
       const clipTop = Math.max(0, sectionRect.top - patternRect.top) + 0.5;
+      const clipRight =
+        Math.max(0, patternRect.right - sectionRect.right) + 0.5;
       const clipBottom =
         Math.max(0, patternRect.bottom - sectionRect.bottom) + 0.5;
+      const clipLeft = Math.max(0, sectionRect.left - patternRect.left) + 0.5;
 
       const travelDistance = window.innerHeight + sectionRect.height;
       const progress = clamp01(
@@ -104,7 +111,9 @@ export function EmbroideryOverlay() {
       return {
         visible: true,
         clipTop,
+        clipRight,
         clipBottom,
+        clipLeft,
         scale,
         opacity,
         parallaxY,
@@ -123,7 +132,7 @@ export function EmbroideryOverlay() {
       }
 
       clipEl.style.opacity = String(state.opacity);
-      clipEl.style.clipPath = `inset(${state.clipTop}px 0px ${state.clipBottom}px 0px)`;
+      clipEl.style.clipPath = `inset(${state.clipTop}px ${state.clipRight}px ${state.clipBottom}px ${state.clipLeft}px)`;
       motifEl.style.transform = `translateY(${state.parallaxY}px) scale(${state.scale})`;
     }
 
@@ -133,7 +142,24 @@ export function EmbroideryOverlay() {
         const clip = clipRefs.current[index];
         const motif = motifRefs.current[index];
         if (!clip || !motif) return;
-        apply(clip, motif, computeState(band.sectionId));
+        const state = computeState(band.sectionId);
+        apply(clip, motif, state);
+
+        if (!band.assemble) return;
+
+        const section = document.getElementById(band.sectionId);
+        if (!section) {
+          motif.classList.remove("is-assembled");
+          return;
+        }
+
+        if (
+          state.visible &&
+          !motif.classList.contains("is-assembled") &&
+          section.getBoundingClientRect().top < window.innerHeight * 0.78
+        ) {
+          motif.classList.add("is-assembled");
+        }
       });
     }
 

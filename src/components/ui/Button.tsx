@@ -36,6 +36,11 @@ interface ButtonProps {
    * hover instead of needing the pointer directly over the button itself.
    */
   hoverGroup?: boolean;
+  /**
+   * Named Tailwind group (`group/{name}`). Use when a button sits inside
+   * nested hoverable frames so `group-hover` does not inherit from a parent.
+   */
+  groupName?: string;
   /** Only applies to the `<button>`/`<Link>` branches (not the decorative span). */
   onClick?: () => void;
   disabled?: boolean;
@@ -60,6 +65,7 @@ export function Button({
   iconSide = "right",
   interactive = true,
   hoverGroup = true,
+  groupName,
   onClick,
   disabled = false,
   type = "button",
@@ -97,11 +103,35 @@ export function Button({
       ? "50px"
       : "38px";
 
+  const namedSubcard = groupName === "subcard";
+  const groupClass = hoverGroup
+    ? namedSubcard
+      ? "group/subcard"
+      : "group"
+    : "";
+  const scopedColors = namedSubcard
+    ? "group-hover/subcard:text-primary group-focus-visible/subcard:text-primary group-hover/subcard:border-secondary group-focus-visible/subcard:border-secondary"
+    : "";
+  const clipOpen = namedSubcard
+    ? iconOnLeft
+      ? "group-hover/subcard:[clip-path:circle(150%_at_var(--circle-offset)_50%)] group-focus-visible/subcard:[clip-path:circle(150%_at_var(--circle-offset)_50%)]"
+      : "group-hover/subcard:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)] group-focus-visible/subcard:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)]"
+    : iconOnLeft
+      ? "group-hover:[clip-path:circle(150%_at_var(--circle-offset)_50%)] group-focus-visible:[clip-path:circle(150%_at_var(--circle-offset)_50%)]"
+      : "group-hover:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)] group-focus-visible:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)]";
+  const iconMotion = namedSubcard
+    ? iconOnLeft
+      ? "group-hover/subcard:-translate-x-0.5 group-focus-visible/subcard:-translate-x-0.5"
+      : "group-hover/subcard:translate-x-1 group-focus-visible/subcard:translate-x-1"
+    : iconOnLeft
+      ? "group-hover:-translate-x-0.5 group-focus-visible:-translate-x-0.5"
+      : "group-hover:translate-x-1 group-focus-visible:translate-x-1";
+
   const colorClasses = showArrow
-    ? "text-primary-dark hover:text-primary border-[1.5px] border-transparent hover:border-secondary"
+    ? `text-primary-dark hover:text-primary focus-visible:text-primary border-[1.5px] border-transparent hover:border-secondary focus-visible:border-secondary ${scopedColors}`
     : "text-primary-dark hover:bg-white hover:text-primary";
 
-  const sharedClassName = `${hoverGroup ? "group" : ""} relative inline-flex items-center justify-center overflow-hidden rounded-[50px] bg-secondary font-bold uppercase transition-colors duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] disabled:pointer-events-none disabled:opacity-40 ${colorClasses} ${sizeClasses} ${className}`;
+  const sharedClassName = `${groupClass} relative inline-flex items-center justify-center overflow-hidden rounded-[50px] bg-secondary font-bold uppercase transition-colors duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] disabled:pointer-events-none disabled:opacity-40 ${colorClasses} ${sizeClasses} ${className}`;
 
   const arrow = showArrow && (
     <span
@@ -113,16 +143,13 @@ export function Button({
       }
       className={
         iconOnLeft
-          ? "pointer-events-none absolute inset-0 z-0 rounded-[50px] bg-white transition-[clip-path] duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none [clip-path:circle(0px_at_var(--circle-offset)_50%)] group-hover:[clip-path:circle(150%_at_var(--circle-offset)_50%)]"
-          : "pointer-events-none absolute inset-0 z-0 rounded-[50px] bg-white transition-[clip-path] duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none [clip-path:circle(0px_at_calc(100%-var(--circle-offset))_50%)] group-hover:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)]"
+          ? `pointer-events-none absolute inset-0 z-0 rounded-[50px] bg-white transition-[clip-path] duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none [clip-path:circle(0px_at_var(--circle-offset)_50%)] ${clipOpen}`
+          : `pointer-events-none absolute inset-0 z-0 rounded-[50px] bg-white transition-[clip-path] duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none [clip-path:circle(0px_at_calc(100%-var(--circle-offset))_50%)] ${clipOpen}`
       }
     />
   );
 
   const iconSrc = iconOnLeft ? "/images/plus-icon.svg" : "/images/arrow-hero.svg";
-  const iconMotion = iconOnLeft
-    ? "group-hover:-translate-x-0.5"
-    : "group-hover:translate-x-1";
 
   const arrowIcon = showArrow && (
     <span

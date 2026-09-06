@@ -22,11 +22,11 @@ export default function FaqPage() {
           <div className="mx-auto w-full max-w-[720px]">
             <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
               <Image
-                src="/images/pattern-contact-2.svg"
+                src="/images/question.svg"
                 alt=""
-                width={147}
-                height={148}
-                className="h-[56px] w-[56px] shrink-0 object-contain sm:h-[70px] sm:w-[70px]"
+                width={63}
+                height={88}
+                className="h-[68px] w-auto shrink-0 self-start object-contain sm:h-[86px] sm:self-auto"
               />
               <div>
                 <Display>Всички въпроси</Display>

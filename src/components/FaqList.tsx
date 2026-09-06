@@ -2,6 +2,7 @@
 
 import { Fragment, useState, type ReactNode } from "react";
 import type { FaqItem } from "@/data/faq";
+import { cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Body, Heading } from "@/components/ui/Typography";
 
 const motion = "duration-200 ease-out motion-reduce:transition-none";
@@ -81,9 +82,7 @@ export function FaqList({ items, highlightQuery = "" }: FaqListProps) {
         return (
           <div
             key={`${item.question}-${index}`}
-            className={`transition-colors ${motion} hover:bg-[#fefefc] ${
-              isOpen ? "bg-[#fefefc]" : "bg-transparent"
-            }`}
+            className={`${cardSurfaceClass} bg-transparent transition-colors ${motion} hover:bg-white`}
           >
             <button
               type="button"

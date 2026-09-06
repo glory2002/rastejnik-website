@@ -7,15 +7,17 @@ import { Reveal } from "./ui/Reveal";
 
 export function ContactCtaSection() {
   return (
-    <section id="contact" className="w-full bg-white py-12 sm:py-16 md:py-24">
+    <section id="contact" className="w-full bg-white py-section-quiet">
       <Container>
-        <Reveal className="flex flex-col items-center gap-5 text-center sm:gap-6">
-          <Title className="max-w-[600px] text-balance">
-            Имате въпрос към нас?
-          </Title>
-          <Body className="max-w-[500px]">
-            Пишете ни — с удоволствие ще отговорим.
-          </Body>
+        <Reveal className="flex flex-col items-center gap-cluster text-center">
+          <div className="flex flex-col items-center gap-stack">
+            <Title className="max-w-[600px] text-balance">
+              Имате въпрос към нас?
+            </Title>
+            <Body className="max-w-[500px]">
+              Пишете ни — с удоволствие ще отговорим.
+            </Body>
+          </div>
           <ContactButton />
         </Reveal>
       </Container>

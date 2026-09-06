@@ -47,7 +47,7 @@ export interface ParentalQuestionnaireResult {
   slug: string;
   title: string;
   icon: string;
-  iconClass?: string;
+  accent: QuestionnaireAccent;
   cell: DashboardCell;
 }
 
@@ -101,7 +101,7 @@ function parentalQuestionnaireResults(
     slug: category.slug,
     title: category.title,
     icon: category.icon,
-    iconClass: category.iconClass,
+    accent: category.accent,
     cell: cells[category.slug] ?? parentalPending(category.title),
   }));
 }

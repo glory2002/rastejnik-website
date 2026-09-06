@@ -3,10 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { TokenIcon } from "@/components/icons/TokenIcon";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLead } from "@/components/ui/SectionLead";
+import { cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Action, Body, Display, Heading } from "@/components/ui/Typography";
 import {
   questionnaireCategories,
@@ -52,14 +54,10 @@ export default function EarlyChildhoodCategoryPage() {
           </Action>
 
           <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8">
-            <Image
+            <TokenIcon
               src={parentCategory.icon}
-              alt=""
-              width={70}
-              height={70}
-              className={`h-[70px] w-auto shrink-0 object-contain sm:h-[88px] ${
-                parentCategory.iconClass ?? ""
-              }`}
+              accent={parentCategory.accent}
+              className="h-[70px] w-[110px] shrink-0 sm:h-[88px] sm:w-[138px]"
             />
             <div>
               <Display className="max-w-[800px]">
@@ -75,14 +73,14 @@ export default function EarlyChildhoodCategoryPage() {
 
       <section className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
-          <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-card sm:grid-cols-2 lg:grid-cols-4">
             {parentCategory.subcategories!.map((sub, index) => (
               <Reveal key={sub.slug} delay={index * 60}>
                 <Link
                   href={`/questionnaires/ranno-detsko-razvitie/${sub.slug}`}
-                  className={`group flex h-full flex-col gap-4 p-5 transition-colors duration-200 ease-out hover:bg-[#fefefc] sm:gap-5 sm:p-8 ${accentClasses[sub.accent]}`}
+                  className={`group ${cardSurfaceClass} flex h-full flex-col gap-cluster p-cluster transition-colors duration-200 ease-out hover:bg-white ${accentClasses[sub.accent]}`}
                 >
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-stack">
                     <Heading as="h2" size="sm" tone="inherit">
                       {sub.title}
                     </Heading>

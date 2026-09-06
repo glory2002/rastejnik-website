@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { GoalShevitsaField } from "@/components/GoalShevitsaField";
 import { ListShevitsa } from "@/components/icons/ListShevitsa";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLead } from "@/components/ui/SectionLead";
@@ -242,31 +243,37 @@ function TeamPanel() {
         </Container>
       </section>
 
-      <section className="w-full bg-primary py-12 sm:py-16 md:py-28">
-        <Container>
-          <Reveal className="max-w-[1000px]">
-            <Meta as="p" tone="white" className="opacity-70">
-              Нашата цел
-            </Meta>
-            <DisplayBanner
-              as="h2"
-              tone="white"
-              className="mt-4 text-balance sm:mt-5"
-            >
-              {aboutOurGoal[0]}
-            </DisplayBanner>
-            <Body
-              as="div"
-              tone="white"
-              className="mt-6 flex max-w-[640px] flex-col gap-4 opacity-90 sm:mt-8"
-            >
-              {aboutOurGoal.slice(1).map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </Body>
-          </Reveal>
-        </Container>
-      </section>
+      <div className="w-full bg-cream px-2.5 md:px-4 lg:px-8">
+        <section
+          id="nas-goal-section"
+          className="relative w-full overflow-hidden bg-primary py-12 sm:py-16 md:py-28"
+        >
+          <GoalShevitsaField />
+          <Container className="relative z-10">
+            <Reveal className="max-w-[950px]">
+              <Meta as="p" tone="white" className="opacity-70">
+                Нашата цел
+              </Meta>
+              <DisplayBanner
+                as="h2"
+                tone="white"
+                className="mt-4 text-balance sm:mt-5"
+              >
+                {aboutOurGoal[0]}
+              </DisplayBanner>
+              <Body
+                as="div"
+                tone="white"
+                className="mt-6 flex max-w-[720px] flex-col gap-4 opacity-90 sm:mt-8"
+              >
+                {aboutOurGoal.slice(1).map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </Body>
+            </Reveal>
+          </Container>
+        </section>
+      </div>
 
       <section className="relative w-full overflow-x-clip bg-cream py-12 sm:py-16 md:py-28">
         <Container>

@@ -28,6 +28,7 @@ import {
   BoyAvatar,
   GirlAvatar,
 } from "@/components/icons/ChildAvatarIcons";
+import { TokenIcon } from "@/components/icons/TokenIcon";
 import { Button } from "@/components/ui/Button";
 import {
   Action,
@@ -1000,12 +1001,11 @@ function ParentalQuestionnaireCard({
   return (
     <div className="flex h-full min-w-0 items-center gap-3 border-[1.5px] border-border-green bg-white px-3 py-3 sm:px-4 sm:py-4">
       <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
-        <Image
+        <TokenIcon
           src={item.icon}
-          alt=""
-          width={40}
-          height={40}
-          className={`h-10 w-10 ${item.iconClass ?? ""}`}
+          accent={item.accent}
+          position="center"
+          className="h-10 w-10"
         />
       </div>
       <Heading as="h2" size="sm" className="min-w-0 flex-1 text-balance">
@@ -1125,7 +1125,7 @@ export function DashboardView() {
           childId={activeChild.id}
         />
       </div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
+      <div className="grid grid-cols-1 gap-card md:grid-cols-3">
         {activeChild.parentalQuestionnaires.map((item) => (
           <ParentalQuestionnaireCard key={item.slug} item={item} />
         ))}

@@ -1,10 +1,8 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "./ui/Container";
 import { Reveal } from "./ui/Reveal";
+import { cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Action, Body, Display, Heading } from "@/components/ui/Typography";
 
 const features = [
@@ -16,6 +14,7 @@ const features = [
     description:
       "Кратки валидирани оценки на развитието - какво работи в реалния живот: ритуали, граници, разговори, ежедневни.",
     href: "/questionnaires",
+    cta: "Към въпросниците",
   },
   {
     icon: "/images/icon-rub-02.svg",
@@ -25,6 +24,7 @@ const features = [
     description:
       "Обновления на платформата, нови материали и теми около ранното детско развитие — накратко и ясно.",
     href: "/news",
+    cta: "Към новините",
   },
   {
     icon: "/images/icon-rub-04.svg",
@@ -34,6 +34,7 @@ const features = [
     description:
       "Кратки, практични идеи за сън, хранене, игра и връзка — на прост език за родителския ден.",
     href: "/tips",
+    cta: "Прочети",
   },
   {
     icon: "/images/icon-rub-03.svg",
@@ -43,103 +44,70 @@ const features = [
     description:
       "Препоръки към асоциации и отправни точки към практики и пространства, свързани с ранното детско развитие.",
     href: "/specialists",
+    cta: "Виж асоциации",
   },
-];
+] as const;
 
-// Calm, system-level motion: one shared rhythm for every moving part.
-const motion = "duration-200 ease-out motion-reduce:transition-none";
+const motion =
+  "duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none";
 
 export function FeaturesSection() {
-  const [hovered, setHovered] = useState<number | null>(null);
-
   return (
-    <section id="resources" className="w-full bg-cream py-12 sm:py-16 md:py-32">
+    <section id="resources" className="w-full bg-cream py-section">
       <Container>
-        <Reveal className="mb-10 max-w-[1000px] text-left sm:mb-12 md:mb-16">
+        <Reveal className="mb-block max-w-[1000px] text-left">
           <Display weight="medium" as="h2">
             Нашите рубрики
           </Display>
         </Reveal>
 
-        {/*
-          One system, four entry points: no borders between columns, just a
-          shared surface. Hovering a column redistributes space across the
-          whole row (28% / 24% / 24% / 24%) so the layout reads as one
-          interface quietly reorganizing itself.
-        */}
-        {/*
-          Fixed height at the row level: hovering redistributes column
-          widths, which reflows text into more or fewer lines. Locking the
-          row's height keeps that reflow contained instead of making the
-          whole section grow/shrink while interacting.
-        */}
         <Reveal
           delay={150}
-          className="flex flex-col overflow-hidden bg-transparent xl:h-[450px] xl:flex-row"
+          className="grid grid-cols-1 gap-card md:grid-cols-2 xl:grid-cols-4"
         >
-          {features.map((feature, index) => {
-            const isHovered = hovered === index;
-            const basis = hovered === null ? 25 : isHovered ? 28 : 24;
-            const ctaLabel =
-              feature.href === "/specialists"
-                ? "Виж асоциации"
-                : feature.href === "/tips"
-                  ? "Прочети"
-                  : feature.href === "/news"
-                    ? "Към новините"
-                    : feature.href === "/questionnaires"
-                      ? "Към въпросниците"
-                      : "Прочети";
+          {features.map((feature) => (
+            <Link
+              key={feature.title}
+              href={feature.href}
+              className={`group ${cardSurfaceClass} relative flex h-full flex-col gap-cluster bg-cream p-cluster outline-none transition-colors ${motion} hover:bg-white focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary`}
+            >
+              <div className="relative flex aspect-mark size-mark shrink-0 items-center justify-center overflow-visible">
+                <div
+                  className={`origin-center scale-mark transition-transform ${motion} group-hover:scale-mark-hover group-focus-visible:scale-mark-hover`}
+                >
+                  <Image
+                    src={feature.icon}
+                    alt=""
+                    width={feature.iconWidth}
+                    height={feature.iconHeight}
+                    className="size-mark object-contain object-center"
+                  />
+                </div>
+              </div>
 
-            return (
-              <Link
-                key={feature.title}
-                href={feature.href}
-                onMouseEnter={() => setHovered(index)}
-                onMouseLeave={() => setHovered(null)}
-                onFocus={() => setHovered(index)}
-                onBlur={() => setHovered(null)}
-                style={{ ["--col-basis" as string]: `${basis}%` }}
-                className={`group relative flex min-w-0 flex-col gap-6 overflow-hidden px-0 py-8 transition-[flex-basis,background-color] sm:gap-8 sm:p-8 md:p-10 xl:grow-0 xl:shrink-0 xl:basis-[var(--col-basis)] ${motion} ${
-                  isHovered ? "bg-[#fefefc]" : "bg-transparent"
-                }`}
-              >
-                <div className="relative z-10 flex h-[70px] w-[70px] shrink-0 items-center justify-center">
-                  <div
-                    className={`origin-center scale-[1.014] transition-transform ${motion} group-hover:scale-[1.38]`}
-                  >
-                    <Image
-                      src={feature.icon}
-                      alt=""
-                      width={feature.iconWidth}
-                      height={feature.iconHeight}
-                      className="h-[70px] w-auto object-contain"
-                    />
-                  </div>
+              <div className="flex min-h-0 flex-1 flex-col">
+                <div className="flex flex-col gap-stack">
+                  <Heading size="lg" className="text-balance">
+                    {feature.title}
+                  </Heading>
+                  <Body tone="muted">{feature.description}</Body>
                 </div>
 
-                <div className="relative z-10 flex flex-1 flex-col gap-6">
-                  <div className="flex flex-col gap-2">
-                    <Heading size="lg">{feature.title}</Heading>
-                    <Body>{feature.description}</Body>
-                  </div>
-
-                  <Action
-                    className={`mt-auto inline-flex w-fit items-center gap-1.5 transition-opacity ${motion} group-hover:opacity-80`}
-                  >
-                    {ctaLabel}
-                    <Image
-                      src="/images/arrow-link.svg"
-                      alt=""
-                      width={14}
-                      height={22}
-                      className={`shrink-0 transition-transform ${motion} group-hover:translate-x-1`}
-                    />
-                  </Action>
-                </div>
-              </Link>
-            );
-          })}
+                <Action
+                  className={`mt-auto inline-flex w-fit items-center gap-1.5 pt-cluster transition-opacity ${motion} group-hover:opacity-80 group-focus-visible:opacity-80`}
+                >
+                  {feature.cta}
+                  <Image
+                    src="/images/arrow-link.svg"
+                    alt=""
+                    width={14}
+                    height={22}
+                    className={`shrink-0 transition-transform ${motion} group-hover:translate-x-1 group-focus-visible:translate-x-1`}
+                  />
+                </Action>
+              </div>
+            </Link>
+          ))}
         </Reveal>
       </Container>
     </section>

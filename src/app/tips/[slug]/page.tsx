@@ -148,7 +148,7 @@ export default async function TipArticlePage({ params }: PageProps) {
         <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
           <Container>
             <Title>Още материали</Title>
-            <ul className="mt-8 grid gap-5 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
+            <ul className="mt-8 grid gap-card sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((item, index) => (
                 <li key={item.slug}>
                   <TipCard
