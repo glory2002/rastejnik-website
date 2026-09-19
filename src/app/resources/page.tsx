@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { FeaturesSection } from "@/components/FeaturesSection";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Container } from "@/components/ui/Container";
+import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Action, Body, Display, Heading, Meta } from "@/components/ui/Typography";
 import { resources, type ResourceItem } from "@/data/resources";
 
@@ -50,7 +50,7 @@ function ResourceCard({ item }: { item: ResourceItem }) {
       href={item.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex h-full flex-col"
+      className={`group ${cardSurfaceClass} flex h-full flex-col`}
     >
       <div
         className={`relative aspect-[16/10] overflow-hidden ${
@@ -80,7 +80,7 @@ function ResourceCard({ item }: { item: ResourceItem }) {
       <div className="flex flex-1 flex-col gap-3 pt-5">
         <Meta>{isVideo ? "Видео" : "PDF"}</Meta>
         <Heading>{item.title}</Heading>
-        <p className="text-base leading-[1.35] text-primary-dark">
+        <p className="text-card-body text-primary-dark">
           {item.excerpt}
         </p>
         <Action className="mt-auto inline-flex items-center gap-1.5 pt-4 transition-opacity group-hover:opacity-80">
@@ -105,17 +105,6 @@ export default function ResourcesPage() {
 
       <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
-          <nav
-            aria-label="Пътека"
-            className="mb-5 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60 sm:mb-6"
-          >
-            <Link href="/" className="transition-opacity hover:opacity-80">
-              Начало
-            </Link>
-            <span aria-hidden>/</span>
-            <span className="text-primary">Ресурси</span>
-          </nav>
-
           <div>
             <Display className="max-w-[800px]">Ресурси</Display>
             <Body className="mt-4 max-w-[620px]">
@@ -128,7 +117,7 @@ export default function ResourcesPage() {
 
       <section className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
-          <ul className="grid gap-card sm:grid-cols-2 lg:grid-cols-3">
+          <ul className={`grid sm:grid-cols-2 lg:grid-cols-3 ${cardGapClass}`}>
             {resources.map((item) => (
               <li key={item.id}>
                 <ResourceCard item={item} />

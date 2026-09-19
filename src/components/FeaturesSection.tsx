@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Container } from "./ui/Container";
 import { Reveal } from "./ui/Reveal";
-import { cardSurfaceClass } from "@/components/ui/cardSurface";
+import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Action, Body, Display, Heading } from "@/components/ui/Typography";
 
 const features = [
@@ -63,7 +63,7 @@ export function FeaturesSection() {
 
         <Reveal
           delay={150}
-          className="grid grid-cols-1 gap-card md:grid-cols-2 xl:grid-cols-4"
+          className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 ${cardGapClass}`}
         >
           {features.map((feature) => (
             <Link
@@ -90,7 +90,13 @@ export function FeaturesSection() {
                   <Heading size="lg" className="text-balance">
                     {feature.title}
                   </Heading>
-                  <Body tone="muted">{feature.description}</Body>
+                  <Body
+                    size="card"
+                    tone="inherit"
+                    className={`feature-copy text-primary-dark/60 transition-colors ${motion}`}
+                  >
+                    {feature.description}
+                  </Body>
                 </div>
 
                 <Action

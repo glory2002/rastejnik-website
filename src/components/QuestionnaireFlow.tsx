@@ -15,8 +15,11 @@ import { ShevitsaAssembleIcon } from "@/components/icons/ShevitsaAssembleIcon";
 import { TrafficLightIcon } from "@/components/icons/TrafficLightIcon";
 import { FaqToggleIcon } from "@/components/FaqList";
 import { Button } from "@/components/ui/Button";
+import { NumberInput } from "@/components/ui/NumberInput";
+import { FormSelect } from "@/components/ui/Select";
 import { Container } from "@/components/ui/Container";
 import {
+  Action,
   Body,
   Heading,
   Label,
@@ -31,6 +34,7 @@ const inputClassName =
 function FormField({
   label,
   className = "",
+  type,
   ...props
 }: { label: string; className?: string } & Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -39,40 +43,15 @@ function FormField({
   return (
     <label className={`flex flex-col gap-2 ${className}`}>
       <Label>{label}</Label>
-      <input {...props} className={inputClassName} />
+      {type === "number" ? (
+        <NumberInput {...props} />
+      ) : (
+        <input type={type} {...props} className={inputClassName} />
+      )}
     </label>
   );
 }
 
-function FormSelect({
-  label,
-  options,
-  className = "",
-  ...props
-}: {
-  label: string;
-  options: string[];
-  className?: string;
-} & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "className">) {
-  return (
-    <label className={`flex flex-col gap-2 ${className}`}>
-      <Label>{label}</Label>
-      <select
-        {...props}
-        className="w-full border-[1.5px] border-border-green bg-white py-3 pl-4 pr-11 text-base text-primary-dark outline-none transition-colors focus:border-primary"
-      >
-        <option value="" disabled hidden>
-          Изберете&hellip;
-        </option>
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
-          </option>
-        ))}
-      </select>
-    </label>
-  );
-}
 
 function OnboardStepShell({
   step,
@@ -256,7 +235,7 @@ export function QuestionnaireFlow({
   const [page, setPage] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [stage, setStage] = useState<Stage>("checking");
-  const [openDomain, setOpenDomain] = useState<number | null>(null);
+  const [openDomains, setOpenDomains] = useState<number[]>([]);
   const [registerData, setRegisterData] = useState({ email: "", password: "" });
   const [parentData, setParentData] = useState<ParentData>(emptyParentData);
   const [childData, setChildData] = useState<ChildData>(emptyChildData);
@@ -296,6 +275,10 @@ export function QuestionnaireFlow({
     return () => {
       document.body.style.overflow = overflow;
     };
+  }, [stage]);
+
+  useEffect(() => {
+    if (stage === "complete") setOpenDomains([]);
   }, [stage]);
 
   const totalPages = Math.ceil(questions.length / pageSize);
@@ -431,7 +414,7 @@ export function QuestionnaireFlow({
             label="Пол"
             options={["Жена", "Мъж", "Друго"]}
             value={parentData.gender}
-            onChange={(e) => updateParent("gender", e.target.value)}
+            onChange={(value) => updateParent("gender", value)}
           />
           <FormField
             label="Етнос"
@@ -447,7 +430,7 @@ export function QuestionnaireFlow({
             label="Вие сте"
             options={["Родител", "Приемен родител", "Настойник"]}
             value={parentData.role}
-            onChange={(e) => updateParent("role", e.target.value)}
+            onChange={(value) => updateParent("role", value)}
           />
           <FormField
             label="Населено място"
@@ -506,7 +489,7 @@ export function QuestionnaireFlow({
             label="Пол"
             options={["Момче", "Момиче"]}
             value={childData.gender}
-            onChange={(e) => updateChild("gender", e.target.value)}
+            onChange={(value) => updateChild("gender", value)}
           />
           <FormField
             label="Кое поред дете"
@@ -519,14 +502,14 @@ export function QuestionnaireFlow({
             label="Родено на термин"
             options={["Да", "Не"]}
             value={childData.fullTerm}
-            onChange={(e) => updateChild("fullTerm", e.target.value)}
+            onChange={(value) => updateChild("fullTerm", value)}
           />
           <FormSelect
             label="Посещава ли детско заведение"
             options={["Да", "Не", "Понякога"]}
             className="sm:col-span-2"
             value={childData.childcare}
-            onChange={(e) => updateChild("childcare", e.target.value)}
+            onChange={(value) => updateChild("childcare", value)}
           />
         </div>
 
@@ -579,7 +562,7 @@ export function QuestionnaireFlow({
             <div className="mt-10 flex flex-col gap-10 sm:mt-16 sm:gap-16">
               {domainResults.map((result, index) => {
                 const tierColor = domainTierColor(result.percentage);
-                const isOpen = openDomain === index;
+                const isOpen = openDomains.includes(index);
                 return (
                   <div key={result.domain} className="flex flex-col">
                     <div className="mb-1.5 flex items-baseline justify-between gap-3">
@@ -611,12 +594,18 @@ export function QuestionnaireFlow({
 
                     <button
                       type="button"
-                      onClick={() => setOpenDomain(isOpen ? null : index)}
+                      onClick={() =>
+                        setOpenDomains((current) =>
+                          isOpen
+                            ? current.filter((item) => item !== index)
+                            : [...current, index],
+                        )
+                      }
                       aria-expanded={isOpen}
                       className="mt-2.5 flex items-center gap-2.5 self-start transition-opacity hover:opacity-70"
                     >
-                      <FaqToggleIcon isOpen={isOpen} />
-                      <Meta as="span">Насоки</Meta>
+                      <FaqToggleIcon isOpen={isOpen} className="mt-0" />
+                      <Action as="span">Насоки</Action>
                     </button>
 
                     <div
@@ -814,11 +803,7 @@ export function QuestionnaireFlow({
                   type="button"
                   onClick={handleBack}
                   disabled={page === 0}
-                  className={`inline-flex items-center gap-2 text-[13px] font-bold uppercase transition-opacity hover:opacity-70 disabled:pointer-events-none disabled:opacity-0 ${
-                    isLiteracy
-                      ? "rounded-full bg-primary-light-solid px-5 py-3 text-primary-dark"
-                      : "text-primary-dark"
-                  }`}
+                  className="inline-flex items-center gap-2 text-[13px] font-bold uppercase text-primary-dark transition-opacity hover:opacity-70 disabled:pointer-events-none disabled:opacity-0"
                 >
                   {isLiteracy ? (
                     <>

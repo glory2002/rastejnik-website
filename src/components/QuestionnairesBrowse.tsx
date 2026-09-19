@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { TokenIcon } from "@/components/icons/TokenIcon";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
-import { cardSurfaceClass } from "@/components/ui/cardSurface";
+import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Body, Heading, Meta } from "@/components/ui/Typography";
 import type {
   QuestionnaireAccent,
@@ -145,7 +145,7 @@ export function QuestionnairesBrowse({
                     <Heading as="h2" size="lg">
                       {category.title}
                     </Heading>
-                    <Body className="max-w-[560px]">
+                    <Body size="card" className="max-w-[560px]">
                       {category.description}
                     </Body>
                   </div>
@@ -218,10 +218,12 @@ export function QuestionnairesBrowse({
             <Heading as="h2" size="lg">
               {category.title}
             </Heading>
-            <Body className="max-w-[560px]">{category.description}</Body>
+            <Body size="card" className="max-w-[560px]">
+              {category.description}
+            </Body>
           </div>
 
-          <div className="mt-2 grid grid-cols-1 gap-card sm:grid-cols-2 lg:grid-cols-4">
+          <div className={`mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ${cardGapClass}`}>
             {category.subcategories!.map((sub) => (
               <Link
                 key={sub.slug}
@@ -232,7 +234,9 @@ export function QuestionnairesBrowse({
                   <Heading as="h3" size="sm" tone="inherit">
                     {sub.title}
                   </Heading>
-                  <Body as="span">{sub.description}</Body>
+                  <Body as="span" size="card">
+                    {sub.description}
+                  </Body>
                 </div>
                 <Button
                   className="mt-auto w-fit"

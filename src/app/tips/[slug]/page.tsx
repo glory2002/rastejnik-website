@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { TipCard } from "@/components/TipCard";
 import { Container } from "@/components/ui/Container";
+import { cardGapClass } from "@/components/ui/cardSurface";
 import {
   Action,
   Body,
@@ -16,6 +17,7 @@ import {
 import {
   getRelatedTips,
   getTipBySlug,
+  getTipCategory,
   tips,
   type TipBlock,
 } from "@/data/tips";
@@ -87,30 +89,34 @@ export default async function TipArticlePage({ params }: PageProps) {
   if (!tip) notFound();
 
   const related = getRelatedTips(tip.slug);
+  const category = getTipCategory(tip.categorySlug);
 
   return (
     <main>
       <Header variant="framed" />
 
       <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
-        <Container className="flex flex-col items-center text-center">
-          <nav
-            aria-label="Пътека"
-            className="mb-6 flex flex-wrap items-center justify-center gap-2 text-label font-medium text-primary-dark/60 sm:mb-8"
+        <Container>
+          <Action
+            as={Link}
+            href={category ? `/tips#${category.slug}` : "/tips"}
+            className="mb-8 inline-flex items-center gap-1.5 transition-opacity hover:opacity-80 sm:mb-10"
           >
-            <Link href="/" className="transition-opacity hover:opacity-80">
-              Начало
-            </Link>
-            <span aria-hidden>/</span>
-            <Link
-              href="/tips"
-              className="transition-opacity hover:opacity-80"
-            >
-              Полезна информация
-            </Link>
-          </nav>
+            <Image
+              src="/images/arrow-link.svg"
+              alt=""
+              width={12}
+              height={19}
+              className="shrink-0 rotate-180"
+            />
+            {category
+              ? `Назад към ${category.title}`
+              : "Назад към полезната информация"}
+          </Action>
 
-          <Display className="max-w-[820px] text-balance">{tip.title}</Display>
+          <div className="flex flex-col items-center text-center">
+            <Display className="max-w-[820px] text-balance">{tip.title}</Display>
+          </div>
         </Container>
       </section>
 
@@ -127,7 +133,7 @@ export default async function TipArticlePage({ params }: PageProps) {
 
             <div className="mt-8 border-t border-border-green pt-6 sm:mt-10 sm:pt-8">
               <Link
-                href="/tips"
+                href={category ? `/tips#${category.slug}` : "/tips"}
                 className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
               >
                 <Image
@@ -137,7 +143,11 @@ export default async function TipArticlePage({ params }: PageProps) {
                   height={22}
                   className="shrink-0 rotate-180"
                 />
-                <Action>Към полезната информация</Action>
+                <Action>
+                  {category
+                    ? `Назад към ${category.title}`
+                    : "Към полезната информация"}
+                </Action>
               </Link>
             </div>
           </div>
@@ -148,7 +158,7 @@ export default async function TipArticlePage({ params }: PageProps) {
         <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
           <Container>
             <Title>Още материали</Title>
-            <ul className="mt-8 grid gap-card sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className={`mt-8 grid sm:mt-10 sm:grid-cols-2 lg:grid-cols-3 ${cardGapClass}`}>
               {related.map((item, index) => (
                 <li key={item.slug}>
                   <TipCard

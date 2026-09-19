@@ -1,31 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ShevitsaMark } from "@/components/icons/ShevitsaMark";
 import { cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Action, Heading, Meta } from "@/components/ui/Typography";
 
-/**
- * Square shevitsa in the corner. Pair 0 = gold/blue, pair 1 = green/pink.
- * Four quadrants sit apart at rest and click together on card hover.
- */
-function ShevitsaMark({ pair }: { pair: 0 | 1 }) {
-  return (
-    <span
-      aria-hidden
-      className={`news-shevitsa pointer-events-none absolute top-6 right-6 z-[2] sm:top-8 sm:right-8${
-        pair === 1 ? " news-shevitsa--alt" : ""
-      }`}
-    >
-      <span className="news-shevitsa__piece news-shevitsa__piece--tl" />
-      <span className="news-shevitsa__piece news-shevitsa__piece--tr" />
-      <span className="news-shevitsa__piece news-shevitsa__piece--bl" />
-      <span className="news-shevitsa__piece news-shevitsa__piece--br" />
-    </span>
-  );
-}
+const cardWashes = [
+  "bg-primary-light-solid",
+  "bg-accent-pink-solid",
+  "bg-accent-pink-solid",
+  "bg-cream",
+  "bg-primary-light-solid",
+  "bg-cream",
+  "bg-primary-light-solid",
+  "bg-accent-pink-solid",
+] as const;
 
 /**
  * Text-led news card — no cover image.
- * Cream at rest, white on hover. Corner shevitsa assembles on hover.
+ * Green / pink / cream washes at rest, white on hover.
+ * Titles carry the hierarchy; body stays quieter. Flat, no radius.
  */
 export function NewsCard({
   href,
@@ -33,31 +26,47 @@ export function NewsCard({
   title,
   excerpt,
   index = 0,
+  featured = false,
 }: {
   href: string;
   date: string;
   title: string;
   excerpt?: string;
   index?: number;
+  featured?: boolean;
 }) {
-  const pair = (index % 2 === 0 ? 0 : 1) as 0 | 1;
+  const wash = cardWashes[index % cardWashes.length];
 
   return (
     <Link
       href={href}
-      className={`news-envelope group ${cardSurfaceClass} relative z-0 flex h-full flex-col overflow-visible bg-cream p-6 pr-[4.75rem] transition-colors duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] hover:z-10 hover:bg-white motion-reduce:transition-none sm:p-8 sm:pr-[5.5rem]`}
+      className={`news-envelope group ${cardSurfaceClass} relative z-0 flex h-full flex-col overflow-visible ${wash} transition-colors duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] hover:z-10 hover:bg-white motion-reduce:transition-none${
+        featured ? " news-envelope--featured" : ""
+      }`}
     >
-      <ShevitsaMark pair={pair} />
-      <Meta>{date}</Meta>
-      <Heading as="h2" className="mt-3 text-balance">
+      <ShevitsaMark index={index} featured={featured} />
+      <Meta tone="muted">{date}</Meta>
+      <Heading
+        as="h2"
+        size={featured ? "featured" : "sm"}
+        className={`text-balance ${featured ? "mt-card-meta-featured" : "mt-card-meta"}`}
+      >
         {title}
       </Heading>
       {excerpt ? (
-        <p className="mt-3 text-base leading-[1.35] text-primary-dark">
+        <p
+          className={`feature-copy text-card-body text-primary ${
+            featured ? "mt-card-copy-featured" : "mt-card-copy"
+          }`}
+        >
           {excerpt}
         </p>
       ) : null}
-      <div className="mt-auto flex items-center pt-6">
+      <div
+        className={`mt-auto flex items-center ${
+          featured ? "pt-card-action-featured" : "pt-card-action"
+        }`}
+      >
         <Action className="inline-flex items-center gap-1.5 transition-opacity group-hover:opacity-80">
           Прочети
           <Image

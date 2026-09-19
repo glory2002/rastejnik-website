@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { ProfileView } from "@/components/ProfileView";
@@ -18,17 +17,6 @@ export default function ProfilePage() {
 
       <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
-          <nav
-            aria-label="Пътека"
-            className="mb-5 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60 sm:mb-6"
-          >
-            <Link href="/" className="transition-opacity hover:opacity-80">
-              Начало
-            </Link>
-            <span aria-hidden>/</span>
-            <span className="text-primary">Профил</span>
-          </nav>
-
           <Display className="max-w-[700px]">Профил</Display>
           <Body className="mt-5 max-w-[560px] sm:mt-6">
             Данните за родителя — може да ги обновите по всяко време. Децата се

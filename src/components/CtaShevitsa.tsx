@@ -14,8 +14,9 @@ function clamp01(value: number) {
 /**
  * CTA motif lives inside the green band so overflow-hidden crops it
  * to that box — nothing paints into the cream gutters.
- * After the pieces assemble, the whole motif tracks scroll like the
- * tagline embroidery (gentle up/down + scale).
+ * Pieces assemble while the band is on screen and scatter again when
+ * you scroll past it. After they lock, the whole motif tracks scroll
+ * like the tagline embroidery (gentle up/down + scale).
  */
 export function CtaShevitsa() {
   const ref = useRef<HTMLDivElement>(null);
@@ -31,12 +32,27 @@ export function CtaShevitsa() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
+    field.querySelectorAll<HTMLElement>(".shevitsa-piece").forEach((piece) => {
+      const delay = piece.style.animationDelay;
+      if (delay) piece.style.setProperty("--piece-delay", delay);
+    });
+
+    if (reduceMotion) {
+      field.classList.add("is-assembled");
+      return;
+    }
+
     let assembled = false;
     let frame = 0;
 
+    function sectionInView() {
+      const rect = band.getBoundingClientRect();
+      const vh = window.innerHeight;
+      return rect.top < vh * 0.72 && rect.bottom > vh * 0.28;
+    }
+
     function applyParallax() {
-      frame = 0;
-      if (!assembled || reduceMotion || !band || !motifEl) return;
+      if (!assembled || !band || !motifEl) return;
 
       const sectionRect = band.getBoundingClientRect();
       const travelDistance = window.innerHeight + sectionRect.height;
@@ -48,28 +64,29 @@ export function CtaShevitsa() {
       motifEl.style.transform = `translateY(${parallaxY}px) scale(${scale})`;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        field.classList.add("is-assembled");
-        assembled = true;
-        observer.disconnect();
-        applyParallax();
-      },
-      { threshold: 0.22, rootMargin: "0px 0px -8% 0px" },
-    );
+    function update() {
+      frame = 0;
+      const visible = sectionInView();
+      if (visible === assembled) {
+        if (visible) applyParallax();
+        return;
+      }
 
-    observer.observe(band);
-
-    function onScroll() {
-      if (frame || !assembled) return;
-      frame = requestAnimationFrame(applyParallax);
+      assembled = visible;
+      field.classList.toggle("is-assembled", visible);
+      if (visible) applyParallax();
+      else motifEl.style.transform = "";
     }
 
+    function onScroll() {
+      if (frame) return;
+      frame = requestAnimationFrame(update);
+    }
+
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
-      observer.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       if (frame) cancelAnimationFrame(frame);

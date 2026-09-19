@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ContactTrigger } from "@/components/ContactModal";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -19,17 +18,6 @@ export default function PrivacyPage() {
 
       <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
-          <nav
-            aria-label="Пътека"
-            className="mb-5 flex flex-wrap items-center gap-2 text-label font-medium text-primary-dark/60 sm:mb-6"
-          >
-            <Link href="/" className="transition-opacity hover:opacity-80">
-              Начало
-            </Link>
-            <span aria-hidden>/</span>
-            <span className="text-primary">Поверителност</span>
-          </nav>
-
           <Display className="max-w-[800px]">Поверителност</Display>
           <Body className="mt-5 max-w-[620px] sm:mt-6">
             Тук ще опишем какви данни събираме, защо и как ги пазим. Текстът е

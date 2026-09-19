@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, ElementType } from "react";
 
-type Tone = "primary" | "dark" | "muted" | "white" | "inherit";
+type Tone = "primary" | "dark" | "muted" | "copy" | "white" | "inherit";
 
 type PolymorphicProps<T extends ElementType> = {
   as?: T;
@@ -16,6 +16,7 @@ const toneClass: Record<Tone, string> = {
   primary: "text-primary",
   dark: "text-primary-dark",
   muted: "text-primary-dark/60",
+  copy: "text-copy",
   white: "text-white",
   inherit: "text-inherit",
 };
@@ -97,12 +98,13 @@ export function Title<T extends ElementType = "h2">({
   );
 }
 
-type HeadingSize = "sm" | "md" | "lg";
+type HeadingSize = "sm" | "md" | "lg" | "featured";
 
 const headingSizeClass: Record<HeadingSize, string> = {
   sm: "text-heading-sm md:text-heading-sm-md",
   md: "text-heading md:text-heading-md",
   lg: "text-heading-lg md:text-heading-lg-md",
+  featured: "text-card-featured",
 };
 
 /** Card / subsection heading (H3 scale). */
@@ -128,7 +130,13 @@ export function Heading<T extends ElementType = "h3">({
   );
 }
 
-type BodySize = "default" | "relaxed";
+type BodySize = "default" | "relaxed" | "card";
+
+const bodySizeClass: Record<BodySize, string> = {
+  default: "text-body",
+  relaxed: "text-body-relaxed",
+  card: "text-card-body",
+};
 
 /** Body copy. */
 export function Body<T extends ElementType = "p">({
@@ -141,11 +149,7 @@ export function Body<T extends ElementType = "p">({
   const Tag = as ?? "p";
   return (
     <Tag
-      className={cx(
-        size === "relaxed" ? "text-body-relaxed" : "text-body",
-        toneClass[tone],
-        className,
-      )}
+      className={cx(bodySizeClass[size], toneClass[tone], className)}
       {...props}
     />
   );

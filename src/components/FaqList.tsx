@@ -9,7 +9,13 @@ const motion = "duration-200 ease-out motion-reduce:transition-none";
 
 /** Shared brand mark used as the accordion state indicator — green & tilted
  *  when collapsed, upright & amber when the answer is revealed. */
-export function FaqToggleIcon({ isOpen }: { isOpen: boolean }) {
+export function FaqToggleIcon({
+  isOpen,
+  className = "",
+}: {
+  isOpen: boolean;
+  className?: string;
+}) {
   return (
     <svg
       viewBox="0 0 51.4928 38.8664"
@@ -18,7 +24,7 @@ export function FaqToggleIcon({ isOpen }: { isOpen: boolean }) {
       aria-hidden
       className={`mt-1 h-4 w-[22px] shrink-0 transition-[transform,color] ${motion} md:h-5 md:w-[26px] ${
         isOpen ? "-rotate-90 text-secondary" : "-rotate-45 text-primary"
-      }`}
+      } ${className}`}
     >
       <path
         d="M51.4928 12.9555L38.5586 0L25.8684 12.9555L12.9342 0L0 12.9555L25.8684 38.8664L51.4928 12.9555Z"

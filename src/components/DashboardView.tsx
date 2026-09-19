@@ -28,8 +28,12 @@ import {
   BoyAvatar,
   GirlAvatar,
 } from "@/components/icons/ChildAvatarIcons";
+import { PlusMarkIcon } from "@/components/icons/PlusMarkIcon";
 import { TokenIcon } from "@/components/icons/TokenIcon";
 import { Button } from "@/components/ui/Button";
+import { NumberInput } from "@/components/ui/NumberInput";
+import { Select } from "@/components/ui/Select";
+import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
 import {
   Action,
   Body,
@@ -40,9 +44,6 @@ import {
 
 const formInputClassName =
   "w-full border-[1.5px] border-border-green bg-white px-4 py-3 text-base text-primary-dark outline-none transition-colors focus:border-primary";
-
-const formSelectClassName =
-  "w-full border-[1.5px] border-border-green py-3 pl-4 pr-11 text-base text-primary-dark outline-none transition-colors focus:border-primary";
 
 const ageAccentTabActive: Record<QuestionnaireAccent, string> = {
   pink: "border-accent-pink bg-accent-pink text-white",
@@ -113,9 +114,9 @@ function GuidancePopup({
           type="button"
           onClick={onClose}
           aria-label="Затвори"
-          className="absolute right-4 top-4 text-[22px] leading-none text-primary-dark/50 transition-opacity hover:opacity-70"
+          className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center text-primary transition-opacity hover:opacity-70"
         >
-          ×
+          <PlusMarkIcon className="h-5 w-5 rotate-45" />
         </button>
 
         <div className="flex flex-col gap-4 pr-6">
@@ -216,9 +217,7 @@ function ChildTabs({
             <button
               type="button"
               onClick={() => onSelect(child.id)}
-              className={`group flex items-center gap-3 py-2.5 pl-3.5 ${
-                isActive ? "pr-2" : "pr-6"
-              }`}
+              className="group flex items-center gap-2.5 py-2.5 pl-3 pr-1.5"
             >
               <Avatar className="baby-avatar-blink h-12 w-12 shrink-0" />
               <span className="flex flex-col items-start leading-tight">
@@ -230,16 +229,18 @@ function ChildTabs({
                 </Action>
               </span>
             </button>
-            {isActive && (
-              <button
-                type="button"
-                onClick={onEditChild}
-                aria-label={`Редактирай ${child.name}`}
-                className="mr-2.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-opacity hover:opacity-70"
-              >
-                <PencilIcon className="h-[18px] w-[18px]" />
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={onEditChild}
+              tabIndex={isActive ? 0 : -1}
+              aria-hidden={!isActive}
+              aria-label={`Редактирай ${child.name}`}
+              className={`mr-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-opacity hover:opacity-70 ${
+                isActive ? "opacity-100" : "invisible pointer-events-none"
+              }`}
+            >
+              <PencilIcon className="h-[18px] w-[18px]" />
+            </button>
           </div>
         );
       })}
@@ -327,9 +328,9 @@ function ChildFormModal({
           type="button"
           onClick={onClose}
           aria-label="Затвори"
-          className="absolute right-4 top-4 text-[22px] leading-none text-primary-dark/50 transition-opacity hover:opacity-70"
+          className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center text-primary transition-opacity hover:opacity-70"
         >
-          ×
+          <PlusMarkIcon className="h-5 w-5 rotate-45" />
         </button>
 
         <div className="flex flex-col gap-6 pr-4">
@@ -366,57 +367,36 @@ function ChildFormModal({
             </label>
             <label className="flex flex-col gap-2">
               <Label>Пол</Label>
-              <select
+              <Select
                 required
                 value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                className={formSelectClassName}
-              >
-                <option value="" disabled hidden>
-                  Изберете&hellip;
-                </option>
-                <option value="Момче">Момче</option>
-                <option value="Момиче">Момиче</option>
-              </select>
+                onChange={setGender}
+                options={["Момче", "Момиче"]}
+              />
             </label>
             <label className="flex flex-col gap-2">
               <Label>Кое поред дете</Label>
-              <input
-                type="number"
+              <NumberInput
                 min={1}
                 value={birthOrder}
                 onChange={(e) => setBirthOrder(e.target.value)}
-                className={formInputClassName}
               />
             </label>
             <label className="flex flex-col gap-2">
               <Label>Родено на термин</Label>
-              <select
+              <Select
                 value={fullTerm}
-                onChange={(e) => setFullTerm(e.target.value)}
-                className={formSelectClassName}
-              >
-                <option value="" disabled hidden>
-                  Изберете&hellip;
-                </option>
-                <option value="Да">Да</option>
-                <option value="Не">Не</option>
-              </select>
+                onChange={setFullTerm}
+                options={["Да", "Не"]}
+              />
             </label>
             <label className="flex flex-col gap-2 sm:col-span-2">
               <Label>Посещава ли детско заведение</Label>
-              <select
+              <Select
                 value={childcare}
-                onChange={(e) => setChildcare(e.target.value)}
-                className={formSelectClassName}
-              >
-                <option value="" disabled hidden>
-                  Изберете&hellip;
-                </option>
-                <option value="Да">Да</option>
-                <option value="Не">Не</option>
-                <option value="Понякога">Понякога</option>
-              </select>
+                onChange={setChildcare}
+                options={["Да", "Не", "Понякога"]}
+              />
             </label>
           </div>
 
@@ -456,7 +436,7 @@ function StatusCircle({
   intervalLabel?: string;
   onOpenGuidance?: (payload: GuidancePayload) => void;
 }) {
-  const box = "inline-flex min-w-[64px] px-3.5 py-2";
+  const box = "inline-flex min-w-[64px] px-3.5 py-2.5";
 
   if (cell.kind === "na") {
     return (
@@ -820,7 +800,7 @@ function ResultsTable({
                 // many months still overflow and scroll on narrower viewports.
                 minWidth: LABEL_COLUMN_WIDTH + columnCount * 120,
                 gridTemplateColumns: `${LABEL_COLUMN_WIDTH}px repeat(${columnCount}, minmax(120px, 1fr))`,
-                gridTemplateRows: `auto repeat(${domainCount}, auto)`,
+                gridTemplateRows: `auto repeat(${domainCount}, minmax(4.75rem, auto))`,
               }}
             >
               <div
@@ -834,7 +814,7 @@ function ResultsTable({
               {table.columns.map((label, columnIndex) => (
                 <div
                   key={label}
-                  className="bg-primary-light-solid px-3 py-4 text-center text-[15px] font-bold text-primary"
+                  className="bg-primary-light-solid px-3 py-5 text-center text-[15px] font-bold text-primary"
                   style={{ gridRow: 1, gridColumn: columnIndex + 2 }}
                 >
                   {label}
@@ -844,7 +824,7 @@ function ResultsTable({
               {table.domains.map((domain, domainIndex) => (
                 <div
                   key={`${domain}-label`}
-                  className={`sticky left-0 z-10 flex items-center bg-white px-4 py-2.5 text-left text-[16px] font-bold leading-[1.3] text-primary-dark ${
+                  className={`sticky left-0 z-10 flex items-center bg-white px-4 py-4 text-left text-[16px] font-bold leading-[1.3] text-primary-dark ${
                     domainIndex > 0 ? "border-t border-border-green/30" : ""
                   }`}
                   style={{
@@ -876,7 +856,7 @@ function ResultsTable({
                       className={
                         isUniformAnchor
                           ? "flex self-stretch items-stretch justify-center px-1.5 py-1.5"
-                          : `flex items-center justify-center px-2 py-2.5 ${
+                          : `flex items-center justify-center px-2 py-4 ${
                               domainIndex > 0
                                 ? "border-t border-border-green/30"
                                 : ""
@@ -950,18 +930,23 @@ function ResultsTable({
           )}
         </div>
 
-        {showScrollbar && (
-          <div
-            ref={trackRef}
-            role="scrollbar"
-            aria-orientation="horizontal"
-            aria-controls="results-table-scroll"
-            aria-valuenow={Math.round(scrollMetrics.scrollLeft)}
-            aria-valuemin={0}
-            aria-valuemax={Math.round(maxScroll)}
-            className="relative h-2 w-full cursor-pointer bg-primary-light-solid"
-            onPointerDown={onTrackPointerDown}
-          >
+        <div
+          ref={trackRef}
+          role={showScrollbar ? "scrollbar" : undefined}
+          aria-hidden={showScrollbar ? undefined : true}
+          aria-orientation={showScrollbar ? "horizontal" : undefined}
+          aria-controls={showScrollbar ? "results-table-scroll" : undefined}
+          aria-valuenow={showScrollbar ? Math.round(scrollMetrics.scrollLeft) : undefined}
+          aria-valuemin={showScrollbar ? 0 : undefined}
+          aria-valuemax={showScrollbar ? Math.round(maxScroll) : undefined}
+          className={`relative h-2 w-full ${
+            showScrollbar
+              ? "cursor-pointer bg-primary-light-solid"
+              : "pointer-events-none bg-transparent"
+          }`}
+          onPointerDown={showScrollbar ? onTrackPointerDown : undefined}
+        >
+          {showScrollbar && (
             <div
               className="absolute top-0 h-full cursor-grab active:cursor-grabbing"
               style={{
@@ -972,8 +957,8 @@ function ResultsTable({
               }}
               onPointerDown={onThumbPointerDown}
             />
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {guidance && (
@@ -999,8 +984,10 @@ function ParentalQuestionnaireCard({
   const [guidance, setGuidance] = useState<GuidancePayload | null>(null);
 
   return (
-    <div className="flex h-full min-w-0 items-center gap-3 border-[1.5px] border-border-green bg-white px-3 py-3 sm:px-4 sm:py-4">
-      <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
+    <div
+      className={`${cardSurfaceClass} parental-tile flex h-full min-h-[6.25rem] min-w-0 items-center gap-3 overflow-visible border-[1.5px] border-border-green bg-white px-3 py-5 sm:min-h-[7rem] sm:px-5 sm:py-6 md:min-h-[7.5rem] md:px-5 md:py-7`}
+    >
+      <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-visible">
         <TokenIcon
           src={item.icon}
           accent={item.accent}
@@ -1125,7 +1112,7 @@ export function DashboardView() {
           childId={activeChild.id}
         />
       </div>
-      <div className="grid grid-cols-1 gap-card md:grid-cols-3">
+      <div className={`grid grid-cols-1 md:grid-cols-3 ${cardGapClass}`}>
         {activeChild.parentalQuestionnaires.map((item) => (
           <ParentalQuestionnaireCard key={item.slug} item={item} />
         ))}

@@ -2,7 +2,12 @@
 
 @theme inline {
   --color-primary: #6d954b;
-  --color-primary-dark: #1f4223;
+  --color-primary-dark: #385d30;
+  /*
+   * Supporting body copy — one step quieter than titles, one step
+   * stronger than the airy 55% wash. Use via text-copy.
+   */
+  --color-copy: color-mix(in srgb, var(--color-primary-dark) 70%, white);
   --color-primary-light: rgba(109, 149, 75, 0.08);
   /* Solid match of primary-light over white — for sticky/opaque surfaces. */
   --color-primary-light-solid: #f3f6f0;
@@ -30,6 +35,7 @@
   --color-status-red: #c1443e;
   --color-status-red-light: rgba(193, 68, 62, 0.12);
   --color-accent-pink-light: rgba(242, 122, 151, 0.1);
+  --color-accent-pink-solid: color-mix(in srgb, var(--color-accent-pink) 11%, white);
   --color-accent-orange-light: rgba(233, 176, 99, 0.14);
   --color-accent-green-light: rgba(109, 149, 75, 0.1);
   --color-accent-blue-light: rgba(71, 106, 191, 0.1);
@@ -59,6 +65,17 @@
   --text-heading-lg--line-height: 1.2;
   --text-heading-lg-md: 1.75rem; /* 28px */
   --text-heading-lg-md--line-height: 1.2;
+  /* News-card titles — regular stays compact; featured jumps a full step. */
+  --text-card: 1.25rem;
+  --text-card--line-height: 1.2;
+  --text-card-md: 1.375rem;
+  --text-card-md--line-height: 1.2;
+  --text-card-featured: clamp(1.75rem, 1.2rem + 1.8vw, 2.25rem);
+  --text-card-featured--line-height: 1.12;
+  --text-card-body: 1.125rem;
+  --text-card-body--line-height: 1.4;
+  --text-card-body-featured: var(--text-card-body);
+  --text-card-body-featured--line-height: 1.4;
   --text-lead: 1.25rem; /* 20px */
   --text-lead--line-height: 1.3;
   /* Hero deck — larger than lead, still clearly below DisplayHero. */
@@ -90,15 +107,47 @@
   --spacing-stack: clamp(1rem, 0.75rem + 0.8vw, 1.5rem);
   --spacing-cluster: clamp(2rem, 1.5rem + 1.2vw, 3rem);
   /*
-   * Card-to-card gutters — use gap-card / gap-card-compact on any
-   * grid, flex, or list of sibling cards. Do not set local gap/margin.
-   * card: standard tiles · card-compact: dense nested / many-up tiles
+   * Card-to-card gutters — use the gap-* utilities (or cardSurface helpers).
+   * Do not set local gap/margin on card grids.
+   *
+   * card:          column gutter — 24px → 40px
+   * card-row:      row gutter — 24px → 32px
+   * card-featured: featured pair — same as column (40px desktop)
+   * card-hierarchy: featured row → regular grid — 32px → 48px
+   * card-compact:  dense nested / many-up tiles
    */
-  --spacing-card: clamp(2rem, 1.5rem + 1.2vw, 3rem);
+  --spacing-card: clamp(1.5rem, 0.75rem + 2.2vw, 2.5rem);
+  --spacing-card-row: clamp(1.5rem, 0.75rem + 1.6vw, 2rem);
+  --spacing-card-featured: var(--spacing-card);
+  --spacing-card-hierarchy: clamp(2rem, 1rem + 2.5vw, 3rem);
   --spacing-card-compact: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
+  /*
+   * Card internals — padding and stacked copy, not grid gutters.
+   * inset: regular 32px · inset-featured: large tiles 40px
+   * meta: date → title 16px · copy: title → excerpt 12–16px
+   * action: excerpt → CTA 24–32px
+   */
+  --spacing-card-inset: 2rem;
+  --spacing-card-inset-featured: 3.25rem;
+  --spacing-card-meta: 1rem;
+  --spacing-card-copy: clamp(0.75rem, 0.6rem + 0.35vw, 1rem);
+  --spacing-card-action: clamp(1.5rem, 1.25rem + 0.6vw, 2rem);
+  --spacing-card-meta-featured: 1.25rem;
+  --spacing-card-copy-featured: 1.25rem;
+  --spacing-card-action-featured: 2.25rem;
 
   /* Pictogram frame — one square, centered, used by rubric marks. */
   --size-mark: 6.5rem;
+  --size-mark-hero: clamp(8.5rem, 20vw, 16rem);
+  /*
+   * News-card corner shevitsa.
+   * Regular is ~22% smaller than featured; featured keeps the larger mark.
+   */
+  --size-news-shevitsa: 2.125rem;
+  --size-news-shevitsa-sm: 2.5rem;
+  --size-news-shevitsa-featured: 2.75rem;
+  --size-news-shevitsa-featured-sm: 3.25rem;
+  --opacity-news-shevitsa: 0.7;
   --aspect-ratio-mark: 1 / 1;
   --scale-mark: 1.014;
   --scale-mark-hover: 1.16;
@@ -152,6 +201,37 @@ select {
   background-position: right 0.95rem center;
   background-size: 14px 10px;
   padding-right: 2.85rem;
+}
+
+/* Native date/month picker — keep the system calendar, tint the icon green. */
+input[type="date"],
+input[type="month"] {
+  color-scheme: light;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="month"]::-webkit-calendar-picker-indicator {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  opacity: 1;
+  background-color: transparent;
+  background-image: url("/images/calendar.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+}
+
+/* Hide native number-input spinners — custom chevrons sit on the field. */
+.number-input-plain {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.number-input-plain::-webkit-outer-spin-button,
+.number-input-plain::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
 }
 
 /* Hide native scrollbar — custom green bar sits under the results table. */
@@ -481,22 +561,48 @@ select {
   --card-surface-ease: var(--tw-ease, ease-out);
 }
 
-.card-surface :is(h1, h2, h3, h4, [data-card-title]) {
+.card-surface :is(h1, h2, h3, h4, [data-card-title], .feature-copy, .text-card-body) {
   transition-property: color;
   transition-duration: var(--card-surface-duration);
   transition-timing-function: var(--card-surface-ease);
 }
 
-.card-surface:hover :is(h1, h2, h3, h4, [data-card-title]),
-.card-surface:focus-visible :is(h1, h2, h3, h4, [data-card-title]),
-.card-surface:has(:focus-visible) :is(h1, h2, h3, h4, [data-card-title]),
-.card-surface:has([aria-expanded="true"]) :is(h1, h2, h3, h4, [data-card-title]) {
+.card-surface:hover :is(h1, h2, h3, h4, [data-card-title], .feature-copy, .text-card-body),
+.card-surface:focus-visible :is(h1, h2, h3, h4, [data-card-title], .feature-copy, .text-card-body),
+.card-surface:has(:focus-visible) :is(h1, h2, h3, h4, [data-card-title], .feature-copy, .text-card-body),
+.card-surface:has([aria-expanded="true"]) :is(h1, h2, h3, h4, [data-card-title], .feature-copy, .text-card-body) {
   color: var(--color-primary-dark);
 }
 
 .card-surface:focus-visible,
 .card-surface:has(:focus-visible),
 .card-surface:has([aria-expanded="true"]) {
+  background-color: var(--color-white, white);
+}
+
+/*
+ * Directory / list rows sitting on cream — white wash on hover,
+ * raw :hover so it also reads in the Cursor preview.
+ */
+.directory-row {
+  --news-shevitsa: var(--size-news-shevitsa, 2.125rem);
+  --news-shevitsa-spread: 0.32rem;
+  --news-shevitsa-ink: var(--opacity-news-shevitsa, 0.7);
+  overflow: visible;
+  transition-property: background-color;
+  transition-duration: var(--card-surface-duration, 200ms);
+  transition-timing-function: var(--card-surface-ease, ease-out);
+}
+
+@media (min-width: 640px) {
+  .directory-row {
+    --news-shevitsa: var(--size-news-shevitsa-sm, 2.5rem);
+    --news-shevitsa-spread: 0.4rem;
+  }
+}
+
+.directory-row:hover,
+.directory-row:focus-visible {
   background-color: var(--color-white, white);
 }
 
@@ -509,7 +615,7 @@ select {
   --card-surface-ease: var(--tw-ease, ease-out);
 }
 
-.questionnaire-cluster > :not(:has(.questionnaire-subcard)) :is(h1, h2, h3, h4, [data-card-title]) {
+.questionnaire-cluster > :not(:has(.questionnaire-subcard)) :is(h1, h2, h3, h4, [data-card-title], .text-card-body) {
   transition-property: color;
   transition-duration: var(--card-surface-duration);
   transition-timing-function: var(--card-surface-ease);
@@ -525,18 +631,57 @@ select {
 
 .questionnaire-cluster:hover:not(:has(.questionnaire-subcard:hover)):not(:has(.questionnaire-subcard:focus-visible))
   > :not(:has(.questionnaire-subcard))
-  :is(h1, h2, h3, h4, [data-card-title]) {
+  :is(h1, h2, h3, h4, [data-card-title], .text-card-body) {
   color: var(--color-primary-dark);
+}
+
+/*
+ * Dashboard parental tiles: already white, so hover is a light green
+ * wash + the same icon scale as the questionnaires page.
+ */
+.parental-tile {
+  --card-surface-duration: var(--tw-duration, 200ms);
+  --card-surface-ease: var(--tw-ease, ease-out);
+  transition-property: background-color, border-color;
+  transition-duration: var(--card-surface-duration);
+  transition-timing-function: var(--card-surface-ease);
+}
+
+.parental-tile .icon-token {
+  transform-origin: center;
+  transition: transform var(--card-surface-duration) var(--card-surface-ease);
+}
+
+.parental-tile:hover,
+.parental-tile:focus-visible,
+.parental-tile:has(:focus-visible),
+.parental-tile:has([aria-expanded="true"]) {
+  background-color: var(--color-primary-light-solid);
+  border-color: var(--color-secondary);
+}
+
+.parental-tile:hover .icon-token,
+.parental-tile:focus-visible .icon-token,
+.parental-tile:has(:focus-visible) .icon-token,
+.parental-tile:has([aria-expanded="true"]) .icon-token {
+  transform: scale(1.3);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .card-surface :is(h1, h2, h3, h4, [data-card-title]),
-  .questionnaire-cluster > :not(:has(.questionnaire-subcard)) :is(h1, h2, h3, h4, [data-card-title]) {
+  .questionnaire-cluster > :not(:has(.questionnaire-subcard)) :is(h1, h2, h3, h4, [data-card-title], .text-card-body) {
     transition: none;
   }
 
-  .questionnaire-cluster .icon-token {
+  .questionnaire-cluster .icon-token,
+  .parental-tile .icon-token {
     transform: none;
+    transition: none;
+  }
+
+  .parental-tile,
+  .directory-row {
+    transition: none;
   }
 }
 
@@ -615,7 +760,8 @@ select {
 
 /*
  * CTA overlay: pieces sit nearby and chaotic, then click into the
- * embroidery-4 form the first time the green band scrolls into view.
+ * embroidery form while the green band is in view. Removing
+ * `is-assembled` (scroll back) reverses the same transition.
  */
 .shevitsa-cta-scatter {
   --shevitsa-scatter: 0.09;
@@ -632,30 +778,26 @@ select {
     )
     rotate(calc(var(--piece-spin) * var(--shevitsa-spin)))
     scale(1);
+  transition: transform 1.05s cubic-bezier(0.33, 1, 0.68, 1);
+  transition-delay: var(--piece-delay, 0ms);
 }
 
 .shevitsa-cta-scatter.is-assembled .shevitsa-piece {
-  animation: shevitsa-cta-assemble 1.05s cubic-bezier(0.33, 1, 0.68, 1) both;
-}
-
-@keyframes shevitsa-cta-assemble {
-  from {
-    transform: translate3d(
-        calc(var(--piece-dx) * var(--shevitsa-scatter)),
-        calc(var(--piece-dy) * var(--shevitsa-scatter)),
-        0
-      )
-      rotate(calc(var(--piece-spin) * var(--shevitsa-spin)))
-      scale(1);
-  }
-  to {
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-  }
+  animation: none;
+  transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
 }
 
 .shevitsa-cluster {
   --shevitsa-scatter: 1;
   --shevitsa-spin: 1;
+}
+
+.shevitsa-goal-drift {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -791,139 +933,198 @@ select {
 }
 
 /*
- * News card shevitsa: a square motif in the top-right, split into four
- * quadrants. At rest the pieces sit apart; hover snaps them together.
- * Two colorways alternate per card.
+ * News card shevitsa: assembled at rest, outer pixels scatter on hover.
+ * Regular cards: smaller monochrome mark at ~70% ink.
+ * Featured cards: larger two-color mark at full ink.
  */
 .news-envelope {
-  --news-shevitsa: 2.75rem;
-  --news-shevitsa-spread: 0.5rem;
+  --news-shevitsa: var(--size-news-shevitsa, 2.125rem);
+  --news-shevitsa-spread: 0.32rem;
+  --news-shevitsa-ink: var(--opacity-news-shevitsa, 0.7);
+  --news-inset: var(--spacing-card-inset, 2rem);
+  padding-top: var(--news-inset);
+  padding-bottom: var(--news-inset);
+  padding-left: var(--news-inset);
+  padding-right: calc(
+    var(--news-inset) + var(--news-shevitsa) + var(--spacing-card-copy, 0.875rem)
+  );
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.news-envelope--featured {
+  --news-shevitsa: var(--size-news-shevitsa-featured, 2.75rem);
+  --news-shevitsa-spread: 0.42rem;
+  --news-shevitsa-ink: 1;
+  --news-inset: var(--spacing-card-inset-featured, 3.25rem);
 }
 
 @media (min-width: 640px) {
   .news-envelope {
-    --news-shevitsa: 3.25rem;
-    --news-shevitsa-spread: 0.62rem;
+    --news-shevitsa: var(--size-news-shevitsa-sm, 2.5rem);
+    --news-shevitsa-spread: 0.4rem;
+  }
+
+  .news-envelope--featured {
+    --news-shevitsa: var(--size-news-shevitsa-featured-sm, 3.25rem);
+    --news-shevitsa-spread: 0.52rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .news-envelope--featured {
+    min-height: 22rem;
   }
 }
 
 .news-shevitsa {
   display: block;
+  top: var(--news-inset);
+  right: var(--news-inset);
   width: var(--news-shevitsa);
   height: var(--news-shevitsa);
   overflow: visible;
+  opacity: var(--news-shevitsa-ink, 0.7);
+  --news-shevitsa-a: var(--color-accent-green);
+  --news-shevitsa-b: var(--color-accent-green);
 }
 
-.news-shevitsa__piece {
-  position: absolute;
-  inset: 0;
-  background-image: url("/images/pattern-contact-2.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100% 100%;
+.news-shevitsa--green {
+  --news-shevitsa-a: var(--color-accent-green);
+  --news-shevitsa-b: var(--color-accent-green);
+}
+
+.news-shevitsa--pink {
+  --news-shevitsa-a: var(--color-accent-pink);
+  --news-shevitsa-b: var(--color-accent-pink);
+}
+
+.news-shevitsa--blue {
+  --news-shevitsa-a: var(--color-accent-blue);
+  --news-shevitsa-b: var(--color-accent-blue);
+}
+
+.news-shevitsa--orange {
+  --news-shevitsa-a: var(--color-accent-orange);
+  --news-shevitsa-b: var(--color-accent-orange);
+}
+
+.news-shevitsa--duo {
+  --news-shevitsa-a: var(--color-accent-orange);
+  --news-shevitsa-b: var(--color-accent-blue);
+}
+
+.news-shevitsa--duo-alt {
+  --news-shevitsa-a: var(--color-accent-green);
+  --news-shevitsa-b: var(--color-accent-pink);
+}
+
+.news-shevitsa__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.news-shevitsa__a {
+  fill: var(--news-shevitsa-a);
+}
+
+.news-shevitsa__b {
+  fill: var(--news-shevitsa-b);
+}
+
+.news-shevitsa__spark {
+  --spark-mul: 1;
   transition: transform 700ms cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.news-shevitsa--alt .news-shevitsa__piece {
-  background-image: url("/images/pattern-contact-1.svg");
+.news-shevitsa__spark--far {
+  --spark-mul: 1.75;
 }
 
-.news-shevitsa__piece--tl {
-  clip-path: inset(0 50% 50% 0);
+:is(.news-envelope, .directory-row):is(:hover, :focus-visible)
+  .news-shevitsa__spark--tl {
   transform: translate(
-    calc(-1 * var(--news-shevitsa-spread)),
-    calc(-1 * var(--news-shevitsa-spread))
+    calc(-1 * var(--spark-mul) * var(--news-shevitsa-spread)),
+    calc(-1 * var(--spark-mul) * var(--news-shevitsa-spread))
   );
 }
 
-.news-shevitsa__piece--tr {
-  clip-path: inset(0 0 50% 50%);
+:is(.news-envelope, .directory-row):is(:hover, :focus-visible)
+  .news-shevitsa__spark--tr {
   transform: translate(
-    var(--news-shevitsa-spread),
-    calc(-1 * var(--news-shevitsa-spread))
+    calc(var(--spark-mul) * var(--news-shevitsa-spread)),
+    calc(-1 * var(--spark-mul) * var(--news-shevitsa-spread))
   );
 }
 
-.news-shevitsa__piece--bl {
-  clip-path: inset(50% 50% 0 0);
+:is(.news-envelope, .directory-row):is(:hover, :focus-visible)
+  .news-shevitsa__spark--bl {
   transform: translate(
-    calc(-1 * var(--news-shevitsa-spread)),
-    var(--news-shevitsa-spread)
+    calc(-1 * var(--spark-mul) * var(--news-shevitsa-spread)),
+    calc(var(--spark-mul) * var(--news-shevitsa-spread))
   );
 }
 
-.news-shevitsa__piece--br {
-  clip-path: inset(50% 0 0 50%);
+:is(.news-envelope, .directory-row):is(:hover, :focus-visible)
+  .news-shevitsa__spark--br {
   transform: translate(
-    var(--news-shevitsa-spread),
-    var(--news-shevitsa-spread)
+    calc(var(--spark-mul) * var(--news-shevitsa-spread)),
+    calc(var(--spark-mul) * var(--news-shevitsa-spread))
   );
-}
-
-.news-envelope:is(:hover, :focus-visible) .news-shevitsa__piece {
-  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .news-shevitsa__piece {
+  .news-shevitsa__spark {
     transition: none;
     transform: none;
   }
 }
 
 /*
- * Hero video scrim — warm forest wash, strongest behind the copy,
- * fading toward the park and the children on the right.
+ * Hero video scrim — darker forest-green wash behind the copy and CTA,
+ * fading to the video on the right. Ink is primary-dark pulled toward black
+ * so the veil reads green, not a grey mist.
  */
 .hero-video-scrim {
+  --hero-ink: color-mix(in srgb, var(--color-primary-dark) 68%, black);
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
+  background-color: color-mix(in srgb, var(--hero-ink) 34%, transparent);
+  background-image:
     radial-gradient(
-      48% 56% at 16% 78%,
-      rgb(38 40 20 / 0.66) 0%,
-      rgb(31 66 35 / 0.4) 34%,
-      rgb(31 66 35 / 0.12) 56%,
-      transparent 74%
+      78% 72% at 6% 88%,
+      color-mix(in srgb, var(--hero-ink) 88%, transparent) 0%,
+      color-mix(in srgb, var(--hero-ink) 58%, transparent) 34%,
+      color-mix(in srgb, var(--hero-ink) 26%, transparent) 58%,
+      transparent 76%
     ),
     linear-gradient(
       90deg,
-      rgb(38 40 20 / 0.4) 0%,
-      rgb(31 66 35 / 0.18) 24%,
-      rgb(31 66 35 / 0.04) 44%,
-      transparent 60%
-    ),
-    linear-gradient(
-      180deg,
-      transparent 42%,
-      rgb(38 40 20 / 0.1) 68%,
-      rgb(31 66 35 / 0.22) 100%
+      color-mix(in srgb, var(--hero-ink) 66%, transparent) 0%,
+      color-mix(in srgb, var(--hero-ink) 32%, transparent) 32%,
+      transparent 58%
     );
 }
 
 @media (max-width: 639px) {
   /* Copy sits at the bottom on small screens. */
   .hero-video-scrim {
-    background:
+    background-color: color-mix(in srgb, var(--hero-ink) 34%, transparent);
+    background-image:
       linear-gradient(
         180deg,
-        transparent 22%,
-        rgb(38 40 20 / 0.08) 46%,
-        rgb(31 66 35 / 0.38) 74%,
-        rgb(38 40 20 / 0.58) 100%
-      ),
-      radial-gradient(
-        78% 52% at 22% 88%,
-        rgb(38 40 20 / 0.52) 0%,
-        rgb(31 66 35 / 0.16) 50%,
-        transparent 74%
+        transparent 28%,
+        color-mix(in srgb, var(--hero-ink) 32%, transparent) 58%,
+        color-mix(in srgb, var(--hero-ink) 72%, transparent) 100%
       ),
       linear-gradient(
         90deg,
-        rgb(31 66 35 / 0.28) 0%,
-        rgb(31 66 35 / 0.08) 46%,
-        transparent 68%
+        color-mix(in srgb, var(--hero-ink) 58%, transparent) 0%,
+        color-mix(in srgb, var(--hero-ink) 24%, transparent) 50%,
+        transparent 78%
       );
   }
 }

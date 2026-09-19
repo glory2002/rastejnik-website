@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLead } from "@/components/ui/SectionLead";
-import { cardSurfaceClass } from "@/components/ui/cardSurface";
+import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Action, Body, Display, Heading } from "@/components/ui/Typography";
 import {
   questionnaireCategories,
@@ -53,27 +53,27 @@ export default function EarlyChildhoodCategoryPage() {
             Въпросници
           </Action>
 
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8">
-            <TokenIcon
-              src={parentCategory.icon}
-              accent={parentCategory.accent}
-              className="h-[70px] w-[110px] shrink-0 sm:h-[88px] sm:w-[138px]"
-            />
-            <div>
-              <Display className="max-w-[800px]">
+          <div className="flex items-center justify-between gap-cluster">
+            <div className="min-w-0 flex-1">
+              <Display className="text-balance md:text-nowrap">
                 {parentCategory.title}
               </Display>
-              <SectionLead className="mt-5 max-w-[620px] sm:mt-6">
+              <SectionLead className="mt-4 max-w-hero-lead sm:mt-5">
                 {parentCategory.description}
               </SectionLead>
             </div>
+            <TokenIcon
+              src={parentCategory.icon}
+              accent={parentCategory.accent}
+              className="size-mark shrink-0"
+            />
           </div>
         </Container>
       </section>
 
       <section className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
-          <div className="grid grid-cols-1 gap-card sm:grid-cols-2 lg:grid-cols-4">
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ${cardGapClass}`}>
             {parentCategory.subcategories!.map((sub, index) => (
               <Reveal key={sub.slug} delay={index * 60}>
                 <Link
@@ -84,7 +84,9 @@ export default function EarlyChildhoodCategoryPage() {
                     <Heading as="h2" size="sm" tone="inherit">
                       {sub.title}
                     </Heading>
-                    <Body as="span">{sub.description}</Body>
+                    <Body as="span" size="card">
+                      {sub.description}
+                    </Body>
                   </div>
                   <Button
                     className="mt-auto w-fit"

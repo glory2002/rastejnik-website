@@ -254,22 +254,27 @@ function TeamPanel() {
               <Meta as="p" tone="white" className="opacity-70">
                 Нашата цел
               </Meta>
-              <DisplayBanner
+              <Display
                 as="h2"
                 tone="white"
-                className="mt-4 text-balance sm:mt-5"
+                weight="medium"
+                className="mt-3 leading-none"
               >
-                {aboutOurGoal[0]}
-              </DisplayBanner>
-              <Body
-                as="div"
-                tone="white"
-                className="mt-6 flex max-w-[720px] flex-col gap-4 opacity-90 sm:mt-8"
-              >
+                Общата ни цел е
+              </Display>
+              <p className="mt-2 text-heading-lg font-medium leading-snug text-white md:text-heading-lg-md">
+                {aboutOurGoal[0].replace(/^Общата ни цел е\s+/, "")}
+              </p>
+              <div className="mt-4 flex flex-col gap-2">
                 {aboutOurGoal.slice(1).map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
+                  <p
+                    key={paragraph}
+                    className="text-heading-lg font-medium leading-snug text-white md:text-heading-lg-md"
+                  >
+                    {paragraph}
+                  </p>
                 ))}
-              </Body>
+              </div>
             </Reveal>
           </Container>
         </section>

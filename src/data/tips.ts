@@ -3,10 +3,25 @@ export type TipBlock =
   | { type: "quote"; text: string; cite?: string }
   | { type: "highlight"; text: string };
 
+export interface TipCategory {
+  slug: string;
+  title: string;
+}
+
+export const tipCategories: TipCategory[] = [
+  { slug: "san", title: "Сън" },
+  { slug: "hranene", title: "Хранене" },
+  { slug: "igra", title: "Игра" },
+  { slug: "granici", title: "Граници" },
+  { slug: "govor", title: "Говор" },
+  { slug: "emotsii", title: "Емоции" },
+];
+
 export interface TipArticle {
   slug: string;
   title: string;
   excerpt: string;
+  categorySlug: string;
   /** Decorative cover from brand assets. */
   coverImage: string;
   coverClass?: string;
@@ -16,6 +31,7 @@ export interface TipArticle {
 export const tips: TipArticle[] = [
   {
     slug: "vecheren-ritual",
+    categorySlug: "san",
     title: "Бащинството и детското здраве",
     excerpt:
       "Предсказуемата вечер намалява напрежението при малките — и при родителите. Кратка последователност, която работи в реалния живот.",
@@ -45,6 +61,7 @@ export const tips: TipArticle[] = [
   },
   {
     slug: "hranene-bez-borba",
+    categorySlug: "hranene",
     title: "Хранителен статус и физическа активност при деца",
     excerpt:
       "Натискът на масата често увеличава отказа. Как да предложите храна спокойно — без подкупи и без паника.",
@@ -74,6 +91,7 @@ export const tips: TipArticle[] = [
   },
   {
     slug: "igra-s-dete",
+    categorySlug: "igra",
     title: "Екосистема и детско физическо здраве",
     excerpt:
       "Не е нужно цял следобед с конструктори. Кратко, пълно присъствие често е по-ценно от дълго отвлечено време заедно.",
@@ -99,6 +117,7 @@ export const tips: TipArticle[] = [
   },
   {
     slug: "granici-s-lyubov",
+    categorySlug: "granici",
     title: "Граници с любов: твърдо „не“ без срам",
     excerpt:
       "Границите не са наказание. Те са рамка, в която детето се чувства сигурно — ако ги държите спокойно и последователно.",
@@ -128,6 +147,7 @@ export const tips: TipArticle[] = [
   },
   {
     slug: "govor-chrez-razgovor",
+    categorySlug: "govor",
     title: "Говор чрез разговор: как да подкрепите езика у дома",
     excerpt:
       "Не са нужни карти всеки ден. Обикновените разговори в кухнята и на разходка изграждат речника по-сигурно, отколкото се усеща.",
@@ -157,6 +177,7 @@ export const tips: TipArticle[] = [
   },
   {
     slug: "kogato-plache",
+    categorySlug: "emotsii",
     title: "Когато плаче: как да останете близо без да „оправяте“ всичко",
     excerpt:
       "Плачът е сигнал, не манипулация. Присъствието ви учи детето, че силните чувства са поносими — и че не е само.",
@@ -190,6 +211,19 @@ export function getTipBySlug(slug: string): TipArticle | undefined {
   return tips.find((tip) => tip.slug === slug);
 }
 
+export function getTipCategory(slug: string): TipCategory | undefined {
+  return tipCategories.find((category) => category.slug === slug);
+}
+
 export function getRelatedTips(slug: string, limit = 3): TipArticle[] {
-  return tips.filter((tip) => tip.slug !== slug).slice(0, limit);
+  const current = getTipBySlug(slug);
+  const rest = tips.filter((tip) => tip.slug !== slug);
+  if (!current) return rest.slice(0, limit);
+  const sameTopic = rest.filter(
+    (tip) => tip.categorySlug === current.categorySlug,
+  );
+  const others = rest.filter(
+    (tip) => tip.categorySlug !== current.categorySlug,
+  );
+  return [...sameTopic, ...others].slice(0, limit);
 }

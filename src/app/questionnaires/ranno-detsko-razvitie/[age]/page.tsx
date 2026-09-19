@@ -9,7 +9,7 @@ import { BabyRattleIcon } from "@/components/icons/BabyRattleIcon";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLead } from "@/components/ui/SectionLead";
-import { cardSurfaceClass } from "@/components/ui/cardSurface";
+import { cardGapCompactClass, cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Action, Display, Heading, Meta } from "@/components/ui/Typography";
 import { getBabyIcons } from "@/lib/babyIcons";
 import {
@@ -82,7 +82,7 @@ export default async function AgeQuestionnairePage({
 
       <section className="w-full bg-white py-16 md:py-24">
         <Container>
-          <Reveal className="grid gap-card-compact sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+          <Reveal className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 ${cardGapCompactClass}`}>
             {sub.intervals.map((interval, index) => {
               const icon = babyIcons[index % babyIcons.length];
               const isRattleBaby = icon === "/images/baby-1.svg";

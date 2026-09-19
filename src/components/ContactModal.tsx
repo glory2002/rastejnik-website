@@ -10,6 +10,7 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
+import { PlusMarkIcon } from "@/components/icons/PlusMarkIcon";
 import { Button } from "@/components/ui/Button";
 import { Body, Heading, Label } from "@/components/ui/Typography";
 
@@ -79,9 +80,9 @@ function ContactFormModal({ onClose }: { onClose: () => void }) {
           type="button"
           onClick={onClose}
           aria-label="Затвори"
-          className="absolute right-4 top-4 text-[22px] leading-none text-primary-dark/50 transition-opacity hover:opacity-70"
+          className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center text-primary transition-opacity hover:opacity-70"
         >
-          ×
+          <PlusMarkIcon className="h-5 w-5 rotate-45" />
         </button>
 
         <div className="flex flex-col gap-6 pr-4">

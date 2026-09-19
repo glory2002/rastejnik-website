@@ -19,27 +19,27 @@ export default function FaqPage() {
 
       <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
-          <div className="mx-auto w-full max-w-[720px]">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
-              <Image
-                src="/images/question.svg"
-                alt=""
-                width={63}
-                height={88}
-                className="h-[68px] w-auto shrink-0 self-start object-contain sm:h-[86px] sm:self-auto"
-              />
-              <div>
-                <Display>Всички въпроси</Display>
-                <Body className="mt-4 max-w-[560px] sm:mt-5">
-                  Пълният списък с кратки, валидирани отговори на най-честите
-                  въпроси на родители — потърсете дума или разгледайте надолу.
-                </Body>
-              </div>
+          <div className="flex items-center justify-between gap-cluster">
+            <div className="min-w-0 flex-1">
+              <Display className="text-balance md:text-nowrap">
+                Всички въпроси
+              </Display>
+              <Body className="mt-4 max-w-hero-lead sm:mt-5">
+                Пълният списък с кратки, валидирани отговори на най-честите
+                въпроси на родители — потърсете дума или разгледайте надолу.
+              </Body>
             </div>
+            <Image
+              src="/images/question.svg"
+              alt=""
+              width={63}
+              height={88}
+              className="h-[length:var(--size-mark)] w-auto shrink-0 object-contain"
+            />
+          </div>
 
-            <div className="mt-10 sm:mt-14">
-              <FaqBrowser />
-            </div>
+          <div className="mx-auto mt-10 w-full max-w-[720px] sm:mt-14">
+            <FaqBrowser />
           </div>
         </Container>
       </section>

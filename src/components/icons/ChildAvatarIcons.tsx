@@ -50,11 +50,23 @@ export function GirlAvatar({ className }: { className?: string }) {
         className="baby-mouth"
         d="M205.98,315.18c-16.37,0-31.06-10.96-35.72-26.66l9.52-2.82c3.42,11.49,14.18,19.53,26.19,19.53s22.79-8.03,26.2-19.53l9.52,2.82c-4.66,15.7-19.35,26.66-35.73,26.66Z"
       />
-      <polygon
-        className="baby-tuft"
-        fill="#f27a97"
-        points="266.08 30.05 236.03 0 205.99 30.05 175.94 0 145.89 30.05 205.99 90.14 266.08 30.05"
-      />
+      {/* Same pink diamond as the old tuft, closer to the head and
+          mirrored as two side ribbons. Origin of each polygon is the
+          point that sits on the head. */}
+      <g transform="translate(96 66) rotate(-38) scale(0.9)">
+        <polygon
+          className="baby-tuft"
+          fill="#f27a97"
+          points="60.09,-60.09 30.04,-90.14 0,-60.09 -30.05,-90.14 -60.1,-60.09 0,0 60.09,-60.09"
+        />
+      </g>
+      <g transform="translate(308 66) rotate(38) scale(0.9)">
+        <polygon
+          className="baby-tuft"
+          fill="#f27a97"
+          points="60.09,-60.09 30.04,-90.14 0,-60.09 -30.05,-90.14 -60.1,-60.09 0,0 60.09,-60.09"
+        />
+      </g>
     </svg>
   );
 }

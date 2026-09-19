@@ -16,6 +16,11 @@ interface ButtonProps {
    */
   size?: "xl" | "l";
   /**
+   * "primary" is the filled yellow pill. "secondary" is the outlined
+   * sibling — same geometry, quieter ink (listing / outbound actions).
+   */
+  variant?: "primary" | "secondary";
+  /**
    * Which side the white-circle icon sits on. `"right"` is the default
    * hero arrow; `"left"` swaps in the plus glyph (same white disc + light
    * green mark) and originates the hover reveal from the left.
@@ -62,6 +67,7 @@ export function Button({
   target,
   rel,
   size = "xl",
+  variant = "primary",
   iconSide = "right",
   interactive = true,
   hoverGroup = true,
@@ -103,6 +109,7 @@ export function Button({
       ? "50px"
       : "38px";
 
+  const isSecondary = variant === "secondary";
   const namedSubcard = groupName === "subcard";
   const groupClass = hoverGroup
     ? namedSubcard
@@ -110,7 +117,9 @@ export function Button({
       : "group"
     : "";
   const scopedColors = namedSubcard
-    ? "group-hover/subcard:text-primary group-focus-visible/subcard:text-primary group-hover/subcard:border-secondary group-focus-visible/subcard:border-secondary"
+    ? isSecondary
+      ? "group-hover/subcard:text-primary group-focus-visible/subcard:text-primary group-hover/subcard:border-primary group-focus-visible/subcard:border-primary"
+      : "group-hover/subcard:text-primary group-focus-visible/subcard:text-primary group-hover/subcard:border-secondary group-focus-visible/subcard:border-secondary"
     : "";
   const clipOpen = namedSubcard
     ? iconOnLeft
@@ -127,13 +136,17 @@ export function Button({
       ? "group-hover:-translate-x-0.5 group-focus-visible:-translate-x-0.5"
       : "group-hover:translate-x-1 group-focus-visible:translate-x-1";
 
-  const colorClasses = showArrow
-    ? `text-primary-dark hover:text-primary focus-visible:text-primary border-[1.5px] border-transparent hover:border-secondary focus-visible:border-secondary ${scopedColors}`
-    : "text-primary-dark hover:bg-white hover:text-primary";
+  const colorClasses = isSecondary
+    ? showArrow
+      ? `text-primary-dark hover:text-primary focus-visible:text-primary border-[1.5px] border-secondary hover:border-primary focus-visible:border-primary ${scopedColors}`
+      : "text-primary-dark border-[1.5px] border-secondary hover:border-primary hover:text-primary"
+    : showArrow
+      ? `text-primary-dark hover:text-primary focus-visible:text-primary border-[1.5px] border-transparent hover:border-secondary focus-visible:border-secondary ${scopedColors}`
+      : "text-primary-dark hover:bg-white hover:text-primary";
 
-  const sharedClassName = `${groupClass} relative inline-flex items-center justify-center overflow-hidden rounded-[50px] bg-secondary font-bold uppercase transition-colors duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] disabled:pointer-events-none disabled:opacity-40 ${colorClasses} ${sizeClasses} ${className}`;
+  const sharedClassName = `${groupClass} relative inline-flex items-center justify-center overflow-hidden rounded-[50px] ${isSecondary ? "bg-white" : "bg-secondary"} font-bold uppercase transition-colors duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] disabled:pointer-events-none disabled:opacity-40 ${colorClasses} ${sizeClasses} ${className}`;
 
-  const arrow = showArrow && (
+  const arrow = showArrow && !isSecondary && (
     <span
       aria-hidden
       style={
@@ -149,13 +162,20 @@ export function Button({
     />
   );
 
-  const iconSrc = iconOnLeft ? "/images/plus-icon.svg" : "/images/arrow-hero.svg";
+  const iconSrc = iconOnLeft
+    ? "/images/plus-icon.svg"
+    : isSecondary
+      ? "/images/arrow-link.svg"
+      : "/images/arrow-hero.svg";
+  const iconWidth = isSecondary && !iconOnLeft ? 14 : arrowImageSize;
+  const iconHeight = isSecondary && !iconOnLeft ? 22 : arrowImageSize;
+  const secondaryBox = isSecondary && !iconOnLeft ? "h-[22px] w-[14px]" : arrowBoxClasses;
 
   const arrowIcon = showArrow && (
     <span
-      className={`relative z-10 flex shrink-0 items-center justify-center transition-transform duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none ${iconMotion} ${arrowBoxClasses}`}
+      className={`relative z-10 flex shrink-0 items-center justify-center transition-transform duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none ${iconMotion} ${secondaryBox}`}
     >
-      <Image src={iconSrc} alt="" width={arrowImageSize} height={arrowImageSize} />
+      <Image src={iconSrc} alt="" width={iconWidth} height={iconHeight} />
     </span>
   );
 

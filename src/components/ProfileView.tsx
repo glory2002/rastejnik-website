@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState, type FormEvent, type InputHTMLAttributes, type SelectHTMLAttributes } from "react";
+import { useEffect, useState, type FormEvent, type InputHTMLAttributes } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
+import { NumberInput } from "@/components/ui/NumberInput";
+import { FormSelect } from "@/components/ui/Select";
 import { Action, Body, Label } from "@/components/ui/Typography";
 import { login, useMockAuth } from "@/lib/authMock";
 import {
@@ -18,6 +20,7 @@ const inputClassName =
 function FormField({
   label,
   className = "",
+  type,
   ...props
 }: { label: string; className?: string } & Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -26,37 +29,11 @@ function FormField({
   return (
     <label className={`flex flex-col gap-2 ${className}`}>
       <Label>{label}</Label>
-      <input {...props} className={inputClassName} />
-    </label>
-  );
-}
-
-function FormSelect({
-  label,
-  options,
-  className = "",
-  ...props
-}: {
-  label: string;
-  options: string[];
-  className?: string;
-} & Omit<SelectHTMLAttributes<HTMLSelectElement>, "className">) {
-  return (
-    <label className={`flex flex-col gap-2 ${className}`}>
-      <Label>{label}</Label>
-      <select
-        {...props}
-        className="w-full border-[1.5px] border-border-green py-3 pl-4 pr-11 text-base text-primary-dark outline-none transition-colors focus:border-primary"
-      >
-        <option value="" disabled hidden>
-          Изберете&hellip;
-        </option>
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
-          </option>
-        ))}
-      </select>
+      {type === "number" ? (
+        <NumberInput {...props} />
+      ) : (
+        <input type={type} {...props} className={inputClassName} />
+      )}
     </label>
   );
 }
@@ -135,7 +112,7 @@ export function ProfileView() {
           label="Пол"
           options={["Жена", "Мъж", "Друго"]}
           value={profile.gender}
-          onChange={(e) => update("gender", e.target.value)}
+          onChange={(value) => update("gender", value)}
         />
         <FormField
           label="Етнос"
@@ -151,7 +128,7 @@ export function ProfileView() {
           label="Вие сте"
           options={["Родител", "Приемен родител", "Настойник"]}
           value={profile.role}
-          onChange={(e) => update("role", e.target.value)}
+          onChange={(value) => update("role", value)}
         />
         <FormField
           label="Населено място"
