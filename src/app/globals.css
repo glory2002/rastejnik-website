@@ -911,7 +911,7 @@ input[type="month"]::-webkit-calendar-picker-indicator {
 }
 
 .partners-marquee {
-  animation: partners-marquee 36s linear infinite;
+  animation: partners-marquee 108s linear infinite;
 }
 
 .partners-marquee:has(img:hover) {
@@ -927,7 +927,8 @@ input[type="month"]::-webkit-calendar-picker-indicator {
     transform: none;
   }
 
-  .partners-marquee__copy {
+  .partners-marquee__copy,
+  .partners-marquee__fill {
     display: none;
   }
 }

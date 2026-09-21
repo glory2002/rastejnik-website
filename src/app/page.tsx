@@ -6,7 +6,6 @@ import { PartnersSection } from "@/components/PartnersSection";
 import { ContactCtaSection } from "@/components/ContactCtaSection";
 import { TaglineSection } from "@/components/TaglineSection";
 import { Footer } from "@/components/Footer";
-import { EmbroideryOverlay } from "@/components/EmbroideryOverlay";
 
 export default function Home() {
   return (
@@ -19,7 +18,6 @@ export default function Home() {
       <TaglineSection />
       <ContactCtaSection />
       <Footer />
-      <EmbroideryOverlay />
     </main>
   );
 }

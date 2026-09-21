@@ -92,8 +92,8 @@ export function FeaturesSection() {
                   </Heading>
                   <Body
                     size="card"
-                    tone="inherit"
-                    className={`feature-copy text-primary-dark/60 transition-colors ${motion}`}
+                    tone="primary"
+                    className={`feature-copy transition-colors ${motion}`}
                   >
                     {feature.description}
                   </Body>

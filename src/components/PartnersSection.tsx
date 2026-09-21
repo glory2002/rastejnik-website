@@ -49,6 +49,35 @@ function PartnerMark({
   );
 }
 
+function PartnerTrack({
+  items,
+  variant = "live",
+  keyPrefix,
+}: {
+  items: typeof partners;
+  variant?: "live" | "fill" | "copy";
+  keyPrefix: string;
+}) {
+  return (
+    <ul
+      aria-hidden={variant === "live" ? undefined : true}
+      className={
+        variant === "live"
+          ? "flex shrink-0 items-center gap-x-10 px-5 sm:gap-x-16 sm:px-8"
+          : variant === "fill"
+            ? "partners-marquee__fill flex shrink-0 items-center gap-x-10 px-5 sm:gap-x-16 sm:px-8"
+            : "partners-marquee__copy flex shrink-0 items-center gap-x-10 px-5 sm:gap-x-16 sm:px-8"
+      }
+    >
+      {items.map((partner, index) => (
+        <li key={`${keyPrefix}-${partner.name}-${index}`}>
+          <PartnerMark partner={partner} />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function PartnersSection() {
   return (
     <section className="w-full bg-[#fefefc] py-section-quiet">
@@ -62,23 +91,12 @@ export function PartnersSection() {
 
       <div className="overflow-hidden">
         <div className="partners-marquee flex w-max items-center">
-          <ul className="flex items-center gap-x-10 px-5 sm:gap-x-16 sm:px-8">
-            {partners.map((partner) => (
-              <li key={partner.name}>
-                <PartnerMark partner={partner} />
-              </li>
-            ))}
-          </ul>
-          <ul
-            aria-hidden
-            className="partners-marquee__copy flex items-center gap-x-10 px-5 sm:gap-x-16 sm:px-8"
-          >
-            {partners.map((partner) => (
-              <li key={`copy-${partner.name}`}>
-                <PartnerMark partner={partner} />
-              </li>
-            ))}
-          </ul>
+          <PartnerTrack items={partners} keyPrefix="a" />
+          <PartnerTrack items={partners} variant="fill" keyPrefix="b" />
+          <PartnerTrack items={partners} variant="fill" keyPrefix="c" />
+          <PartnerTrack items={partners} variant="copy" keyPrefix="d" />
+          <PartnerTrack items={partners} variant="copy" keyPrefix="e" />
+          <PartnerTrack items={partners} variant="copy" keyPrefix="f" />
         </div>
       </div>
     </section>
