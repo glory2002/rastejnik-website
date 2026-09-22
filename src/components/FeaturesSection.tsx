@@ -61,13 +61,12 @@ export function FeaturesSection() {
           </Display>
         </Reveal>
 
-        <Reveal
-          delay={150}
+        <div
           className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 ${cardGapClass}`}
         >
-          {features.map((feature) => (
-            <Link
-              key={feature.title}
+          {features.map((feature, index) => (
+            <Reveal key={feature.title} delay={index * 90}>
+              <Link
               href={feature.href}
               className={`group ${cardSurfaceClass} relative flex h-full flex-col gap-cluster bg-cream p-cluster outline-none transition-colors ${motion} hover:bg-white focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary`}
             >
@@ -113,8 +112,9 @@ export function FeaturesSection() {
                 </Action>
               </div>
             </Link>
+            </Reveal>
           ))}
-        </Reveal>
+        </div>
       </Container>
     </section>
   );

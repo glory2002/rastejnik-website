@@ -9,17 +9,21 @@ export function ContactCtaSection() {
   return (
     <section id="contact" className="w-full bg-white py-section-quiet">
       <Container>
-        <Reveal className="flex flex-col items-center gap-cluster text-center">
-          <div className="flex flex-col items-center gap-stack">
+        <div className="flex flex-col items-center gap-cluster text-center">
+          <Reveal>
             <Title className="max-w-[600px] text-balance">
               Имате въпрос към нас?
             </Title>
+          </Reveal>
+          <Reveal delay={120}>
             <Body className="max-w-[500px]">
               Пишете ни — с удоволствие ще отговорим.
             </Body>
-          </div>
-          <ContactButton />
-        </Reveal>
+          </Reveal>
+          <Reveal delay={220}>
+            <ContactButton />
+          </Reveal>
+        </div>
       </Container>
     </section>
   );

@@ -8,9 +8,9 @@
  */
 const PALETTE = {
   cream:
-    ".cls-1{fill:#e19826}.cls-2{fill:#6d954b}.cls-3{fill:#ee3c42}.cls-4{fill:#f17996}.cls-5{fill:#1f4fa1}",
+    ".shev-cream .cls-1{fill:#e19826}.shev-cream .cls-2{fill:#6d954b}.shev-cream .cls-3{fill:#ee3c42}.shev-cream .cls-4{fill:#f17996}.shev-cream .cls-5{fill:#1f4fa1}",
   onPrimary:
-    ".cls-1{fill:#e19826}.cls-2{fill:#fff;fill-opacity:.35}.cls-3{fill:#ee3c42}.cls-4{fill:#f17996}.cls-5{fill:#1f4fa1}",
+    ".shev-onPrimary .cls-1{fill:#e19826}.shev-onPrimary .cls-2{fill:#fff;fill-opacity:.35}.shev-onPrimary .cls-3{fill:#ee3c42}.shev-onPrimary .cls-4{fill:#f17996}.shev-onPrimary .cls-5{fill:#1f4fa1}",
 } as const;
 
 export function ShevitsaAssembleIcon({
@@ -23,7 +23,7 @@ export function ShevitsaAssembleIcon({
   return (
     <svg
       viewBox="0 0 708.98 726.03"
-      className={className}
+      className={["shev-" + tone, className].filter(Boolean).join(" ")}
       aria-hidden="true"
       overflow="visible"
     >

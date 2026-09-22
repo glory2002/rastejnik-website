@@ -3,13 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { ListingHero } from "@/components/ListingHero";
 import { TokenIcon } from "@/components/icons/TokenIcon";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLead } from "@/components/ui/SectionLead";
 import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
-import { Action, Body, Display, Heading } from "@/components/ui/Typography";
+import { Action, Body, Heading } from "@/components/ui/Typography";
 import {
   questionnaireCategories,
   type QuestionnaireAccent,
@@ -53,21 +54,20 @@ export default function EarlyChildhoodCategoryPage() {
             Въпросници
           </Action>
 
-          <div className="flex items-center justify-between gap-cluster">
-            <div className="min-w-0 flex-1">
-              <Display className="text-balance md:text-nowrap">
-                {parentCategory.title}
-              </Display>
-              <SectionLead className="mt-4 max-w-hero-lead sm:mt-5">
-                {parentCategory.description}
-              </SectionLead>
-            </div>
-            <TokenIcon
-              src={parentCategory.icon}
-              accent={parentCategory.accent}
-              className="size-mark shrink-0"
-            />
-          </div>
+          <ListingHero
+            title={parentCategory.title}
+            mark={
+              <TokenIcon
+                src={parentCategory.icon}
+                accent={parentCategory.accent}
+                className="size-mark shrink-0"
+              />
+            }
+          >
+            <SectionLead className="mt-4 max-w-hero-lead sm:mt-5">
+              {parentCategory.description}
+            </SectionLead>
+          </ListingHero>
         </Container>
       </section>
 

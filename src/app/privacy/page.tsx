@@ -3,6 +3,7 @@ import { ContactTrigger } from "@/components/ContactModal";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Container } from "@/components/ui/Container";
+import { Reveal, RevealStack } from "@/components/ui/Reveal";
 import { Body, Display, Heading } from "@/components/ui/Typography";
 
 export const metadata: Metadata = {
@@ -18,11 +19,13 @@ export default function PrivacyPage() {
 
       <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
-          <Display className="max-w-[800px]">Поверителност</Display>
-          <Body className="mt-5 max-w-[620px] sm:mt-6">
-            Тук ще опишем какви данни събираме, защо и как ги пазим. Текстът е
-            чернова — ще се допълни с финална политика преди публичен старт.
-          </Body>
+          <RevealStack>
+            <Display className="max-w-[800px]">Поверителност</Display>
+            <Body className="mt-5 max-w-[620px] sm:mt-6">
+              Тук ще опишем какви данни събираме, защо и как ги пазим. Текстът е
+              чернова — ще се допълни с финална политика преди публичен старт.
+            </Body>
+          </RevealStack>
         </Container>
       </section>
 
@@ -33,22 +36,22 @@ export default function PrivacyPage() {
             size="relaxed"
             className="mx-auto flex max-w-[720px] flex-col gap-8"
           >
-            <div className="flex flex-col gap-3">
+            <Reveal className="flex flex-col gap-3">
               <Heading as="h2">Какви данни обработваме</Heading>
               <p>
                 При регистрация и ползване на въпросниците може да обработваме
                 данни за контакт и информация, която въвеждате за детето — само
                 доколкото е нужна за услугата.
               </p>
-            </div>
-            <div className="flex flex-col gap-3">
+            </Reveal>
+            <Reveal delay={80} className="flex flex-col gap-3">
               <Heading as="h2">За какво ги ползваме</Heading>
               <p>
                 За да ви покажем резултати, да запазим прогреса ви и да
                 подобрим съдържанието на платформата. Не продаваме лични данни.
               </p>
-            </div>
-            <div className="flex flex-col gap-3">
+            </Reveal>
+            <Reveal delay={160} className="flex flex-col gap-3">
               <Heading as="h2">Вашите права</Heading>
               <p>
                 Можете да поискате достъп, поправка или изтриване на данни.
@@ -58,7 +61,7 @@ export default function PrivacyPage() {
                 </ContactTrigger>
                 .
               </p>
-            </div>
+            </Reveal>
           </Body>
         </Container>
       </section>

@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { NewsCard } from "@/components/NewsCard";
 import { Container } from "@/components/ui/Container";
+import { Reveal, RevealStack } from "@/components/ui/Reveal";
 import { cardGapClass } from "@/components/ui/cardSurface";
 import {
   Action,
@@ -111,46 +112,52 @@ export default async function NewsArticlePage({ params }: PageProps) {
             Всички новини
           </Action>
 
-          <div className="flex flex-col items-center text-center">
+          <RevealStack className="flex flex-col items-center text-center">
             <Meta className="mb-4">{article.date}</Meta>
             <Display className="max-w-[820px] text-balance">
               {article.title}
             </Display>
-          </div>
+          </RevealStack>
         </Container>
       </section>
 
       <article className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <div className="mx-auto max-w-[720px]">
-            <div className="relative mb-8 aspect-[16/9] overflow-hidden bg-cream sm:mb-12">
-              <Image
-                src={article.coverImage}
-                alt=""
-                fill
-                sizes="(max-width: 720px) 100vw, 720px"
-                className="object-cover"
-                priority
-              />
-            </div>
-
-            <NewsBody blocks={article.body} />
-
-            <div className="mt-8 border-t border-border-green pt-6 sm:mt-10 sm:pt-8">
-              <Link
-                href="/news"
-                className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
-              >
+            <Reveal>
+              <div className="relative mb-8 aspect-[16/9] overflow-hidden bg-cream sm:mb-12">
                 <Image
-                  src="/images/arrow-link.svg"
+                  src={article.coverImage}
                   alt=""
-                  width={14}
-                  height={22}
-                  className="shrink-0 rotate-180"
+                  fill
+                  sizes="(max-width: 720px) 100vw, 720px"
+                  className="object-cover"
+                  priority
                 />
-                <Action>Всички новини</Action>
-              </Link>
-            </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={140}>
+              <NewsBody blocks={article.body} />
+            </Reveal>
+
+            <Reveal delay={220}>
+              <div className="mt-8 border-t border-border-green pt-6 sm:mt-10 sm:pt-8">
+                <Link
+                  href="/news"
+                  className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
+                >
+                  <Image
+                    src="/images/arrow-link.svg"
+                    alt=""
+                    width={14}
+                    height={22}
+                    className="shrink-0 rotate-180"
+                  />
+                  <Action>Всички новини</Action>
+                </Link>
+              </div>
+            </Reveal>
           </div>
         </Container>
       </article>
@@ -158,17 +165,21 @@ export default async function NewsArticlePage({ params }: PageProps) {
       {related.length > 0 ? (
         <section className="w-full bg-white py-12 sm:py-16 md:py-24">
           <Container>
-            <Title>Още новини</Title>
+            <Reveal>
+              <Title>Още новини</Title>
+            </Reveal>
             <ul className={`mt-8 grid sm:mt-10 sm:grid-cols-2 lg:grid-cols-3 ${cardGapClass}`}>
               {related.map((item, index) => (
                 <li key={item.slug}>
-                  <NewsCard
-                    href={`/news/${item.slug}`}
-                    date={item.date}
-                    title={item.title}
-                    excerpt={item.excerpt}
-                    index={index}
-                  />
+                  <Reveal delay={Math.min(index * 70, 210)}>
+                    <NewsCard
+                      href={`/news/${item.slug}`}
+                      date={item.date}
+                      title={item.title}
+                      excerpt={item.excerpt}
+                      index={index}
+                    />
+                  </Reveal>
                 </li>
               ))}
             </ul>

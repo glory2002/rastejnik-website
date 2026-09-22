@@ -3,6 +3,7 @@
 import { Fragment, useState, type ReactNode } from "react";
 import type { FaqItem } from "@/data/faq";
 import { cardSurfaceClass } from "@/components/ui/cardSurface";
+import { Reveal } from "@/components/ui/Reveal";
 import { Body, Heading } from "@/components/ui/Typography";
 
 const motion = "duration-200 ease-out motion-reduce:transition-none";
@@ -86,8 +87,9 @@ export function FaqList({ items, highlightQuery = "" }: FaqListProps) {
         const isOpen = openIndex === index;
 
         return (
-          <div
+          <Reveal
             key={`${item.question}-${index}`}
+            delay={Math.min(index * 50, 200)}
             className={`${cardSurfaceClass} bg-transparent transition-colors ${motion} hover:bg-white`}
           >
             <button
@@ -116,7 +118,7 @@ export function FaqList({ items, highlightQuery = "" }: FaqListProps) {
                 </div>
               </div>
             </div>
-          </div>
+          </Reveal>
         );
       })}
     </div>

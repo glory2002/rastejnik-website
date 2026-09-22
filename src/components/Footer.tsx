@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ContactTrigger } from "@/components/ContactModal";
 import { Logo } from "./Header";
 import { FullWidth } from "./ui/Container";
+import { Reveal } from "./ui/Reveal";
 
 const platformItems = [
   { label: "Въпросници", href: "/questionnaires" },
@@ -25,7 +26,7 @@ export function Footer() {
   return (
     <footer className="w-full bg-primary-dark">
       <FullWidth className="py-section-quiet">
-        <div className="flex flex-col gap-block lg:flex-row lg:justify-between">
+        <Reveal className="flex flex-col gap-block lg:flex-row lg:justify-between">
           <div className="max-w-[400px]">
             <Link href="/" aria-label="Растежник начало" className="inline-block">
               <Logo variant="footer" />
@@ -74,9 +75,9 @@ export function Footer() {
               </ul>
             </div>
           </div>
-        </div>
+        </Reveal>
 
-        <div className="mt-block flex flex-col items-start justify-between gap-4 border-t border-[rgba(255,255,255,0.13)] pt-cluster sm:flex-row sm:items-center">
+        <Reveal delay={120} className="mt-block flex flex-col items-start justify-between gap-4 border-t border-[rgba(255,255,255,0.13)] pt-cluster sm:flex-row sm:items-center">
           <p className="text-sm text-footer-text">
             © 2024 Растежник. Всички права запазени.
           </p>
@@ -92,7 +93,7 @@ export function Footer() {
               </li>
             ))}
           </ul>
-        </div>
+        </Reveal>
       </FullWidth>
     </footer>
   );

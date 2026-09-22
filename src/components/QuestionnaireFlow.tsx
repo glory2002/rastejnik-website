@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/Button";
 import { NumberInput } from "@/components/ui/NumberInput";
 import { FormSelect } from "@/components/ui/Select";
 import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
 import {
   Action,
   Body,
@@ -70,17 +71,23 @@ function OnboardStepShell({
     <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
       <Container>
         <div
-          className="shevitsa-stage-enter mx-auto flex w-full flex-col gap-8 sm:gap-10"
+          className="mx-auto flex w-full flex-col gap-8 sm:gap-10"
           style={{ maxWidth }}
         >
           <div className="flex flex-col items-center gap-3 text-center">
-            <Meta tone="muted">Стъпка {step} от 3</Meta>
-            <Title as="h1">{title}</Title>
+            <Reveal>
+              <Meta tone="muted">Стъпка {step} от 3</Meta>
+            </Reveal>
+            <Reveal delay={80}>
+              <Title as="h1">{title}</Title>
+            </Reveal>
             {description && (
-              <Body className="max-w-[440px]">{description}</Body>
+              <Reveal delay={160}>
+                <Body className="max-w-[440px]">{description}</Body>
+              </Reveal>
             )}
           </div>
-          {children}
+          <Reveal delay={220}>{children}</Reveal>
         </div>
       </Container>
     </section>
@@ -328,7 +335,9 @@ export function QuestionnaireFlow({
 
   const headerSection = stage === "questions" && header && (
     <section className="w-full bg-cream py-5 md:py-6">
-      <Container>{header}</Container>
+      <Container>
+        <Reveal>{header}</Reveal>
+      </Container>
     </section>
   );
 
@@ -541,18 +550,18 @@ export function QuestionnaireFlow({
       <section className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <div className="mx-auto w-full max-w-[720px]">
-            <div className="shevitsa-stage-enter flex flex-col items-center gap-8 text-center sm:gap-10">
-        <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-8 text-center sm:gap-10">
+        <Reveal className="flex flex-col items-center gap-4">
           <Title className="max-w-[560px] text-balance">Поздравления!</Title>
           <Body className="max-w-[480px]">
             Успешно завършихте оценката на развитието на вашето дете. Ето
             обобщените резултати и препоръки, които ще ви помогнат да
             подкрепите растежа му.
           </Body>
-        </div>
+        </Reveal>
 
         {domainResults.length > 0 && (
-          <div className="w-full bg-white p-6 text-left sm:p-8 md:p-10">
+          <Reveal delay={140} className="w-full bg-white p-6 text-left sm:p-8 md:p-10">
             <div className="flex flex-col items-center gap-12 text-center">
               <Heading size="sm">Обобщение на резултатите</Heading>
               <TrafficLight level={overallStatus.level} label={overallStatus.label} />
@@ -628,12 +637,14 @@ export function QuestionnaireFlow({
               </Heading>
               <Body>{generalGuidance}</Body>
             </div>
-          </div>
+          </Reveal>
         )}
 
-              <Button href={backHref} size="l" className="mt-2">
-                {backLabel}
-              </Button>
+              <Reveal delay={220}>
+                <Button href={backHref} size="l" className="mt-2">
+                  {backLabel}
+                </Button>
+              </Reveal>
             </div>
           </div>
         </Container>
@@ -649,7 +660,7 @@ export function QuestionnaireFlow({
           <div
             className={`mx-auto w-full ${isLiteracy ? "max-w-[640px]" : "max-w-[720px]"}`}
           >
-            <div className="flex flex-col gap-8 sm:gap-10">
+            <Reveal key={page} className="flex flex-col gap-8 sm:gap-10">
               <div className={isLiteracy ? "text-center" : undefined}>
                 <Meta
                   as="div"
@@ -843,7 +854,7 @@ export function QuestionnaireFlow({
                   ) : null}
                 </button>
               </div>
-            </div>
+            </Reveal>
           </div>
         </Container>
       </section>

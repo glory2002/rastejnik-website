@@ -72,25 +72,29 @@ export default async function AgeQuestionnairePage({
             Ранно детско развитие
           </Action>
 
-          <Display className="max-w-[700px]">{sub.title}</Display>
-          <SectionLead className="mt-6 max-w-[560px]">
-            {sub.description} Изберете конкретен етап по-долу, за да
-            започнете съответния въпросник.
-          </SectionLead>
+          <Reveal>
+            <Display className="max-w-[700px]">{sub.title}</Display>
+          </Reveal>
+          <Reveal delay={140}>
+            <SectionLead className="mt-6 max-w-[560px]">
+              {sub.description} Изберете конкретен етап по-долу, за да
+              започнете съответния въпросник.
+            </SectionLead>
+          </Reveal>
         </Container>
       </section>
 
       <section className="w-full bg-white py-16 md:py-24">
         <Container>
-          <Reveal className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 ${cardGapCompactClass}`}>
+          <div className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 ${cardGapCompactClass}`}>
             {sub.intervals.map((interval, index) => {
               const icon = babyIcons[index % babyIcons.length];
               const isRattleBaby = icon === "/images/baby-1.svg";
               const isCrawlBaby = icon === "/images/baby-2.svg";
 
               return (
+                <Reveal key={interval.label} delay={Math.min(index * 50, 200)}>
                 <Link
-                  key={interval.label}
                   href={`/questionnaires/ranno-detsko-razvitie/${sub.slug}/${interval.slug}`}
                   className={`group ${cardSurfaceClass} relative flex aspect-square flex-col items-center gap-4 bg-cream p-6 text-center transition-colors duration-200 ease-out hover:bg-white`}
                 >
@@ -129,9 +133,10 @@ export default async function AgeQuestionnairePage({
                     />
                   </Meta>
                 </Link>
+                </Reveal>
               );
             })}
-          </Reveal>
+          </div>
         </Container>
       </section>
 

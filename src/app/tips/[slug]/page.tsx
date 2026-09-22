@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { TipCard } from "@/components/TipCard";
 import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
 import { cardGapClass } from "@/components/ui/cardSurface";
 import {
   Action,
@@ -114,42 +115,48 @@ export default async function TipArticlePage({ params }: PageProps) {
               : "Назад към полезната информация"}
           </Action>
 
-          <div className="flex flex-col items-center text-center">
+          <Reveal className="flex flex-col items-center text-center">
             <Display className="max-w-[820px] text-balance">{tip.title}</Display>
-          </div>
+          </Reveal>
         </Container>
       </section>
 
       <article className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <div className="mx-auto max-w-[720px]">
-            <TipBody blocks={tip.body} />
+            <Reveal>
+              <TipBody blocks={tip.body} />
+            </Reveal>
 
-            <p className="mt-10 text-[15px] leading-[1.4] text-primary-dark/60 sm:mt-12">
-              Растежник не замества медицински или терапевтичен съвет. При
-              притеснение за здравето или развитието на детето се обърнете към
-              специалист.
-            </p>
+            <Reveal delay={140}>
+              <p className="mt-10 text-[15px] leading-[1.4] text-primary-dark/60 sm:mt-12">
+                Растежник не замества медицински или терапевтичен съвет. При
+                притеснение за здравето или развитието на детето се обърнете към
+                специалист.
+              </p>
+            </Reveal>
 
-            <div className="mt-8 border-t border-border-green pt-6 sm:mt-10 sm:pt-8">
-              <Link
-                href={category ? `/tips#${category.slug}` : "/tips"}
-                className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
-              >
-                <Image
-                  src="/images/arrow-link.svg"
-                  alt=""
-                  width={14}
-                  height={22}
-                  className="shrink-0 rotate-180"
-                />
-                <Action>
-                  {category
-                    ? `Назад към ${category.title}`
-                    : "Към полезната информация"}
-                </Action>
-              </Link>
-            </div>
+            <Reveal delay={220}>
+              <div className="mt-8 border-t border-border-green pt-6 sm:mt-10 sm:pt-8">
+                <Link
+                  href={category ? `/tips#${category.slug}` : "/tips"}
+                  className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
+                >
+                  <Image
+                    src="/images/arrow-link.svg"
+                    alt=""
+                    width={14}
+                    height={22}
+                    className="shrink-0 rotate-180"
+                  />
+                  <Action>
+                    {category
+                      ? `Назад към ${category.title}`
+                      : "Към полезната информация"}
+                  </Action>
+                </Link>
+              </div>
+            </Reveal>
           </div>
         </Container>
       </article>
@@ -157,16 +164,20 @@ export default async function TipArticlePage({ params }: PageProps) {
       {related.length > 0 ? (
         <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
           <Container>
-            <Title>Още материали</Title>
+            <Reveal>
+              <Title>Още материали</Title>
+            </Reveal>
             <ul className={`mt-8 grid sm:mt-10 sm:grid-cols-2 lg:grid-cols-3 ${cardGapClass}`}>
               {related.map((item, index) => (
                 <li key={item.slug}>
-                  <TipCard
-                    href={`/tips/${item.slug}`}
-                    title={item.title}
-                    excerpt={item.excerpt}
-                    index={index}
-                  />
+                  <Reveal delay={Math.min(index * 70, 210)}>
+                    <TipCard
+                      href={`/tips/${item.slug}`}
+                      title={item.title}
+                      excerpt={item.excerpt}
+                      index={index}
+                    />
+                  </Reveal>
                 </li>
               ))}
             </ul>

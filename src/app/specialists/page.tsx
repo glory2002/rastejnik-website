@@ -4,10 +4,11 @@ import { ContactTrigger } from "@/components/ContactModal";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { ShevitsaMark } from "@/components/icons/ShevitsaMark";
+import { ListingHero } from "@/components/ListingHero";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { cardSurfaceClass } from "@/components/ui/cardSurface";
-import { Action, Body, Display, Heading, Meta, Title } from "@/components/ui/Typography";
+import { Action, Body, Heading, Meta, Title } from "@/components/ui/Typography";
 import { associations } from "@/data/specialists";
 
 export const metadata: Metadata = {
@@ -23,25 +24,24 @@ export default function SpecialistsPage() {
 
       <section className="relative z-10 w-full py-12 sm:py-16 md:py-24">
         <Container>
-          <div className="flex items-center justify-between gap-cluster">
-            <div className="min-w-0 flex-1">
-              <Display className="text-balance md:text-nowrap">
-                Специалисти и пространства
-              </Display>
-              <Body className="mt-4 max-w-hero-lead sm:mt-5">
-                Растежник не замества медицински съвет. Списъкът е ориентир —
-                през сайтовете на асоциациите можете да проверите
-                правоспособност и да намерите практики близо до вас.
-              </Body>
-            </div>
-            <Image
-              src="/images/icon-rub-03.svg"
-              alt=""
-              width={128}
-              height={109}
-              className="h-[length:var(--size-mark)] w-auto shrink-0 object-contain"
-            />
-          </div>
+          <ListingHero
+            title="Специалисти и пространства"
+            mark={
+              <Image
+                src="/images/icon-rub-03.svg"
+                alt=""
+                width={128}
+                height={109}
+                className="h-[length:var(--size-mark)] w-auto shrink-0 object-contain"
+              />
+            }
+          >
+            <Body className="mt-4 max-w-hero-lead sm:mt-5">
+              Растежник не замества медицински съвет. Списъкът е ориентир —
+              през сайтовете на асоциациите можете да проверите
+              правоспособност и да намерите практики близо до вас.
+            </Body>
+          </ListingHero>
         </Container>
       </section>
 
@@ -50,6 +50,7 @@ export default function SpecialistsPage() {
           <ul className="border-t border-border-green">
             {associations.map((association, index) => (
               <li key={association.name} className="border-b border-border-green">
+                <Reveal delay={Math.min(index * 60, 180)}>
                 <a
                   href={association.href}
                   target="_blank"
@@ -81,6 +82,7 @@ export default function SpecialistsPage() {
                     </span>
                   </div>
                 </a>
+                </Reveal>
               </li>
             ))}
           </ul>

@@ -4,6 +4,7 @@ import { FeaturesSection } from "@/components/FeaturesSection";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Container } from "@/components/ui/Container";
+import { Reveal, RevealStack } from "@/components/ui/Reveal";
 import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Action, Body, Display, Heading, Meta } from "@/components/ui/Typography";
 import { resources, type ResourceItem } from "@/data/resources";
@@ -105,22 +106,24 @@ export default function ResourcesPage() {
 
       <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
-          <div>
+          <RevealStack>
             <Display className="max-w-[800px]">Ресурси</Display>
             <Body className="mt-4 max-w-[620px]">
               Видеа и PDF материали за ежедневието с малко дете — отворете
               видеото в YouTube или изтеглете книгата.
             </Body>
-          </div>
+          </RevealStack>
         </Container>
       </section>
 
       <section className="w-full bg-white py-12 sm:py-16 md:py-24">
         <Container>
           <ul className={`grid sm:grid-cols-2 lg:grid-cols-3 ${cardGapClass}`}>
-            {resources.map((item) => (
+            {resources.map((item, index) => (
               <li key={item.id}>
-                <ResourceCard item={item} />
+                <Reveal delay={Math.min(index * 70, 210)}>
+                  <ResourceCard item={item} />
+                </Reveal>
               </li>
             ))}
           </ul>

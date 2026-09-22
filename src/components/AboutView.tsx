@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { GoalShevitsaField } from "@/components/GoalShevitsaField";
@@ -454,12 +455,27 @@ export function AboutView() {
     <>
       <section className="relative w-full bg-cream pt-12 sm:pt-16 md:pt-28">
         <Container>
-          <Reveal className="max-w-[720px]" key={active}>
-            <Display>{title}</Display>
-            <SectionLead className="mt-5 max-w-[540px] sm:mt-6">
-              {lead}
-            </SectionLead>
-          </Reveal>
+          <div className="flex items-center gap-cluster" key={active}>
+            <Reveal>
+              <Image
+                src="/images/Za-nas.svg"
+                alt=""
+                width={79}
+                height={69}
+                className="h-[length:var(--size-mark)] w-auto shrink-0 object-contain"
+              />
+            </Reveal>
+            <div className="min-w-0">
+              <Reveal delay={100}>
+                <Display>{title}</Display>
+              </Reveal>
+              <Reveal delay={220}>
+                <SectionLead className="mt-5 max-w-[540px] sm:mt-6">
+                  {lead}
+                </SectionLead>
+              </Reveal>
+            </div>
+          </div>
         </Container>
 
         <div

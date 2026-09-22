@@ -12,20 +12,22 @@ function clamp01(value: number) {
 }
 
 /**
- * CTA motif lives inside the green band so overflow-hidden crops it
- * to that box — nothing paints into the cream gutters.
+ * Large shevitsa inside a band (`overflow-hidden` crops it to the box).
  * Pieces assemble while the band is on screen and scatter again when
- * you scroll past it. After they lock, the whole motif tracks scroll
- * like the tagline embroidery (gentle up/down + scale).
+ * you scroll past. After they lock, the motif tracks scroll gently.
  */
-export function CtaShevitsa() {
+export function CtaShevitsa({
+  tone = "onPrimary",
+}: {
+  tone?: "cream" | "onPrimary";
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const motifRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const field = ref.current;
     const motifEl = motifRef.current;
-    const band = document.getElementById("cta-section");
+    const band = field?.closest("section");
     if (!field || !motifEl || !band) return;
 
     const reduceMotion = window.matchMedia(
@@ -85,9 +87,14 @@ export function CtaShevitsa() {
 
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
+    document.addEventListener("scroll", onScroll, {
+      passive: true,
+      capture: true,
+    });
     window.addEventListener("resize", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("scroll", onScroll, { capture: true });
       window.removeEventListener("resize", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
@@ -101,7 +108,7 @@ export function CtaShevitsa() {
     >
       <div ref={motifRef} className="origin-bottom will-change-transform">
         <ShevitsaAssembleIcon
-          tone="onPrimary"
+          tone={tone}
           className="h-auto w-full overflow-visible"
         />
       </div>

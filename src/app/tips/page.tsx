@@ -3,9 +3,11 @@ import Image from "next/image";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { TipCard } from "@/components/TipCard";
+import { ListingHero } from "@/components/ListingHero";
 import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
 import { cardGapClass } from "@/components/ui/cardSurface";
-import { Body, Display } from "@/components/ui/Typography";
+import { Body } from "@/components/ui/Typography";
 import { tips } from "@/data/tips";
 
 export const metadata: Metadata = {
@@ -21,24 +23,23 @@ export default function TipsListingPage() {
 
       <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
-          <div className="flex items-center justify-between gap-cluster">
-            <div className="min-w-0 flex-1">
-              <Display className="text-balance md:text-nowrap">
-                Полезна информация
-              </Display>
-              <Body className="mt-4 max-w-hero-lead sm:mt-5">
-                Кратки, практични идеи за сън, хранене, игра и връзка —
-                написани за родителския ден, не за идеален свят.
-              </Body>
-            </div>
-            <Image
-              src="/images/icon-rub-04.svg"
-              alt=""
-              width={165}
-              height={110}
-              className="h-[length:var(--size-mark)] w-auto shrink-0 object-contain"
-            />
-          </div>
+          <ListingHero
+            title="Полезна информация"
+            mark={
+              <Image
+                src="/images/icon-rub-04.svg"
+                alt=""
+                width={165}
+                height={110}
+                className="h-[length:var(--size-mark)] w-auto shrink-0 object-contain"
+              />
+            }
+          >
+            <Body className="mt-4 max-w-hero-lead sm:mt-5">
+              Кратки, практични идеи за сън, хранене, игра и връзка —
+              написани за родителския ден, не за идеален свят.
+            </Body>
+          </ListingHero>
         </Container>
       </section>
 
@@ -56,12 +57,14 @@ export default function TipsListingPage() {
                   id={isCategoryAnchor ? tip.categorySlug : undefined}
                   className={isCategoryAnchor ? "scroll-mt-24" : undefined}
                 >
-                  <TipCard
-                    href={`/tips/${tip.slug}`}
-                    title={tip.title}
-                    excerpt={tip.excerpt}
-                    index={index}
-                  />
+                  <Reveal delay={Math.min(index * 70, 210)}>
+                    <TipCard
+                      href={`/tips/${tip.slug}`}
+                      title={tip.title}
+                      excerpt={tip.excerpt}
+                      index={index}
+                    />
+                  </Reveal>
                 </li>
               );
             })}

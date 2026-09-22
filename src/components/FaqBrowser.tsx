@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { FaqList } from "./FaqList";
 import { Button } from "@/components/ui/Button";
+import { Reveal } from "@/components/ui/Reveal";
 import { Body, Label } from "@/components/ui/Typography";
 import { faqQuestions } from "@/data/faq";
 
@@ -36,16 +37,18 @@ export function FaqBrowser() {
 
   return (
     <div className="flex w-full flex-col gap-10">
-      <label className="flex w-full flex-col gap-2">
-        <Label>Търсене</Label>
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => handleQueryChange(e.target.value)}
-          placeholder="Търси въпрос…"
-          className={searchInputClassName}
-        />
-      </label>
+      <Reveal>
+        <label className="flex w-full flex-col gap-2">
+          <Label>Търсене</Label>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => handleQueryChange(e.target.value)}
+            placeholder="Търси въпрос…"
+            className={searchInputClassName}
+          />
+        </label>
+      </Reveal>
 
       {filtered.length === 0 ? (
         <Body>

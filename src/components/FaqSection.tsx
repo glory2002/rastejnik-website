@@ -16,35 +16,41 @@ export function FaqSection() {
     <section id="questionnaires" className="w-full bg-cream py-section">
       <Container>
         <div className="grid gap-block lg:grid-cols-2">
-          <Reveal className="lg:sticky lg:top-24 lg:self-start">
-            <Display weight="medium" as="h2" className="text-balance">
-              Бързи отговори на най-честите въпроси
-            </Display>
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <Reveal>
+              <Display weight="medium" as="h2" className="text-balance">
+                Бързи отговори на най-честите въпроси
+              </Display>
+            </Reveal>
 
-            <SectionLead className="mt-stack max-w-[360px]">
-              Физическо и моторно развитие
-              <br />
-              Социално развитие
-              <br />
-              Език и говор, и др.
-            </SectionLead>
+            <Reveal delay={120}>
+              <SectionLead className="mt-stack max-w-[360px]">
+                Физическо и моторно развитие
+                <br />
+                Социално развитие
+                <br />
+                Език и говор, и др.
+              </SectionLead>
+            </Reveal>
 
-            <Link
-              href="/faq"
-              className={`group mt-cluster inline-flex w-fit max-w-full items-center gap-1.5 rounded-full border-[1.5px] border-secondary px-5 py-3 transition-colors sm:px-6 sm:py-3.5 ${motion} hover:border-primary`}
-            >
-              <Action className="inline-flex items-center gap-1.5">
-                Разгледай всички въпроси
-                <Image
-                  src="/images/arrow-link.svg"
-                  alt=""
-                  width={14}
-                  height={22}
-                  className={`shrink-0 transition-transform ${motion} group-hover:translate-x-1`}
-                />
-              </Action>
-            </Link>
-          </Reveal>
+            <Reveal delay={220}>
+              <Link
+                href="/faq"
+                className={`group mt-cluster inline-flex w-fit max-w-full items-center gap-1.5 rounded-full border-[1.5px] border-secondary px-5 py-3 transition-colors sm:px-6 sm:py-3.5 ${motion} hover:border-primary`}
+              >
+                <Action className="inline-flex items-center gap-1.5">
+                  Разгледай всички въпроси
+                  <Image
+                    src="/images/arrow-link.svg"
+                    alt=""
+                    width={14}
+                    height={22}
+                    className={`shrink-0 transition-transform ${motion} group-hover:translate-x-1`}
+                  />
+                </Action>
+              </Link>
+            </Reveal>
+          </div>
 
           <Reveal delay={150}>
             <FaqList items={visibleQuestions} />

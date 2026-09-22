@@ -32,28 +32,34 @@ export function Hero() {
           <div className="hero-video-scrim" aria-hidden />
 
           <Container className="relative flex h-full flex-col items-start justify-end pb-hero-block text-left sm:pb-hero-block-md lg:pb-hero-block-lg">
-            <Reveal className="flex w-full max-w-hero-copy flex-col items-start gap-block lg:ml-hero-inset">
+            <div className="flex w-full max-w-hero-copy flex-col items-start gap-block lg:ml-hero-inset">
               <div className="flex w-full flex-col items-start gap-cluster">
-                <DisplayHero className="max-w-hero-display">
-                  Помагаме
-                  <br />
-                  на децата
-                  <br />
-                  да разцъфтят
-                </DisplayHero>
-                <SectionLead
-                  tone="light"
-                  size="hero"
-                  className="hero-lead max-w-hero-lead"
-                >
-                  Кратки валидирани оценки на развитието - какво работи в
-                  реалния живот: ритуали, граници, разговори, ежедневни.
-                </SectionLead>
+                <Reveal>
+                  <DisplayHero className="max-w-hero-display">
+                    Помагаме
+                    <br />
+                    на децата
+                    <br />
+                    да разцъфтят
+                  </DisplayHero>
+                </Reveal>
+                <Reveal delay={140}>
+                  <SectionLead
+                    tone="light"
+                    size="hero"
+                    className="hero-lead max-w-hero-lead"
+                  >
+                    Кратки валидирани оценки на развитието - какво работи в
+                    реалния живот: ритуали, граници, разговори, ежедневни.
+                  </SectionLead>
+                </Reveal>
               </div>
-              <Button className="max-w-full" href="/questionnaires">
-                Направи Въпросника Безплатно
-              </Button>
-            </Reveal>
+              <Reveal delay={260}>
+                <Button className="max-w-full" href="/questionnaires">
+                  Направи Въпросника Безплатно
+                </Button>
+              </Reveal>
+            </div>
           </Container>
         </div>
       </div>
