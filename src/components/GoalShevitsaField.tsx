@@ -71,6 +71,7 @@ export function GoalShevitsaField() {
     let running = true;
 
     function apply() {
+      if (!section || !field) return;
       const rect = section.getBoundingClientRect();
       const vh = window.innerHeight;
       const visible = rect.bottom > 0 && rect.top < vh;

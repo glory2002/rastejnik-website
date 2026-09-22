@@ -25,22 +25,22 @@ export function CtaShevitsa({
   const motifRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const field = ref.current;
+    const fieldEl = ref.current;
     const motifEl = motifRef.current;
-    const band = field?.closest("section");
-    if (!field || !motifEl || !band) return;
+    const sectionEl = fieldEl?.closest("section");
+    if (!fieldEl || !motifEl || !sectionEl) return;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    field.querySelectorAll<HTMLElement>(".shevitsa-piece").forEach((piece) => {
+    fieldEl.querySelectorAll<HTMLElement>(".shevitsa-piece").forEach((piece) => {
       const delay = piece.style.animationDelay;
       if (delay) piece.style.setProperty("--piece-delay", delay);
     });
 
     if (reduceMotion) {
-      field.classList.add("is-assembled");
+      fieldEl.classList.add("is-assembled");
       return;
     }
 
@@ -48,15 +48,16 @@ export function CtaShevitsa({
     let frame = 0;
 
     function sectionInView() {
-      const rect = band.getBoundingClientRect();
+      if (!sectionEl) return false;
+      const rect = sectionEl.getBoundingClientRect();
       const vh = window.innerHeight;
       return rect.top < vh * 0.72 && rect.bottom > vh * 0.28;
     }
 
     function applyParallax() {
-      if (!assembled || !band || !motifEl) return;
+      if (!assembled || !sectionEl || !motifEl) return;
 
-      const sectionRect = band.getBoundingClientRect();
+      const sectionRect = sectionEl.getBoundingClientRect();
       const travelDistance = window.innerHeight + sectionRect.height;
       const progress = clamp01(
         (window.innerHeight - sectionRect.top) / travelDistance,
@@ -75,9 +76,9 @@ export function CtaShevitsa({
       }
 
       assembled = visible;
-      field.classList.toggle("is-assembled", visible);
+      fieldEl?.classList.toggle("is-assembled", visible);
       if (visible) applyParallax();
-      else motifEl.style.transform = "";
+      else if (motifEl) motifEl.style.transform = "";
     }
 
     function onScroll() {

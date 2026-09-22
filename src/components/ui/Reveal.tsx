@@ -96,7 +96,7 @@ export function Reveal({
       if (frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
-        if (isInView(el, root)) show();
+        if (el && isInView(el, root)) show();
       });
     }
 
@@ -122,10 +122,10 @@ export function Reveal({
     window.addEventListener("resize", onScroll);
 
     const poll = window.setInterval(() => {
-      if (isInView(el, root)) show();
+      if (el && isInView(el, root)) show();
     }, 160);
 
-    if (isInView(el, root)) show();
+    if (el && isInView(el, root)) show();
 
     function cleanup() {
       observer.disconnect();
