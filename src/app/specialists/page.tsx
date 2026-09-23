@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { ContactTrigger } from "@/components/ContactModal";
@@ -17,23 +18,29 @@ export const metadata: Metadata = {
     "Препоръчани асоциации и отправни точки към практики и пространства, свързани с ранното детско развитие и здравни грижи.",
 };
 
+const listingRailClass =
+  "flex w-[length:var(--listing-rail)] shrink-0 items-center justify-center";
+
 export default function SpecialistsPage() {
   return (
-    <main className="relative bg-cream">
+    <main className="relative bg-cream [--listing-rail:calc(var(--size-mark)*127.56/109.44)]">
       <Header variant="framed" />
 
       <section className="relative z-10 w-full py-12 sm:py-16 md:py-24">
         <Container>
           <ListingHero
+            className="px-directory-inset"
             title="Специалисти и пространства"
             mark={
-              <Image
-                src="/images/icon-rub-03.svg"
-                alt=""
-                width={128}
-                height={109}
-                className="h-[length:var(--size-mark)] w-auto shrink-0 object-contain"
-              />
+              <span className={listingRailClass}>
+                <Image
+                  src="/images/icon-rub-03.svg"
+                  alt=""
+                  width={128}
+                  height={109}
+                  className="h-[length:var(--size-mark)] w-auto shrink-0 object-contain"
+                />
+              </span>
             }
           >
             <Body className="mt-4 max-w-hero-lead sm:mt-5">
@@ -47,17 +54,23 @@ export default function SpecialistsPage() {
 
       <section className="relative w-full pb-12 sm:pb-16 md:pb-24">
         <Container>
-          <ul className="border-t border-border-green">
+          <ul className="directory-fan border-t border-border-green">
             {associations.map((association, index) => (
-              <li key={association.name} className="border-b border-border-green">
+              <li
+                key={association.name}
+                className="border-b border-border-green"
+                style={{ "--directory-fan-index": index } as CSSProperties}
+              >
                 <Reveal delay={Math.min(index * 60, 180)}>
                 <a
                   href={association.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`directory-row group ${cardSurfaceClass} flex items-center gap-stack px-card-inset py-cluster outline-none sm:gap-8`}
+                  className={`directory-row group ${cardSurfaceClass} flex items-center gap-cluster px-directory-inset py-cluster outline-none`}
                 >
-                  <ShevitsaMark index={index} className="relative shrink-0" />
+                  <span className={listingRailClass}>
+                    <ShevitsaMark index={index} className="relative shrink-0" />
+                  </span>
                   <div className="flex min-w-0 flex-1 flex-col gap-stack sm:flex-row sm:items-center sm:justify-between sm:gap-8">
                     <div className="min-w-0">
                       <Meta>{association.category}</Meta>

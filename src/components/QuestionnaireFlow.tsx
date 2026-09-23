@@ -87,21 +87,29 @@ function OnboardStepShell({
               </Reveal>
             )}
           </div>
-          <Reveal delay={220}>{children}</Reveal>
+          <Reveal delay={220} className="flex flex-col gap-cluster">
+            {children}
+          </Reveal>
         </div>
       </Container>
     </section>
   );
 }
 
-/** Active square fill — white shevitsa sits on top. */
+/** Active diamond — pale wash, dark shevitsa on top. */
 const trafficLightActiveBg: Record<OverallLevel, string> = {
-  red: "bg-status-red",
-  yellow: "bg-accent-orange",
-  green: "bg-primary",
+  red: "bg-status-red-solid",
+  yellow: "bg-accent-orange-solid",
+  green: "bg-primary-wash-solid",
 };
 
-/** Idle squares stay pale solids (no motif), matching the design mock. */
+const trafficLightActiveInk: Record<OverallLevel, string> = {
+  red: "text-status-red",
+  yellow: "text-accent-orange",
+  green: "text-primary",
+};
+
+/** Idle squares stay paler solids (no motif). */
 const trafficLightIdleBg: Record<OverallLevel, string> = {
   red: "bg-[#f0d4d2]",
   yellow: "bg-cream-solid",
@@ -142,7 +150,9 @@ function TrafficLight({
               }`}
             >
               {isActive && (
-                <TrafficLightIcon className="h-9 w-9 text-white/45" />
+                <TrafficLightIcon
+                  className={`h-10 w-10 ${trafficLightActiveInk[dot]}`}
+                />
               )}
             </div>
           );

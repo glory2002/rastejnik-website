@@ -34,11 +34,15 @@
   /* Status red for the results screen's traffic-light indicator (no green/orange equivalent needed — those reuse --color-primary / --color-accent-orange). */
   --color-status-red: #c1443e;
   --color-status-red-light: rgba(193, 68, 62, 0.12);
+  --color-status-red-solid: color-mix(in srgb, var(--color-status-red) 18%, white);
+  --color-accent-orange-solid: color-mix(in srgb, var(--color-accent-orange) 18%, white);
+  --color-primary-wash-solid: color-mix(in srgb, var(--color-primary) 18%, white);
   --color-accent-pink-light: rgba(242, 122, 151, 0.1);
-  --color-accent-pink-solid: color-mix(in srgb, var(--color-accent-pink) 11%, white);
+  --color-accent-pink-solid: color-mix(in srgb, var(--color-accent-pink) 7%, white);
   --color-accent-orange-light: rgba(233, 176, 99, 0.14);
   --color-accent-green-light: rgba(109, 149, 75, 0.1);
   --color-accent-blue-light: rgba(71, 106, 191, 0.1);
+  --color-accent-blue-solid: color-mix(in srgb, var(--color-accent-blue) 8%, white);
   --font-sans: var(--font-adys), system-ui, sans-serif;
 
   /*
@@ -129,6 +133,7 @@
    */
   --spacing-card-inset: 2rem;
   --spacing-card-inset-featured: 3.25rem;
+  --spacing-directory-inset: 2.75rem;
   --spacing-card-meta: 1rem;
   --spacing-card-copy: clamp(0.75rem, 0.6rem + 0.35vw, 1rem);
   --spacing-card-action: clamp(1.5rem, 1.25rem + 0.6vw, 2rem);
@@ -148,6 +153,7 @@
   --size-news-shevitsa-featured: 2.75rem;
   --size-news-shevitsa-featured-sm: 3.25rem;
   --opacity-news-shevitsa: 0.7;
+  --scale-news-shevitsa-hover: 1.25;
   --aspect-ratio-mark: 1 / 1;
   --scale-mark: 1.014;
   --scale-mark-hover: 1.16;
@@ -584,11 +590,19 @@ input[type="month"]::-webkit-calendar-picker-indicator {
  * Directory / list rows sitting on cream — white wash on hover,
  * raw :hover so it also reads in the Cursor preview.
  */
+.directory-fan > li {
+  position: sticky;
+  top: 0;
+  z-index: calc(1 + var(--directory-fan-index, 0));
+  background-color: var(--color-cream);
+}
+
 .directory-row {
   --news-shevitsa: var(--size-news-shevitsa, 2.125rem);
   --news-shevitsa-spread: 0.32rem;
   --news-shevitsa-ink: var(--opacity-news-shevitsa, 0.7);
   overflow: visible;
+  background-color: var(--color-cream);
   transition-property: background-color;
   transition-duration: var(--card-surface-duration, 200ms);
   transition-timing-function: var(--card-surface-ease, ease-out);
@@ -811,6 +825,10 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   .shevitsa-stage-space,
   .shevitsa-stage-space > svg {
     animation: none;
+  }
+
+  .shevitsa-goal-drift {
+    transform: none;
   }
 }
 
@@ -1035,6 +1053,14 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   fill: var(--news-shevitsa-b);
 }
 
+.directory-row .news-shevitsa {
+  transition: transform 700ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.directory-row:is(:hover, :focus-visible) .news-shevitsa {
+  transform: scale(var(--scale-news-shevitsa-hover, 1.25));
+}
+
 .news-shevitsa__spark {
   --spark-mul: 1;
   transition: transform 700ms cubic-bezier(0.33, 1, 0.68, 1);
@@ -1077,6 +1103,7 @@ input[type="month"]::-webkit-calendar-picker-indicator {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .directory-row .news-shevitsa,
   .news-shevitsa__spark {
     transition: none;
     transform: none;

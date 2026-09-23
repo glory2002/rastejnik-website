@@ -400,7 +400,7 @@ function ChildFormModal({
             </label>
           </div>
 
-          <div className="flex flex-wrap items-center justify-end gap-3">
+          <div className="mt-2 flex flex-wrap items-center justify-end gap-3">
             <button
               type="button"
               onClick={onClose}

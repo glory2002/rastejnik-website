@@ -8,17 +8,19 @@ const shevitsaTones = ["green", "pink", "blue", "orange"] as const;
 export function ShevitsaMark({
   index,
   featured = false,
+  tone,
   className = "absolute z-[2]",
 }: {
   index: number;
   featured?: boolean;
+  tone?: (typeof shevitsaTones)[number];
   className?: string;
 }) {
   const toneClass = featured
     ? index % 2 === 0
       ? " news-shevitsa--duo"
       : " news-shevitsa--duo-alt"
-    : ` news-shevitsa--${shevitsaTones[index % shevitsaTones.length]}`;
+    : ` news-shevitsa--${tone ?? shevitsaTones[index % shevitsaTones.length]}`;
 
   return (
     <span

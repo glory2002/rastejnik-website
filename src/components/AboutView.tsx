@@ -255,22 +255,17 @@ function TeamPanel() {
               <Meta as="p" tone="white" className="opacity-70">
                 Нашата цел
               </Meta>
-              <Display
-                as="h2"
-                tone="white"
-                weight="medium"
-                className="mt-3 leading-none"
-              >
+              <h2 className="mt-3 text-heading-lg font-medium leading-none text-white md:text-heading-lg-md">
                 Общата ни цел е
-              </Display>
-              <p className="mt-2 text-heading-lg font-medium leading-snug text-white md:text-heading-lg-md">
+              </h2>
+              <p className="mt-2 text-heading font-medium leading-snug text-white md:text-heading-md">
                 {aboutOurGoal[0].replace(/^Общата ни цел е\s+/, "")}
               </p>
               <div className="mt-4 flex flex-col gap-2">
                 {aboutOurGoal.slice(1).map((paragraph) => (
                   <p
                     key={paragraph}
-                    className="text-heading-lg font-medium leading-snug text-white md:text-heading-lg-md"
+                    className="text-heading font-medium leading-snug text-white md:text-heading-md"
                   >
                     {paragraph}
                   </p>

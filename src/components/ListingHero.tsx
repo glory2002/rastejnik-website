@@ -6,13 +6,15 @@ export function ListingHero({
   mark,
   title,
   children,
+  className = "",
 }: {
   mark?: ReactNode;
   title: ReactNode;
   children: ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="flex items-center gap-cluster">
+    <div className={`flex items-center gap-cluster${className ? ` ${className}` : ""}`}>
       {mark ? <Reveal>{mark}</Reveal> : null}
       <div className="min-w-0">
         <Reveal delay={mark ? 100 : 0}>

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { FeaturesSection } from "@/components/FeaturesSection";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { PdfPlaceholder } from "@/components/icons/PdfPlaceholder";
 import { Container } from "@/components/ui/Container";
 import { Reveal, RevealStack } from "@/components/ui/Reveal";
 import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
@@ -22,24 +23,6 @@ function PlayMark() {
         <path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z" />
       </svg>
     </span>
-  );
-}
-
-function BookMark() {
-  return (
-    <svg viewBox="0 0 80 100" className="h-[72px] w-auto" aria-hidden>
-      <rect x="12" y="8" width="56" height="84" fill="#6d954b" />
-      <rect x="18" y="14" width="44" height="72" fill="#fdf8f0" />
-      <polygon points="40,28 52,40 40,52 28,40" fill="#e9b063" />
-      <rect
-        x="32"
-        y="56"
-        width="16"
-        height="16"
-        fill="#1f4fa1"
-        transform="rotate(45 40 64)"
-      />
-    </svg>
   );
 }
 
@@ -74,7 +57,7 @@ function ResourceCard({ item }: { item: ResourceItem }) {
             </div>
           </>
         ) : (
-          <BookMark />
+          <PdfPlaceholder />
         )}
       </div>
 

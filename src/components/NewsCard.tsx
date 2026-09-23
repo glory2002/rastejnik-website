@@ -5,14 +5,14 @@ import { cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Action, Heading, Meta } from "@/components/ui/Typography";
 
 const cardWashes = [
-  "bg-primary-light-solid",
-  "bg-accent-pink-solid",
-  "bg-accent-pink-solid",
-  "bg-cream",
-  "bg-primary-light-solid",
-  "bg-cream",
-  "bg-primary-light-solid",
-  "bg-accent-pink-solid",
+  { wash: "bg-primary-light-solid", shevitsa: "green" },
+  { wash: "bg-accent-pink-solid", shevitsa: "pink" },
+  { wash: "bg-accent-pink-solid", shevitsa: "pink" },
+  { wash: "bg-cream", shevitsa: "orange" },
+  { wash: "bg-primary-light-solid", shevitsa: "green" },
+  { wash: "bg-cream", shevitsa: "orange" },
+  { wash: "bg-primary-light-solid", shevitsa: "green" },
+  { wash: "bg-accent-pink-solid", shevitsa: "pink" },
 ] as const;
 
 /**
@@ -35,7 +35,7 @@ export function NewsCard({
   index?: number;
   featured?: boolean;
 }) {
-  const wash = cardWashes[index % cardWashes.length];
+  const { wash, shevitsa } = cardWashes[index % cardWashes.length];
 
   return (
     <Link
@@ -44,7 +44,7 @@ export function NewsCard({
         featured ? " news-envelope--featured" : ""
       }`}
     >
-      <ShevitsaMark index={index} featured={featured} />
+      <ShevitsaMark index={index} featured={featured} tone={shevitsa} />
       <Meta tone="muted">{date}</Meta>
       <Heading
         as="h2"
