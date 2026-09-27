@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Reveal } from "@/components/ui/Reveal";
-import { Body, Display } from "@/components/ui/Typography";
+import { Display, Lead } from "@/components/ui/Typography";
 
 export function ListingHero({
   mark,
@@ -22,7 +22,7 @@ export function ListingHero({
         </Reveal>
         <Reveal delay={mark ? 220 : 140}>
           {typeof children === "string" ? (
-            <Body className="mt-4 max-w-hero-lead sm:mt-5">{children}</Body>
+            <Lead className="mt-4 max-w-hero-lead sm:mt-5">{children}</Lead>
           ) : (
             children
           )}

@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { Display } from "@/components/ui/Typography";
+import { Title } from "@/components/ui/Typography";
 import { Container } from "./ui/Container";
 import { Reveal } from "./ui/Reveal";
 
-const partners = [
+export const partners = [
   {
     name: "Зеленият морски двор на Варна",
     src: "/images/partner-zeleniyat-morski-dvor.png",
@@ -83,9 +83,7 @@ export function PartnersSection() {
     <section className="w-full bg-[#fefefc] py-section-quiet">
       <Container>
         <Reveal className="mx-auto mb-block max-w-[1000px] text-center">
-          <Display weight="medium" as="h2">
-            Партньори
-          </Display>
+          <Title>Партньори</Title>
         </Reveal>
       </Container>
 

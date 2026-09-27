@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, ElementType } from "react";
 
-type Tone = "primary" | "dark" | "muted" | "copy" | "white" | "inherit";
+type Tone = "primary" | "dark" | "muted" | "white" | "inherit";
 
 type PolymorphicProps<T extends ElementType> = {
   as?: T;
@@ -16,14 +16,13 @@ const toneClass: Record<Tone, string> = {
   primary: "text-primary",
   dark: "text-primary-dark",
   muted: "text-primary-dark/60",
-  copy: "text-copy",
   white: "text-white",
   inherit: "text-inherit",
 };
 
 /**
- * Page / section display heading (H1 scale).
- * Default: bold primary. Use `weight="medium"` for homepage-style soft displays.
+ * Page lockup (H1). Bold by default.
+ * `weight="medium"` is for soft homepage / quote lockups.
  */
 export function Display<T extends ElementType = "h1">({
   as,
@@ -46,7 +45,7 @@ export function Display<T extends ElementType = "h1">({
   );
 }
 
-/** Hero-scale display (homepage video hero). */
+/** Homepage video hero only. Do not reuse on listing pages. */
 export function DisplayHero<T extends ElementType = "h1">({
   as,
   className = "",
@@ -62,27 +61,7 @@ export function DisplayHero<T extends ElementType = "h1">({
   );
 }
 
-/** Large banner display (CTA / tagline sections). */
-export function DisplayBanner<T extends ElementType = "h2">({
-  as,
-  className = "",
-  tone = "primary",
-  ...props
-}: PolymorphicProps<T>) {
-  const Tag = as ?? "h2";
-  return (
-    <Tag
-      className={cx(
-        "text-display-banner font-medium",
-        toneClass[tone],
-        className,
-      )}
-      {...props}
-    />
-  );
-}
-
-/** Section title (H2 scale). */
+/** Section title (H2). */
 export function Title<T extends ElementType = "h2">({
   as,
   className = "",
@@ -101,27 +80,28 @@ export function Title<T extends ElementType = "h2">({
 type HeadingSize = "sm" | "md" | "lg" | "featured";
 
 const headingSizeClass: Record<HeadingSize, string> = {
-  sm: "text-heading-sm md:text-heading-sm-md",
-  md: "text-heading md:text-heading-md",
-  lg: "text-heading-lg md:text-heading-lg-md",
-  featured: "text-card-featured",
+  sm: "text-heading-sm",
+  md: "text-heading",
+  lg: "text-heading-lg",
+  featured: "text-heading-featured",
 };
 
-/** Card / subsection heading (H3 scale). */
+/** Card / subsection heading. */
 export function Heading<T extends ElementType = "h3">({
   as,
   className = "",
   tone = "primary",
   size = "md",
+  weight = "bold",
   ...props
-}: PolymorphicProps<T> & { size?: HeadingSize }) {
+}: PolymorphicProps<T> & { size?: HeadingSize; weight?: "bold" | "medium" }) {
   const Tag = as ?? "h3";
   return (
     <Tag
       data-card-title=""
       className={cx(
         headingSizeClass[size],
-        "font-bold",
+        weight === "medium" ? "font-medium" : "font-bold",
         toneClass[tone],
         className,
       )}
@@ -130,15 +110,40 @@ export function Heading<T extends ElementType = "h3">({
   );
 }
 
-type BodySize = "default" | "relaxed" | "card";
+type LeadSize = "default" | "hero";
+
+/**
+ * One line under a heading. Not for body copy or card excerpts.
+ */
+export function Lead<T extends ElementType = "p">({
+  as,
+  className = "",
+  tone = "dark",
+  size = "default",
+  ...props
+}: PolymorphicProps<T> & { size?: LeadSize }) {
+  const Tag = as ?? "p";
+  return (
+    <Tag
+      className={cx(
+        size === "hero" ? "text-lead-hero" : "text-lead",
+        "font-medium",
+        toneClass[tone],
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+type BodySize = "default" | "card";
 
 const bodySizeClass: Record<BodySize, string> = {
   default: "text-body",
-  relaxed: "text-body-relaxed",
   card: "text-card-body",
 };
 
-/** Body copy. */
+/** Body copy. Default line-height is open; `card` is the quieter 18px. */
 export function Body<T extends ElementType = "p">({
   as,
   className = "",
@@ -155,7 +160,7 @@ export function Body<T extends ElementType = "p">({
   );
 }
 
-/** Form / UI label (14px bold). */
+/** Form / UI label. */
 export function Label<T extends ElementType = "span">({
   as,
   className = "",
@@ -191,7 +196,7 @@ export function Meta<T extends ElementType = "p">({
   );
 }
 
-/** Uppercase action / text link style (Прочети, Към новините). */
+/** Uppercase action / text link style. */
 export function Action<T extends ElementType = "span">({
   as,
   className = "",

@@ -9,7 +9,6 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import Link from "next/link";
 import {
   createDashboardChild,
   dashboardChildren as initialDashboardChildren,
@@ -30,7 +29,7 @@ import {
 } from "@/components/icons/ChildAvatarIcons";
 import { PlusMarkIcon } from "@/components/icons/PlusMarkIcon";
 import { TokenIcon } from "@/components/icons/TokenIcon";
-import { Button } from "@/components/ui/Button";
+import { Button, LinkButton } from "@/components/ui/Button";
 import { NumberInput } from "@/components/ui/NumberInput";
 import { Select } from "@/components/ui/Select";
 import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
@@ -247,7 +246,7 @@ function ChildTabs({
 
       <Button
         size="l"
-        iconSide="left"
+        icon="plus"
         className="w-full sm:ml-auto sm:w-auto"
         onClick={onAddChild}
       >
@@ -401,13 +400,9 @@ function ChildFormModal({
           </div>
 
           <div className="mt-2 flex flex-wrap items-center justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="text-[14px] font-bold uppercase text-primary-dark transition-opacity hover:opacity-70"
-            >
+            <LinkButton icon="none" onClick={onClose}>
               Отказ
-            </button>
+            </LinkButton>
             <Button size="l" disabled={!canSave} onClick={handleSave}>
               Запази
             </Button>
@@ -441,7 +436,7 @@ function StatusCircle({
   if (cell.kind === "na") {
     return (
       <div className={`${box} shrink-0 items-center justify-center`}>
-        <span className="text-[11px] font-bold uppercase text-primary-dark/40">
+        <span className="text-meta font-bold uppercase text-primary-dark/40">
           Няма
         </span>
       </div>
@@ -451,7 +446,7 @@ function StatusCircle({
   if (cell.kind === "upcoming") {
     return (
       <div className={`${box} shrink-0 items-center justify-center`}>
-        <span className="text-[11px] font-bold uppercase text-primary-dark/40">
+        <span className="text-meta font-bold uppercase text-primary-dark/40">
           Предстои
         </span>
       </div>
@@ -473,7 +468,7 @@ function StatusCircle({
                 style={{ backgroundColor: resultTierColorLight(value) }}
               >
                 <span
-                  className="text-[15px] font-bold"
+                  className="text-label font-bold"
                   style={{ color: resultTierColor(value) }}
                 >
                   {value}%
@@ -498,7 +493,7 @@ function StatusCircle({
               style={{ backgroundColor: resultTierColorLight(value) }}
             >
               <span
-                className="text-[15px] font-bold"
+                className="text-label font-bold"
                 style={{ color: resultTierColor(value) }}
               >
                 {value}%
@@ -506,7 +501,7 @@ function StatusCircle({
               <ButtonArrowIcon className="h-[14px] w-[9px] shrink-0 text-primary-dark/40 transition-colors duration-150 group-hover:text-secondary" />
               <span
                 role="tooltip"
-                className="pointer-events-none absolute left-1/2 top-0 z-20 -translate-x-1/2 -translate-y-[calc(100%+10px)] whitespace-nowrap bg-primary-dark px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.04em] text-white opacity-0 shadow-[0_6px_16px_rgba(31,66,35,0.18)] transition-opacity duration-150 group-hover:opacity-100"
+                className="pointer-events-none absolute left-1/2 top-0 z-20 -translate-x-1/2 -translate-y-[calc(100%+10px)] whitespace-nowrap bg-primary-dark px-2.5 py-1 text-meta font-bold uppercase tracking-[0.04em] text-white opacity-0 shadow-[0_6px_16px_rgba(31,66,35,0.18)] transition-opacity duration-150 group-hover:opacity-100"
               >
                 Насоки
                 <span
@@ -544,7 +539,7 @@ function PendingFillControl({
   open: boolean;
   onToggle?: () => void;
 }) {
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(
     null,
@@ -598,15 +593,14 @@ function PendingFillControl({
 
   return (
     <div className="relative shrink-0">
-      <button
+      <LinkButton
         ref={triggerRef}
-        type="button"
+        icon="none"
         onClick={onToggle}
         aria-expanded={open}
-        className="text-[13px] font-bold uppercase text-accent-blue underline underline-offset-2 transition-opacity hover:opacity-80"
       >
         Попълни
-      </button>
+      </LinkButton>
 
       {open &&
         coords &&
@@ -617,12 +611,9 @@ function PendingFillControl({
             style={{ top: coords.top, left: coords.left }}
           >
             <p className="text-[14px] leading-[1.3]">{prompt}</p>
-            <Link
-              href={href}
-              className="mt-2 inline-block text-[13px] font-bold uppercase text-secondary underline-offset-2 hover:underline"
-            >
+            <Button href={href} size="s" className="mt-2">
               Започни сега
-            </Link>
+            </Button>
             <span
               aria-hidden
               className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-primary-dark"
@@ -669,7 +660,7 @@ function getUniformStatusColumns(table: DashboardTable): Set<number> {
   return result;
 }
 
-function ResultsTable({
+export function ResultsTable({
   table,
   resetKey,
 }: {
@@ -814,7 +805,7 @@ function ResultsTable({
               {table.columns.map((label, columnIndex) => (
                 <div
                   key={label}
-                  className="bg-primary-light-solid px-3 py-5 text-center text-[15px] font-bold text-primary"
+                  className="bg-primary-light-solid px-3 py-5 text-center text-label font-bold text-primary"
                   style={{ gridRow: 1, gridColumn: columnIndex + 2 }}
                 >
                   {label}

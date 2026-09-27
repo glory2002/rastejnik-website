@@ -5,7 +5,7 @@ import { Header } from "@/components/Header";
 import { QuestionnairesBrowse } from "@/components/QuestionnairesBrowse";
 import { ListingHero } from "@/components/ListingHero";
 import { Container } from "@/components/ui/Container";
-import { Body } from "@/components/ui/Typography";
+import { Lead } from "@/components/ui/Typography";
 import { questionnaireCategories } from "@/data/questionnaires";
 
 export const metadata: Metadata = {
@@ -33,11 +33,11 @@ export default function QuestionnairesPage() {
               />
             }
           >
-            <Body className="mt-4 max-w-hero-lead sm:mt-5">
+            <Lead className="mt-4 max-w-hero-lead sm:mt-5">
               Кратки, валидирани въпросници, които ви помагат да разберете
               по-добре себе си като родител и развитието на детето — изберете
               категория по-долу.
-            </Body>
+            </Lead>
           </ListingHero>
 
           <div className="mt-10 sm:mt-14">

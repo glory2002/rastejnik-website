@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { ListingHero } from "@/components/ListingHero";
 import { TokenIcon } from "@/components/icons/TokenIcon";
-import { Button } from "@/components/ui/Button";
+import { Button, LinkButton } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
-import { SectionLead } from "@/components/ui/SectionLead";
 import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
-import { Action, Body, Heading } from "@/components/ui/Typography";
+import { Body, Heading, Lead } from "@/components/ui/Typography";
 import {
   questionnaireCategories,
   type QuestionnaireAccent,
@@ -39,20 +37,9 @@ export default function EarlyChildhoodCategoryPage() {
 
       <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
-          <Action
-            as={Link}
-            href="/questionnaires"
-            className="group mb-8 inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
-          >
-            <Image
-              src="/images/arrow-link.svg"
-              alt=""
-              width={12}
-              height={19}
-              className="shrink-0 rotate-180"
-            />
+          <LinkButton href="/questionnaires" icon="back" className="mb-8">
             Въпросници
-          </Action>
+          </LinkButton>
 
           <ListingHero
             title={parentCategory.title}
@@ -64,9 +51,9 @@ export default function EarlyChildhoodCategoryPage() {
               />
             }
           >
-            <SectionLead className="mt-4 max-w-hero-lead sm:mt-5">
+            <Lead className="mt-4 max-w-hero-lead sm:mt-5">
               {parentCategory.description}
-            </SectionLead>
+            </Lead>
           </ListingHero>
         </Container>
       </section>

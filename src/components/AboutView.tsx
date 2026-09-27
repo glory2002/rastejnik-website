@@ -7,12 +7,12 @@ import { Container } from "@/components/ui/Container";
 import { GoalShevitsaField } from "@/components/GoalShevitsaField";
 import { ListShevitsa } from "@/components/icons/ListShevitsa";
 import { Reveal } from "@/components/ui/Reveal";
-import { SectionLead } from "@/components/ui/SectionLead";
 import {
   Body,
   Display,
-  DisplayBanner,
   Heading,
+  Label,
+  Lead,
   Meta,
   Title,
 } from "@/components/ui/Typography";
@@ -196,12 +196,12 @@ function TeamPanel() {
             <AboutSplitTitle>
               <Title>Кои сме ние?</Title>
               <div className="mt-6 flex items-center gap-3 sm:mt-8">
-                <span className="text-display font-medium leading-none text-primary">
+                <Display as="span" weight="medium" className="leading-none">
                   08
-                </span>
-                <Body tone="muted" className="max-w-[12rem] text-label">
+                </Display>
+                <Label as="p" tone="muted" className="max-w-[12rem] font-medium">
                   години работа с деца и семейства
-                </Body>
+                </Label>
               </div>
             </AboutSplitTitle>
 
@@ -255,20 +255,34 @@ function TeamPanel() {
               <Meta as="p" tone="white" className="opacity-70">
                 Нашата цел
               </Meta>
-              <h2 className="mt-3 text-heading-lg font-medium leading-none text-white md:text-heading-lg-md">
+              <Heading
+                as="h2"
+                size="lg"
+                weight="medium"
+                tone="white"
+                className="mt-3 leading-none"
+              >
                 Общата ни цел е
-              </h2>
-              <p className="mt-2 text-heading font-medium leading-snug text-white md:text-heading-md">
+              </Heading>
+              <Heading
+                as="p"
+                weight="medium"
+                tone="white"
+                className="mt-2 leading-snug"
+              >
                 {aboutOurGoal[0].replace(/^Общата ни цел е\s+/, "")}
-              </p>
+              </Heading>
               <div className="mt-4 flex flex-col gap-2">
                 {aboutOurGoal.slice(1).map((paragraph) => (
-                  <p
+                  <Heading
                     key={paragraph}
-                    className="text-heading font-medium leading-snug text-white md:text-heading-md"
+                    as="p"
+                    weight="medium"
+                    tone="white"
+                    className="leading-snug"
                   >
                     {paragraph}
-                  </p>
+                  </Heading>
                 ))}
               </div>
             </Reveal>
@@ -281,7 +295,7 @@ function TeamPanel() {
           <div className={aboutSplit}>
             <AboutSplitTitle>
               <Title>Как я постигаме?</Title>
-              <Body className="mt-5 max-w-[560px]">{aboutHowWeAchieveLead}</Body>
+              <Lead className="mt-5 max-w-[560px]">{aboutHowWeAchieveLead}</Lead>
             </AboutSplitTitle>
             <NumberedList items={aboutHowWeAchieve} />
           </div>
@@ -302,9 +316,9 @@ function PlatformPanel() {
                 За кого е предназначена тази платформа?
               </Title>
               <div className="mt-6 flex items-baseline gap-3 sm:mt-8">
-                <span className="text-display-banner font-medium leading-none text-primary">
+                <Display as="span" weight="medium" className="leading-none">
                   0–4
-                </span>
+                </Display>
                 <Meta as="span" className="normal-case tracking-normal">
                   години
                 </Meta>
@@ -369,9 +383,9 @@ function PlatformPanel() {
           <div className={aboutSplit}>
             <AboutSplitTitle>
               <Meta as="p">Подкрепата</Meta>
-              <DisplayBanner as="p" className="mt-4 text-balance sm:mt-5">
+              <Display as="p" weight="medium" className="mt-4 text-balance sm:mt-5">
                 {aboutSupportLead}
-              </DisplayBanner>
+              </Display>
             </AboutSplitTitle>
 
             <div className="flex min-w-0 flex-col gap-12 sm:gap-16 md:gap-20">
@@ -465,9 +479,9 @@ export function AboutView() {
                 <Display>{title}</Display>
               </Reveal>
               <Reveal delay={220}>
-                <SectionLead className="mt-5 max-w-[540px] sm:mt-6">
+                <Lead className="mt-5 max-w-[540px] sm:mt-6">
                   {lead}
-                </SectionLead>
+                </Lead>
               </Reveal>
             </div>
           </div>
@@ -495,7 +509,7 @@ export function AboutView() {
                     aria-controls={`panel-${tab.id}`}
                     tabIndex={isActive ? 0 : -1}
                     onClick={() => selectTab(tab.id)}
-                    className={`min-w-0 flex-1 px-3 py-3.5 text-center text-[14px] font-bold uppercase tracking-[0.02em] transition-colors sm:flex-none sm:px-6 sm:py-4 sm:text-[15px] ${
+                    className={`min-w-0 flex-1 px-3 py-3.5 text-center text-action font-bold uppercase tracking-[0.02em] transition-colors sm:flex-none sm:px-6 sm:py-4 ${
                       isActive
                         ? "border-b-2 border-primary text-primary"
                         : "border-b-2 border-transparent text-primary-dark/55 hover:text-primary"

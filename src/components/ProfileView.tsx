@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent, type InputHTMLAttributes } from "r
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
+import { DateInput } from "@/components/ui/DateInput";
 import { NumberInput } from "@/components/ui/NumberInput";
 import { FormSelect } from "@/components/ui/Select";
 import { Action, Body, Label } from "@/components/ui/Typography";
@@ -102,12 +103,14 @@ export function ProfileView() {
           value={profile.name}
           onChange={(e) => update("name", e.target.value)}
         />
-        <FormField
-          label="Дата на раждане"
-          type="date"
-          value={profile.birthDate}
-          onChange={(e) => update("birthDate", e.target.value)}
-        />
+        <div className="flex flex-col gap-2">
+          <Label>Дата на раждане</Label>
+          <DateInput
+            aria-label="Дата на раждане"
+            value={profile.birthDate}
+            onChange={(value) => update("birthDate", value)}
+          />
+        </div>
         <FormSelect
           label="Пол"
           options={["Жена", "Мъж", "Друго"]}

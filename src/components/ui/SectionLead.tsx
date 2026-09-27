@@ -1,34 +1,18 @@
 import type { ComponentPropsWithoutRef } from "react";
+import { Lead } from "@/components/ui/Typography";
+
+type LeadTone = "primary" | "dark" | "muted" | "white" | "inherit";
 
 interface SectionLeadProps extends ComponentPropsWithoutRef<"p"> {
-  /** Text color for the lead paragraph. Use "light" over dark/video backgrounds. */
-  tone?: "primary" | "light";
-  /** "hero" is the homepage deck — larger, more open than the default lead. */
+  /** @deprecated Use `white` — `light` still maps to it. */
+  tone?: LeadTone | "light";
   size?: "default" | "hero";
 }
 
-/**
- * The short intro line placed directly under a section's main heading
- * (e.g. "Напишете ни съобщение..." under "Свържете се с нас", or the
- * subheading under the hero's <h1>).
- *
- * Reserved specifically for that heading → lead-paragraph pattern — do
- * not reuse it for general body copy, card text, or anything not sitting
- * right below a heading.
- */
+/** @deprecated Prefer `Lead` from Typography. */
 export function SectionLead({
-  className = "",
-  tone = "primary",
-  size = "default",
+  tone = "dark",
   ...props
 }: SectionLeadProps) {
-  const toneClass = tone === "light" ? "text-white/85" : "text-primary";
-  const sizeClass = size === "hero" ? "text-lead-hero" : "text-lead";
-
-  return (
-    <p
-      className={`${sizeClass} font-medium ${toneClass} ${className}`}
-      {...props}
-    />
-  );
+  return <Lead tone={tone === "light" ? "white" : tone} {...props} />;
 }

@@ -1,5 +1,11 @@
-<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="2.25" y="4.25" width="15.5" height="13.5" rx="1.25" stroke="#6d954b" stroke-width="1.5"/>
-  <path d="M2.25 8.25h15.5" stroke="#6d954b" stroke-width="1.5"/>
-  <path d="M6.5 2.5v3.5M13.5 2.5v3.5" stroke="#6d954b" stroke-width="1.5" stroke-linecap="round"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.65 60.02">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #6ea241;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M45.56,7.37V0h-14.74v7.37h-8.99V0H7.08v7.37H0v52.65h52.65V7.37h-7.09ZM17.07,52.45H7.08v-9.99h9.99v9.99ZM17.07,39.4H7.08v-9.99h9.99v9.99ZM17.07,26.36H7.08v-9.99h9.99v9.99ZM31.32,52.45h-9.99v-9.99h9.99v9.99ZM31.32,39.4h-9.99v-9.99h9.99v9.99ZM31.32,26.36h-9.99v-9.99h9.99v9.99ZM45.57,52.45h-9.99v-9.99h9.99v9.99ZM45.57,39.4h-9.99v-9.99h9.99v9.99ZM45.57,26.36h-9.99v-9.99h9.99v9.99Z"/>
 </svg>

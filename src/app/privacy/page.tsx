@@ -33,7 +33,6 @@ export default function PrivacyPage() {
         <Container>
           <Body
             as="div"
-            size="relaxed"
             className="mx-auto flex max-w-[720px] flex-col gap-8"
           >
             <Reveal className="flex flex-col gap-3">

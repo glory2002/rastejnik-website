@@ -1,4 +1,4 @@
-const shevitsaTones = ["green", "pink", "blue", "orange"] as const;
+export const shevitsaTones = ["green", "pink", "blue", "orange"] as const;
 
 /**
  * Square shevitsa mark.

@@ -1,7 +1,7 @@
 "use client";
 
 import { ContactButton } from "@/components/ContactModal";
-import { Body, Title } from "@/components/ui/Typography";
+import { Lead, Title } from "@/components/ui/Typography";
 import { Container } from "./ui/Container";
 import { Reveal } from "./ui/Reveal";
 
@@ -16,9 +16,9 @@ export function ContactCtaSection() {
             </Title>
           </Reveal>
           <Reveal delay={120}>
-            <Body className="max-w-[500px]">
+            <Lead className="max-w-[500px]">
               Пишете ни — с удоволствие ще отговорим.
-            </Body>
+            </Lead>
           </Reveal>
           <Reveal delay={220}>
             <ContactButton />

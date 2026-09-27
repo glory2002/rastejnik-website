@@ -1,13 +1,13 @@
-import Image from "next/image";
 import Link from "next/link";
 import { InfoMark } from "@/components/icons/InfoMark";
+import { LinkButton } from "@/components/ui/Button";
 import { cardSurfaceClass } from "@/components/ui/cardSurface";
-import { Action, Title } from "@/components/ui/Typography";
+import { Body, Title } from "@/components/ui/Typography";
 
-const hoverIconColor = [
-  "group-hover:text-accent-pink",
-  "group-hover:text-primary",
-  "group-hover:text-accent-blue",
+export const tipIconHovers = [
+  { name: "accent-pink", hover: "group-hover:text-accent-pink", swatch: "text-accent-pink" },
+  { name: "primary", hover: "group-hover:text-primary", swatch: "text-primary" },
+  { name: "accent-blue", hover: "group-hover:text-accent-blue", swatch: "text-accent-blue" },
 ] as const;
 
 /**
@@ -25,7 +25,7 @@ export function TipCard({
   excerpt: string;
   index?: number;
 }) {
-  const iconHover = hoverIconColor[index % hoverIconColor.length];
+  const iconHover = tipIconHovers[index % tipIconHovers.length].hover;
 
   return (
     <Link
@@ -40,21 +40,14 @@ export function TipCard({
         {title}
       </Title>
 
-      <p className="mt-card-copy text-card-body text-primary-dark/75">
+      <Body size="card" tone="muted" className="mt-card-copy">
         {excerpt}
-      </p>
+      </Body>
 
-      <div className="mt-auto flex items-center justify-between gap-4 pt-card-action">
-        <Action className="transition-opacity group-hover:opacity-80">
+      <div className="mt-auto flex items-center pt-card-action">
+        <LinkButton interactive={false} hoverGroup={false}>
           Прочети
-        </Action>
-        <Image
-          src="/images/arrow-link.svg"
-          alt=""
-          width={14}
-          height={22}
-          className="shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-1"
-        />
+        </LinkButton>
       </div>
     </Link>
   );

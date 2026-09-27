@@ -1,5 +1,40 @@
+import { forwardRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
+function cx(...parts: Array<string | false | undefined>) {
+  return parts.filter(Boolean).join(" ");
+}
+
+/** Shared label type for every button and text link. */
+const labelClass = "text-action font-bold uppercase";
+
+const motionEase = "duration-700 ease-[cubic-bezier(0.33,1,0.68,1)]";
+
+const revealClosedLeft = "[clip-path:circle(0px_at_var(--circle-offset)_50%)]";
+const revealClosedRight =
+  "[clip-path:circle(0px_at_calc(100%-var(--circle-offset))_50%)]";
+const revealOpenLeft =
+  "group-hover:[clip-path:circle(150%_at_var(--circle-offset)_50%)] group-focus-visible:[clip-path:circle(150%_at_var(--circle-offset)_50%)]";
+const revealOpenRight =
+  "group-hover:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)] group-focus-visible:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)]";
+const revealOpenLeftSubcard =
+  "group-hover/subcard:[clip-path:circle(150%_at_var(--circle-offset)_50%)] group-focus-visible/subcard:[clip-path:circle(150%_at_var(--circle-offset)_50%)]";
+const revealOpenRightSubcard =
+  "group-hover/subcard:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)] group-focus-visible/subcard:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)]";
+const nudgeLeft =
+  "group-hover:-translate-x-0.5 group-focus-visible:-translate-x-0.5";
+const nudgeRight = "group-hover:translate-x-1 group-focus-visible:translate-x-1";
+const nudgeLeftSubcard =
+  "group-hover/subcard:-translate-x-0.5 group-focus-visible/subcard:-translate-x-0.5";
+const nudgeRightSubcard =
+  "group-hover/subcard:translate-x-1 group-focus-visible/subcard:translate-x-1";
+const subcardText =
+  "group-hover/subcard:text-primary group-focus-visible/subcard:text-primary";
+const subcardBorderPrimary =
+  "group-hover/subcard:border-primary group-focus-visible/subcard:border-primary";
+const subcardBorderSecondary =
+  "group-hover/subcard:border-secondary group-focus-visible/subcard:border-secondary";
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -12,18 +47,23 @@ interface ButtonProps {
   /**
    * "xl" is the hero-scale CTA — reserved for the homepage hero button.
    * "l" is the same button family sized down for denser contexts (cards,
-   * in-page CTAs, etc). Only affects the arrow variant (`showArrow`).
+   * in-page CTAs, etc). "s" is the compact pill for tight surfaces such as
+   * the dashboard fill popover. Only affects the arrow variant (`showArrow`).
    */
-  size?: "xl" | "l";
+  size?: "xl" | "l" | "s";
   /**
    * "primary" is the filled yellow pill. "secondary" is the outlined
    * sibling — same geometry, quieter ink (listing / outbound actions).
    */
   variant?: "primary" | "secondary";
   /**
-   * Which side the white-circle icon sits on. `"right"` is the default
-   * hero arrow; `"left"` swaps in the plus glyph (same white disc + light
-   * green mark) and originates the hover reveal from the left.
+   * White-circle mark. `"arrow"` (default) and `"plus"` sit on the right.
+   * `"back"` is the same arrow flipped, on the left — only for назад.
+   */
+  icon?: "arrow" | "back" | "plus";
+  /**
+   * @deprecated Prefer `icon`. `"left"` maps to `"back"` so the left
+   * slot stays the back arrow, not a second forward icon.
    */
   iconSide?: "left" | "right";
   /**
@@ -68,7 +108,8 @@ export function Button({
   rel,
   size = "xl",
   variant = "primary",
-  iconSide = "right",
+  icon: iconProp,
+  iconSide,
   interactive = true,
   hoverGroup = true,
   groupName,
@@ -76,38 +117,23 @@ export function Button({
   disabled = false,
   type = "button",
 }: ButtonProps) {
-  const sizeClasses = showArrow
-    ? size === "xl"
-      ? "min-h-[56px] gap-2 px-5 py-3.5 text-[13px] sm:h-[73px] sm:gap-2.5 sm:px-8 sm:py-5 sm:text-[15px]"
-      : "h-[56px] gap-2 px-5 py-3.5 text-[13px] sm:px-6 sm:text-[14px]"
-    : "gap-1.5 px-5 py-3.5 text-[15px]";
+  const sizeClasses = !showArrow
+    ? "gap-1.5 px-5 py-3.5"
+    : size === "xl"
+      ? "min-h-[56px] gap-2 px-5 py-3.5 sm:h-[73px] sm:gap-2.5 sm:px-8 sm:py-5"
+      : size === "l"
+        ? "h-[56px] gap-2 px-5 py-3.5 sm:px-6"
+        : "h-10 gap-1.5 px-3.5";
 
-  const iconOnLeft = showArrow && iconSide === "left";
-  // Left plus sits a touch smaller than the right arrow so it doesn't
-  // overpower the shorter "Добави дете" label.
-  const arrowBoxClasses = iconOnLeft
-    ? size === "xl"
-      ? "h-8 w-8"
-      : "h-6 w-6"
-    : size === "xl"
-      ? "h-9 w-9"
-      : "h-7 w-7";
-  const arrowImageSize = iconOnLeft
-    ? size === "xl"
-      ? 32
-      : 24
-    : size === "xl"
-      ? 36
-      : 28;
+  const icon =
+    iconProp ?? (iconSide === "left" ? "back" : "arrow");
+  const iconOnLeft = showArrow && icon === "back";
+  const arrowBoxClasses =
+    size === "xl" ? "h-9 w-9" : size === "l" ? "h-7 w-7" : "h-5 w-5";
+  const arrowImageSize = size === "xl" ? 36 : size === "l" ? 28 : 20;
   // Reveal circle's origin must sit under the icon's center: padding +
-  // half the icon box (xl arrow: 32+18, l arrow: 24+14; xl plus: 32+16, l plus: 24+12).
-  const circleOffset = iconOnLeft
-    ? size === "xl"
-      ? "48px"
-      : "36px"
-    : size === "xl"
-      ? "50px"
-      : "38px";
+  // half the icon box (xl: 32+18, l: 24+14, s: 14+10).
+  const circleOffset = size === "xl" ? "50px" : size === "l" ? "38px" : "24px";
 
   const isSecondary = variant === "secondary";
   const namedSubcard = groupName === "subcard";
@@ -116,35 +142,46 @@ export function Button({
       ? "group/subcard"
       : "group"
     : "";
-  const scopedColors = namedSubcard
-    ? isSecondary
-      ? "group-hover/subcard:text-primary group-focus-visible/subcard:text-primary group-hover/subcard:border-primary group-focus-visible/subcard:border-primary"
-      : "group-hover/subcard:text-primary group-focus-visible/subcard:text-primary group-hover/subcard:border-secondary group-focus-visible/subcard:border-secondary"
-    : "";
   const clipOpen = namedSubcard
     ? iconOnLeft
-      ? "group-hover/subcard:[clip-path:circle(150%_at_var(--circle-offset)_50%)] group-focus-visible/subcard:[clip-path:circle(150%_at_var(--circle-offset)_50%)]"
-      : "group-hover/subcard:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)] group-focus-visible/subcard:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)]"
+      ? revealOpenLeftSubcard
+      : revealOpenRightSubcard
     : iconOnLeft
-      ? "group-hover:[clip-path:circle(150%_at_var(--circle-offset)_50%)] group-focus-visible:[clip-path:circle(150%_at_var(--circle-offset)_50%)]"
-      : "group-hover:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)] group-focus-visible:[clip-path:circle(150%_at_calc(100%-var(--circle-offset))_50%)]";
+      ? revealOpenLeft
+      : revealOpenRight;
   const iconMotion = namedSubcard
     ? iconOnLeft
-      ? "group-hover/subcard:-translate-x-0.5 group-focus-visible/subcard:-translate-x-0.5"
-      : "group-hover/subcard:translate-x-1 group-focus-visible/subcard:translate-x-1"
+      ? nudgeLeftSubcard
+      : nudgeRightSubcard
     : iconOnLeft
-      ? "group-hover:-translate-x-0.5 group-focus-visible:-translate-x-0.5"
-      : "group-hover:translate-x-1 group-focus-visible:translate-x-1";
-
-  const colorClasses = isSecondary
-    ? showArrow
-      ? `text-primary-dark hover:text-primary focus-visible:text-primary border-[1.5px] border-secondary hover:border-primary focus-visible:border-primary ${scopedColors}`
-      : "text-primary-dark border-[1.5px] border-secondary hover:border-primary hover:text-primary"
-    : showArrow
-      ? `text-primary-dark hover:text-primary focus-visible:text-primary border-[1.5px] border-transparent hover:border-secondary focus-visible:border-secondary ${scopedColors}`
+      ? nudgeLeft
+      : nudgeRight;
+  const colorClasses = showArrow
+    ? cx(
+        "border-[1.5px] text-primary-dark hover:text-primary focus-visible:text-primary",
+        isSecondary
+          ? "border-secondary hover:border-primary focus-visible:border-primary"
+          : "border-transparent hover:border-secondary focus-visible:border-secondary",
+        namedSubcard && subcardText,
+        namedSubcard &&
+          (isSecondary ? subcardBorderPrimary : subcardBorderSecondary),
+      )
+    : isSecondary
+      ? "border-[1.5px] border-secondary text-primary-dark hover:border-primary hover:text-primary"
       : "text-primary-dark hover:bg-white hover:text-primary";
 
-  const sharedClassName = `${groupClass} relative inline-flex items-center justify-center overflow-hidden rounded-[50px] ${isSecondary ? "bg-white" : "bg-secondary"} font-bold uppercase transition-colors duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] disabled:pointer-events-none disabled:opacity-40 ${colorClasses} ${sizeClasses} ${className}`;
+  const sharedClassName = cx(
+    groupClass,
+    "relative inline-flex items-center justify-center overflow-hidden rounded-full",
+    isSecondary ? "bg-white" : "bg-secondary",
+    labelClass,
+    "transition-colors",
+    motionEase,
+    "disabled:pointer-events-none disabled:opacity-40",
+    colorClasses,
+    sizeClasses,
+    className,
+  );
 
   const arrow = showArrow && !isSecondary && (
     <span
@@ -154,28 +191,42 @@ export function Button({
           "--circle-offset": circleOffset,
         } as React.CSSProperties
       }
-      className={
-        iconOnLeft
-          ? `pointer-events-none absolute inset-0 z-0 rounded-[50px] bg-white transition-[clip-path] duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none [clip-path:circle(0px_at_var(--circle-offset)_50%)] ${clipOpen}`
-          : `pointer-events-none absolute inset-0 z-0 rounded-[50px] bg-white transition-[clip-path] duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none [clip-path:circle(0px_at_calc(100%-var(--circle-offset))_50%)] ${clipOpen}`
-      }
+      className={cx(
+        "pointer-events-none absolute inset-0 z-0 rounded-full bg-white transition-[clip-path] motion-reduce:transition-none",
+        motionEase,
+        iconOnLeft ? revealClosedLeft : revealClosedRight,
+        clipOpen,
+      )}
     />
   );
 
-  const iconSrc = iconOnLeft
-    ? "/images/plus-icon.svg"
-    : isSecondary
-      ? "/images/arrow-link.svg"
-      : "/images/arrow-hero.svg";
-  const iconWidth = isSecondary && !iconOnLeft ? 14 : arrowImageSize;
-  const iconHeight = isSecondary && !iconOnLeft ? 22 : arrowImageSize;
-  const secondaryBox = isSecondary && !iconOnLeft ? "h-[22px] w-[14px]" : arrowBoxClasses;
+  const iconSrc =
+    icon === "plus"
+      ? "/images/plus-icon.svg"
+      : isSecondary
+        ? "/images/arrow-link.svg"
+        : "/images/arrow-hero.svg";
+  const iconFlip = icon === "back" ? "-scale-x-100" : "";
+  const iconWidth = isSecondary ? 14 : arrowImageSize;
+  const iconHeight = isSecondary ? 22 : arrowImageSize;
+  const secondaryBox = isSecondary ? "h-[22px] w-[14px]" : arrowBoxClasses;
 
   const arrowIcon = showArrow && (
     <span
-      className={`relative z-10 flex shrink-0 items-center justify-center transition-transform duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none ${iconMotion} ${secondaryBox}`}
+      className={cx(
+        "relative z-10 flex shrink-0 items-center justify-center transition-transform motion-reduce:transition-none",
+        motionEase,
+        iconMotion,
+        secondaryBox,
+      )}
     >
-      <Image src={iconSrc} alt="" width={iconWidth} height={iconHeight} />
+      <Image
+        src={iconSrc}
+        alt=""
+        width={iconWidth}
+        height={iconHeight}
+        className={iconFlip}
+      />
     </span>
   );
 
@@ -234,26 +285,177 @@ interface LinkButtonProps {
   children: React.ReactNode;
   href?: string;
   className?: string;
+  /**
+   * `"arrow"` sits on the right. `"back"` is the same arrow, flipped, on the left.
+   * `"none"` is the text-only tertiary action.
+   */
+  icon?: "arrow" | "back" | "none";
+  /**
+   * Set to false for a visual tertiary nested inside another link
+   * (a whole-card `<Link>`), so the markup stays valid.
+   */
+  interactive?: boolean;
+  /**
+   * Set to false when a parent already has `group`, so the label
+   * and the arrow follow that ancestor's hover.
+   */
+  hoverGroup?: boolean;
+  onClick?: () => void;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  target?: string;
+  rel?: string;
+  "aria-expanded"?: boolean;
 }
 
-export function LinkButton({
-  children,
-  href = "#",
+export const LinkButton = forwardRef<HTMLElement, LinkButtonProps>(
+  function LinkButton(
+    {
+      children,
+      href,
+      className = "",
+      icon = "arrow",
+      interactive = true,
+      hoverGroup = true,
+      onClick,
+      disabled = false,
+      type = "button",
+      target,
+      rel,
+      "aria-expanded": ariaExpanded,
+    },
+    ref,
+  ) {
+    const iconOnLeft = icon === "back";
+    const mark =
+      icon === "none" ? null : (
+        <Image
+          src="/images/arrow-link.svg"
+          alt=""
+          width={14}
+          height={22}
+          className={cx(
+            "shrink-0 transition-transform motion-reduce:transition-none",
+            motionEase,
+            iconOnLeft ? "-scale-x-100" : "",
+            iconOnLeft ? nudgeLeft : nudgeRight,
+          )}
+        />
+      );
+
+    const sharedClassName = cx(
+      hoverGroup && "group",
+      "inline-flex items-center justify-center gap-2 rounded-full py-3.5 transition-colors",
+      motionEase,
+      "text-primary-dark hover:text-primary focus-visible:text-primary",
+      !hoverGroup &&
+        "group-hover:text-primary group-focus-visible:text-primary",
+      labelClass,
+      "disabled:pointer-events-none disabled:opacity-40",
+      className,
+    );
+    const content = (
+      <>
+        {iconOnLeft ? mark : null}
+        {children}
+        {icon === "arrow" ? mark : null}
+      </>
+    );
+
+    if (!interactive) {
+      return (
+        <span ref={ref as React.Ref<HTMLSpanElement>} className={sharedClassName}>
+          {content}
+        </span>
+      );
+    }
+
+    if (href) {
+      const external = /^https?:/i.test(href);
+      if (external) {
+        return (
+          <a
+            ref={ref as React.Ref<HTMLAnchorElement>}
+            href={href}
+            className={sharedClassName}
+            onClick={onClick}
+            target={target}
+            rel={rel}
+            aria-expanded={ariaExpanded}
+          >
+            {content}
+          </a>
+        );
+      }
+      return (
+        <Link
+          ref={ref as React.Ref<HTMLAnchorElement>}
+          href={href}
+          className={sharedClassName}
+          onClick={onClick}
+          target={target}
+          rel={rel}
+          aria-expanded={ariaExpanded}
+        >
+          {content}
+        </Link>
+      );
+    }
+
+    return (
+      <button
+        ref={ref as React.Ref<HTMLButtonElement>}
+        type={type}
+        className={sharedClassName}
+        onClick={onClick}
+        disabled={disabled}
+        aria-expanded={ariaExpanded}
+      >
+        {content}
+      </button>
+    );
+  },
+);
+
+/** Icon-only carousel control. Same 36px hero arrow as the XL button. */
+const carouselArrowClass = "h-9 w-9";
+
+interface CarouselArrowProps {
+  direction?: "prev" | "next";
+  label: string;
+  disabled?: boolean;
+  onClick?: () => void;
+  className?: string;
+}
+
+export function CarouselArrow({
+  direction = "next",
+  label,
+  disabled = false,
+  onClick,
   className = "",
-}: LinkButtonProps) {
+}: CarouselArrowProps) {
   return (
-    <a
-      href={href}
-      className={`inline-flex items-center justify-center gap-1.5 rounded-[33px] py-3.5 text-[17px] font-bold uppercase text-primary transition-opacity hover:opacity-80 ${className}`}
+    <button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      onClick={onClick}
+      className={cx(
+        "transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-35",
+        className,
+      )}
     >
-      {children}
       <Image
-        src="/images/arrow-link.svg"
+        src="/images/arrow-hero.svg"
         alt=""
-        width={14}
-        height={22}
-        className="shrink-0"
+        width={36}
+        height={36}
+        className={cx(
+          carouselArrowClass,
+          direction === "prev" && "rotate-180",
+        )}
       />
-    </a>
+    </button>
   );
 }

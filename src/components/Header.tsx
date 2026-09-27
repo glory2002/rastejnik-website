@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ProfileMenu } from "@/components/ProfileMenu";
 import { login, useMockAuth } from "@/lib/authMock";
 import { Button } from "./ui/Button";
 import { FullWidth } from "./ui/Container";
+import { NavText } from "./ui/Typography";
 
 const navLinks = [
   { label: "За Нас", href: "/about" },
@@ -125,6 +126,7 @@ export function Header({
   const isFramed = variant === "framed";
   const isStatic = isLight || isFramed;
   const loggedIn = useMockAuth();
+  const pathname = usePathname();
   const router = useRouter();
 
   // Hide on scroll down, show on the first scroll up — while the bar
@@ -236,7 +238,12 @@ export function Header({
         }
       >
       <FullWidth className="flex items-center justify-between gap-3 py-3">
-        <Link href="/" aria-label="Растежник начало" className="min-w-0 shrink">
+        <Link
+          href="/"
+          aria-label="Растежник начало"
+          className="min-w-0 shrink"
+          scroll={pathname !== "/"}
+        >
           <Logo variant="header" tone={logoTone} />
         </Link>
 
@@ -245,9 +252,10 @@ export function Header({
             <Link
               key={link.label}
               href={link.href}
-              className={`text-nav font-medium transition-colors hover:opacity-80 ${linkTone}`}
+              scroll={pathname !== link.href}
+              className={`transition-colors hover:opacity-80 ${linkTone}`}
             >
-              {link.label}
+              <NavText tone="inherit">{link.label}</NavText>
             </Link>
           ))}
           {loggedIn ? (
@@ -327,10 +335,11 @@ export function Header({
               <li key={link.label}>
                 <Link
                   href={link.href}
+                  scroll={pathname !== link.href}
                   onClick={closeMenu}
-                  className="block px-2 py-3 text-nav font-medium text-primary transition-opacity hover:opacity-80"
+                  className="block px-2 py-3 text-primary transition-opacity hover:opacity-80"
                 >
-                  {link.label}
+                  <NavText tone="inherit">{link.label}</NavText>
                 </Link>
               </li>
             ))}

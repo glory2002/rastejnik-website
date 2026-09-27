@@ -3,11 +3,13 @@ import Image from "next/image";
 import { FeaturesSection } from "@/components/FeaturesSection";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { ListingHero } from "@/components/ListingHero";
 import { PdfPlaceholder } from "@/components/icons/PdfPlaceholder";
 import { Container } from "@/components/ui/Container";
-import { Reveal, RevealStack } from "@/components/ui/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
-import { Action, Body, Display, Heading, Meta } from "@/components/ui/Typography";
+import { LinkButton } from "@/components/ui/Button";
+import { Body, Heading, Lead, Meta } from "@/components/ui/Typography";
 import { resources, type ResourceItem } from "@/data/resources";
 
 export const metadata: Metadata = {
@@ -64,19 +66,10 @@ function ResourceCard({ item }: { item: ResourceItem }) {
       <div className="flex flex-1 flex-col gap-3 pt-5">
         <Meta>{isVideo ? "Видео" : "PDF"}</Meta>
         <Heading>{item.title}</Heading>
-        <p className="text-card-body text-primary-dark">
-          {item.excerpt}
-        </p>
-        <Action className="mt-auto inline-flex items-center gap-1.5 pt-4 transition-opacity group-hover:opacity-80">
+        <Body size="card">{item.excerpt}</Body>
+        <LinkButton interactive={false} hoverGroup={false} className="mt-auto self-start pt-4">
           {isVideo ? "Гледай в YouTube" : "Отвори PDF"}
-          <Image
-            src="/images/arrow-link.svg"
-            alt=""
-            width={14}
-            height={22}
-            className="shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-1"
-          />
-        </Action>
+        </LinkButton>
       </div>
     </a>
   );
@@ -89,13 +82,23 @@ export default function ResourcesPage() {
 
       <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
-          <RevealStack>
-            <Display className="max-w-[800px]">Ресурси</Display>
-            <Body className="mt-4 max-w-[620px]">
+          <ListingHero
+            title="Ресурси"
+            mark={
+              <Image
+                src="/images/resursi.svg"
+                alt=""
+                width={79}
+                height={69}
+                className="h-[length:var(--size-mark)] w-auto shrink-0 object-contain"
+              />
+            }
+          >
+            <Lead className="mt-4 max-w-hero-lead sm:mt-5">
               Видеа и PDF материали за ежедневието с малко дете — отворете
               видеото в YouTube или изтеглете книгата.
-            </Body>
-          </RevealStack>
+            </Lead>
+          </ListingHero>
         </Container>
       </section>
 

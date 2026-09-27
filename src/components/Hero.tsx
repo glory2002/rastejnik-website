@@ -2,8 +2,7 @@ import { Header } from "./Header";
 import { Button } from "./ui/Button";
 import { Container } from "./ui/Container";
 import { Reveal } from "./ui/Reveal";
-import { SectionLead } from "./ui/SectionLead";
-import { DisplayHero } from "@/components/ui/Typography";
+import { DisplayHero, Lead } from "@/components/ui/Typography";
 
 const HERO_VIDEO = "/videos/hero-video.mp4";
 const HERO_POSTER = "/images/hero.jpg";
@@ -44,14 +43,14 @@ export function Hero() {
                   </DisplayHero>
                 </Reveal>
                 <Reveal delay={140}>
-                  <SectionLead
-                    tone="light"
+                  <Lead
+                    tone="white"
                     size="hero"
                     className="hero-lead max-w-hero-lead"
                   >
                     Кратки валидирани оценки на развитието - какво работи в
                     реалния живот: ритуали, граници, разговори, ежедневни.
-                  </SectionLead>
+                  </Lead>
                 </Reveal>
               </div>
               <Reveal delay={260}>

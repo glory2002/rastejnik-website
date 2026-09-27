@@ -7,7 +7,7 @@ import { ListingHero } from "@/components/ListingHero";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { cardGapClass } from "@/components/ui/cardSurface";
-import { Body } from "@/components/ui/Typography";
+import { Lead } from "@/components/ui/Typography";
 import { tips } from "@/data/tips";
 
 export const metadata: Metadata = {
@@ -35,10 +35,10 @@ export default function TipsListingPage() {
               />
             }
           >
-            <Body className="mt-4 max-w-hero-lead sm:mt-5">
+            <Lead className="mt-4 max-w-hero-lead sm:mt-5">
               Кратки, практични идеи за сън, хранене, игра и връзка —
               написани за родителския ден, не за идеален свят.
-            </Body>
+            </Lead>
           </ListingHero>
         </Container>
       </section>
@@ -55,9 +55,9 @@ export default function TipsListingPage() {
                 <li
                   key={tip.slug}
                   id={isCategoryAnchor ? tip.categorySlug : undefined}
-                  className={isCategoryAnchor ? "scroll-mt-24" : undefined}
+                  className={`h-full${isCategoryAnchor ? " scroll-mt-24" : ""}`}
                 >
-                  <Reveal delay={Math.min(index * 70, 210)}>
+                  <Reveal delay={Math.min(index * 70, 210)} className="h-full">
                     <TipCard
                       href={`/tips/${tip.slug}`}
                       title={tip.title}

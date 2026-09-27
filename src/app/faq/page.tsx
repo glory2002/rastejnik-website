@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { ListingHero } from "@/components/ListingHero";
 import { Container } from "@/components/ui/Container";
-import { Body } from "@/components/ui/Typography";
+import { Lead } from "@/components/ui/Typography";
 
 export const metadata: Metadata = {
   title: "Всички въпроси — Растежник",
@@ -32,10 +32,10 @@ export default function FaqPage() {
               />
             }
           >
-            <Body className="mt-4 max-w-hero-lead sm:mt-5">
+            <Lead className="mt-4 max-w-hero-lead sm:mt-5">
               Пълният списък с кратки, валидирани отговори на най-честите
               въпроси на родители — потърсете дума или разгледайте надолу.
-            </Body>
+            </Lead>
           </ListingHero>
 
           <div className="mx-auto mt-10 w-full max-w-[720px] sm:mt-14">

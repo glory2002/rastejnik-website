@@ -14,9 +14,8 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
+      <Header variant="framed" />
       <main className="overflow-x-clip">
-        <Header variant="framed" />
-
         <AboutView />
 
         <CtaSection />

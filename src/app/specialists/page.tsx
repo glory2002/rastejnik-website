@@ -9,7 +9,8 @@ import { ListingHero } from "@/components/ListingHero";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { cardSurfaceClass } from "@/components/ui/cardSurface";
-import { Action, Body, Heading, Meta, Title } from "@/components/ui/Typography";
+import { LinkButton } from "@/components/ui/Button";
+import { Body, Heading, Lead, Meta, Title } from "@/components/ui/Typography";
 import { associations } from "@/data/specialists";
 
 export const metadata: Metadata = {
@@ -43,11 +44,11 @@ export default function SpecialistsPage() {
               </span>
             }
           >
-            <Body className="mt-4 max-w-hero-lead sm:mt-5">
+            <Lead className="mt-4 max-w-hero-lead sm:mt-5">
               Растежник не замества медицински съвет. Списъкът е ориентир —
               през сайтовете на асоциациите можете да проверите
               правоспособност и да намерите практики близо до вас.
-            </Body>
+            </Lead>
           </ListingHero>
         </Container>
       </section>
@@ -81,18 +82,9 @@ export default function SpecialistsPage() {
                         {association.description}
                       </Body>
                     </div>
-                    <span className="flex shrink-0 items-center gap-1.5">
-                      <Action className="transition-opacity group-hover:opacity-80">
-                        Към сайта
-                      </Action>
-                      <Image
-                        src="/images/arrow-link.svg"
-                        alt=""
-                        width={14}
-                        height={22}
-                        className="shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-1"
-                      />
-                    </span>
+                    <LinkButton interactive={false} hoverGroup={false} className="shrink-0">
+                      Към сайта
+                    </LinkButton>
                   </div>
                 </a>
                 </Reveal>

@@ -11,7 +11,7 @@ import {
   cardGapFeaturedClass,
   cardGapHierarchyClass,
 } from "@/components/ui/cardSurface";
-import { Body } from "@/components/ui/Typography";
+import { Lead } from "@/components/ui/Typography";
 import { news } from "@/data/news";
 
 export const metadata: Metadata = {
@@ -39,10 +39,10 @@ export default function NewsListingPage() {
               />
             }
           >
-            <Body className="mt-4 max-w-hero-lead sm:mt-5">
+            <Lead className="mt-4 max-w-hero-lead sm:mt-5">
               Какво е ново в Растежник — обновления, материали и теми около
               първите години с детето.
-            </Body>
+            </Lead>
           </ListingHero>
         </Container>
       </section>
@@ -52,8 +52,8 @@ export default function NewsListingPage() {
           <div className={`flex flex-col ${cardGapHierarchyClass}`}>
             <ul className={`grid md:grid-cols-2 ${cardGapFeaturedClass}`}>
               {news.slice(0, 2).map((item, index) => (
-                <li key={item.slug}>
-                  <Reveal delay={index * 80}>
+                <li key={item.slug} className="h-full">
+                  <Reveal delay={index * 80} className="h-full">
                     <NewsCard
                       href={`/news/${item.slug}`}
                       date={item.date}
@@ -68,8 +68,8 @@ export default function NewsListingPage() {
             </ul>
             <ul className={`grid md:grid-cols-2 lg:grid-cols-3 ${cardGapClass}`}>
               {news.slice(2).map((item, index) => (
-                <li key={item.slug}>
-                  <Reveal delay={Math.min(index * 70, 210)}>
+                <li key={item.slug} className="h-full">
+                  <Reveal delay={Math.min(index * 70, 210)} className="h-full">
                     <NewsCard
                       href={`/news/${item.slug}`}
                       date={item.date}

@@ -41,14 +41,14 @@ export function ProfileMenu() {
           <Link
             href="/dashboard"
             onClick={() => setOpen(false)}
-            className="block px-4 py-2.5 text-[15px] font-medium text-primary-dark transition-colors hover:bg-primary-light hover:text-primary"
+            className="block px-4 py-2.5 text-label font-medium text-primary-dark transition-colors hover:bg-primary-light hover:text-primary"
           >
             Табло
           </Link>
           <Link
             href="/profile"
             onClick={() => setOpen(false)}
-            className="block px-4 py-2.5 text-[15px] font-medium text-primary-dark transition-colors hover:bg-primary-light hover:text-primary"
+            className="block px-4 py-2.5 text-label font-medium text-primary-dark transition-colors hover:bg-primary-light hover:text-primary"
           >
             Профил
           </Link>
@@ -60,7 +60,7 @@ export function ProfileMenu() {
               // Full navigation so every header remounts with guest buttons.
               window.location.assign("/");
             }}
-            className="block w-full px-4 py-2.5 text-left text-[15px] font-medium text-primary-dark transition-colors hover:bg-primary-light hover:text-primary"
+            className="block w-full px-4 py-2.5 text-left text-label font-medium text-primary-dark transition-colors hover:bg-primary-light hover:text-primary"
           >
             Изход
           </button>

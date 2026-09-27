@@ -8,9 +8,9 @@ import { BabyCrawlIcon } from "@/components/icons/BabyCrawlIcon";
 import { BabyRattleIcon } from "@/components/icons/BabyRattleIcon";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
-import { SectionLead } from "@/components/ui/SectionLead";
 import { cardGapCompactClass, cardSurfaceClass } from "@/components/ui/cardSurface";
-import { Action, Display, Heading, Meta } from "@/components/ui/Typography";
+import { LinkButton } from "@/components/ui/Button";
+import { Display, Heading, Lead } from "@/components/ui/Typography";
 import { getBabyIcons } from "@/lib/babyIcons";
 import {
   questionnaireCategories,
@@ -57,29 +57,22 @@ export default async function AgeQuestionnairePage({
 
       <section className="w-full bg-cream py-16 md:py-24">
         <Container>
-          <Action
-            as={Link}
+          <LinkButton
             href="/questionnaires/ranno-detsko-razvitie"
-            className="group mb-8 inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
+            icon="back"
+            className="mb-8"
           >
-            <Image
-              src="/images/arrow-link.svg"
-              alt=""
-              width={12}
-              height={19}
-              className="shrink-0 rotate-180"
-            />
             Ранно детско развитие
-          </Action>
+          </LinkButton>
 
           <Reveal>
             <Display className="max-w-[700px]">{sub.title}</Display>
           </Reveal>
           <Reveal delay={140}>
-            <SectionLead className="mt-6 max-w-[560px]">
+            <Lead className="mt-6 max-w-[560px]">
               {sub.description} Изберете конкретен етап по-долу, за да
               започнете съответния въпросник.
-            </SectionLead>
+            </Lead>
           </Reveal>
         </Container>
       </section>
@@ -118,20 +111,13 @@ export default async function AgeQuestionnairePage({
                   <Heading as="span" size="sm">
                     {interval.label}
                   </Heading>
-                  <Meta
-                    as="span"
-                    tone="dark"
-                    className="mt-auto inline-flex items-center gap-1.5 transition-transform duration-200 ease-out group-hover:translate-x-1"
+                  <LinkButton
+                    interactive={false}
+                    hoverGroup={false}
+                    className="mt-auto"
                   >
                     Започни
-                    <Image
-                      src="/images/arrow-link.svg"
-                      alt=""
-                      width={10}
-                      height={16}
-                      className="shrink-0"
-                    />
-                  </Meta>
+                  </LinkButton>
                 </Link>
                 </Reveal>
               );

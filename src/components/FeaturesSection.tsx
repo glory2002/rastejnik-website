@@ -3,7 +3,8 @@ import Link from "next/link";
 import { Container } from "./ui/Container";
 import { Reveal } from "./ui/Reveal";
 import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
-import { Action, Body, Display, Heading } from "@/components/ui/Typography";
+import { LinkButton } from "@/components/ui/Button";
+import { Body, Heading, Title } from "@/components/ui/Typography";
 
 const features = [
   {
@@ -56,9 +57,7 @@ export function FeaturesSection() {
     <section id="resources" className="w-full bg-cream py-section">
       <Container>
         <Reveal className="mb-block max-w-[1000px] text-left">
-          <Display weight="medium" as="h2">
-            Нашите рубрики
-          </Display>
+          <Title>Нашите рубрики</Title>
         </Reveal>
 
         <div
@@ -98,18 +97,13 @@ export function FeaturesSection() {
                   </Body>
                 </div>
 
-                <Action
-                  className={`mt-auto inline-flex w-fit items-center gap-1.5 pt-cluster transition-opacity ${motion} group-hover:opacity-80 group-focus-visible:opacity-80`}
+                <LinkButton
+                  interactive={false}
+                  hoverGroup={false}
+                  className="mt-auto w-fit pt-cluster"
                 >
                   {feature.cta}
-                  <Image
-                    src="/images/arrow-link.svg"
-                    alt=""
-                    width={14}
-                    height={22}
-                    className={`shrink-0 transition-transform ${motion} group-hover:translate-x-1 group-focus-visible:translate-x-1`}
-                  />
-                </Action>
+                </LinkButton>
               </div>
             </Link>
             </Reveal>

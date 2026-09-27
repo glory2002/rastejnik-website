@@ -3,11 +3,6 @@
 @theme inline {
   --color-primary: #6d954b;
   --color-primary-dark: #385d30;
-  /*
-   * Supporting body copy — one step quieter than titles, one step
-   * stronger than the airy 55% wash. Use via text-copy.
-   */
-  --color-copy: color-mix(in srgb, var(--color-primary-dark) 70%, white);
   --color-primary-light: rgba(109, 149, 75, 0.08);
   /* Solid match of primary-light over white — for sticky/opaque surfaces. */
   --color-primary-light-solid: #f3f6f0;
@@ -28,7 +23,8 @@
    * told apart by color without inventing a one-off hex value.
    */
   --color-accent-pink: #f27a97;
-  --color-accent-orange: #e9b063;
+  /* Same gold as secondary — kept so the pink/orange/green/blue accent set stays complete. */
+  --color-accent-orange: var(--color-secondary);
   --color-accent-green: #6d954b;
   --color-accent-blue: #476abf;
   /* Status red for the results screen's traffic-light indicator (no green/orange equivalent needed — those reuse --color-primary / --color-accent-orange). */
@@ -53,35 +49,21 @@
   --text-display--line-height: 1.05;
   --text-display-hero: clamp(2.5rem, 6.4vw, 88px);
   --text-display-hero--line-height: 1;
-  --text-display-banner: clamp(2rem, 4.6vw, 4.75rem);
-  --text-display-banner--line-height: 1.2;
   --text-title: clamp(1.75rem, 3vw, 2.5rem);
   --text-title--line-height: 1.08;
-  --text-heading: 1.375rem; /* 22px */
-  --text-heading--line-height: 1.2;
-  --text-heading-md: 1.5rem; /* 24px — pair with md:text-heading-md */
-  --text-heading-md--line-height: 1.2;
-  --text-heading-sm: 1.25rem; /* 20px */
+  /* One size per role — no mobile/desktop pairs. */
+  --text-heading-sm: 1.375rem; /* 22px — subsection */
   --text-heading-sm--line-height: 1.2;
-  --text-heading-sm-md: 1.375rem; /* 22px */
-  --text-heading-sm-md--line-height: 1.2;
-  --text-heading-lg: 1.625rem; /* 26px */
+  --text-heading: 1.625rem; /* 26px — card title */
+  --text-heading--line-height: 1.2;
+  --text-heading-lg: 1.75rem; /* 28px — directory / category */
   --text-heading-lg--line-height: 1.2;
-  --text-heading-lg-md: 1.75rem; /* 28px */
-  --text-heading-lg-md--line-height: 1.2;
-  /* News-card titles — regular stays compact; featured jumps a full step. */
-  --text-card: 1.25rem;
-  --text-card--line-height: 1.2;
-  --text-card-md: 1.375rem;
-  --text-card-md--line-height: 1.2;
-  --text-card-featured: clamp(1.75rem, 1.2rem + 1.8vw, 2.25rem);
-  --text-card-featured--line-height: 1.12;
+  --text-heading-featured: clamp(1.75rem, 1.2rem + 1.8vw, 2.25rem);
+  --text-heading-featured--line-height: 1.12;
   --text-card-body: 1.125rem;
   --text-card-body--line-height: 1.4;
-  --text-card-body-featured: var(--text-card-body);
-  --text-card-body-featured--line-height: 1.4;
-  --text-lead: 1.25rem; /* 20px */
-  --text-lead--line-height: 1.3;
+  --text-lead: 1.375rem; /* 22px */
+  --text-lead--line-height: 1.4;
   /* Hero deck — larger than lead, still clearly below DisplayHero. */
   --text-lead-hero: clamp(1.1875rem, 0.35vw + 1.12rem, 1.4375rem);
   --text-lead-hero--line-height: 1.5;
@@ -152,6 +134,8 @@
   --size-news-shevitsa-sm: 2.5rem;
   --size-news-shevitsa-featured: 2.75rem;
   --size-news-shevitsa-featured-sm: 3.25rem;
+  --min-height-news-card: 18rem;
+  --min-height-news-card-md: 22rem;
   --opacity-news-shevitsa: 0.7;
   --scale-news-shevitsa-hover: 1.25;
   --aspect-ratio-mark: 1 / 1;
@@ -163,14 +147,12 @@
   --min-height-hero-md: 35rem;
 
   --text-body: 1.25rem; /* 20px */
-  --text-body--line-height: 1.3;
-  --text-body-relaxed: 1.25rem;
-  --text-body-relaxed--line-height: 1.55;
+  --text-body--line-height: 1.55;
   --text-label: 1rem; /* 16px */
   --text-label--line-height: 1.3;
   --text-meta: 0.75rem; /* 12px */
   --text-meta--line-height: 1.3;
-  --text-action: 0.9375rem; /* 15px */
+  --text-action: 1rem; /* 16px */
   --text-action--line-height: 1.3;
   --text-nav: 1.3125rem; /* 21px */
   --text-nav--line-height: 1.3;
@@ -209,13 +191,12 @@ select {
   padding-right: 2.85rem;
 }
 
-/* Native date/month picker — keep the system calendar, tint the icon green. */
-input[type="date"],
+
+/* Native month picker — green calendar mark. Full dates use DateInput. */
 input[type="month"] {
   color-scheme: light;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="month"]::-webkit-calendar-picker-indicator {
   width: 16px;
   height: 16px;
@@ -228,7 +209,7 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   background-size: 16px 16px;
 }
 
-/* Hide native number-input spinners — custom chevrons sit on the field. */
+
 .number-input-plain {
   appearance: textfield;
   -moz-appearance: textfield;
@@ -969,6 +950,7 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   );
   border-radius: 0;
   box-shadow: none;
+  min-height: var(--min-height-news-card);
 }
 
 .news-envelope--featured {
@@ -991,8 +973,12 @@ input[type="month"]::-webkit-calendar-picker-indicator {
 }
 
 @media (min-width: 768px) {
+  .news-envelope {
+    min-height: var(--min-height-news-card-md);
+  }
+
   .news-envelope--featured {
-    min-height: 22rem;
+    min-height: var(--min-height-news-card-md);
   }
 }
 
@@ -1111,48 +1097,46 @@ input[type="month"]::-webkit-calendar-picker-indicator {
 }
 
 /*
- * Hero video scrim — darker forest-green wash behind the copy and CTA,
- * fading to the video on the right. Ink is primary-dark pulled toward black
- * so the veil reads green, not a grey mist.
+ * Hero video scrim — neutral dark behind the copy only.
+ * A green wash made skin and clothing look sickly; black keeps the
+ * footage’s own colour and still holds the white type.
  */
 .hero-video-scrim {
-  --hero-ink: color-mix(in srgb, var(--color-primary-dark) 68%, black);
+  --hero-ink: #0c0c0c;
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-color: color-mix(in srgb, var(--hero-ink) 34%, transparent);
   background-image:
     radial-gradient(
-      78% 72% at 6% 88%,
-      color-mix(in srgb, var(--hero-ink) 88%, transparent) 0%,
-      color-mix(in srgb, var(--hero-ink) 58%, transparent) 34%,
-      color-mix(in srgb, var(--hero-ink) 26%, transparent) 58%,
-      transparent 76%
+      68% 64% at 8% 90%,
+      color-mix(in srgb, var(--hero-ink) 70%, transparent) 0%,
+      color-mix(in srgb, var(--hero-ink) 38%, transparent) 36%,
+      color-mix(in srgb, var(--hero-ink) 12%, transparent) 58%,
+      transparent 74%
     ),
     linear-gradient(
       90deg,
-      color-mix(in srgb, var(--hero-ink) 66%, transparent) 0%,
-      color-mix(in srgb, var(--hero-ink) 32%, transparent) 32%,
-      transparent 58%
+      color-mix(in srgb, var(--hero-ink) 42%, transparent) 0%,
+      color-mix(in srgb, var(--hero-ink) 16%, transparent) 28%,
+      transparent 50%
     );
 }
 
 @media (max-width: 639px) {
   /* Copy sits at the bottom on small screens. */
   .hero-video-scrim {
-    background-color: color-mix(in srgb, var(--hero-ink) 34%, transparent);
     background-image:
       linear-gradient(
         180deg,
-        transparent 28%,
-        color-mix(in srgb, var(--hero-ink) 32%, transparent) 58%,
-        color-mix(in srgb, var(--hero-ink) 72%, transparent) 100%
+        transparent 32%,
+        color-mix(in srgb, var(--hero-ink) 22%, transparent) 60%,
+        color-mix(in srgb, var(--hero-ink) 62%, transparent) 100%
       ),
       linear-gradient(
         90deg,
-        color-mix(in srgb, var(--hero-ink) 58%, transparent) 0%,
-        color-mix(in srgb, var(--hero-ink) 24%, transparent) 50%,
-        transparent 78%
+        color-mix(in srgb, var(--hero-ink) 36%, transparent) 0%,
+        color-mix(in srgb, var(--hero-ink) 12%, transparent) 46%,
+        transparent 72%
       );
   }
 }

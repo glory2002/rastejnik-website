@@ -1,7 +1,7 @@
 import { Container } from "./ui/Container";
 import { CtaShevitsa } from "./CtaShevitsa";
 import { Reveal } from "./ui/Reveal";
-import { DisplayBanner } from "@/components/ui/Typography";
+import { Display } from "@/components/ui/Typography";
 
 export function CtaSection() {
   return (
@@ -13,10 +13,10 @@ export function CtaSection() {
         <CtaShevitsa />
         <Container className="relative z-20">
           <Reveal className="max-w-[950px] text-left">
-            <DisplayBanner as="p" tone="white">
+            <Display as="p" weight="medium" tone="white">
               Развитието не е състезание. Растежник помага да го наблюдавате, а
               не да го сравнявате.
-            </DisplayBanner>
+            </Display>
           </Reveal>
         </Container>
       </section>

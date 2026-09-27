@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import {
   answerOptions as defaultAnswerOptions,
   generalGuidance,
@@ -14,7 +13,8 @@ import {
 import { ShevitsaAssembleIcon } from "@/components/icons/ShevitsaAssembleIcon";
 import { TrafficLightIcon } from "@/components/icons/TrafficLightIcon";
 import { FaqToggleIcon } from "@/components/FaqList";
-import { Button } from "@/components/ui/Button";
+import { Button, LinkButton } from "@/components/ui/Button";
+import { DateInput } from "@/components/ui/DateInput";
 import { NumberInput } from "@/components/ui/NumberInput";
 import { FormSelect } from "@/components/ui/Select";
 import { Container } from "@/components/ui/Container";
@@ -388,22 +388,21 @@ export function QuestionnaireFlow({
         </div>
 
         <div className="flex flex-col gap-3">
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="l"
+            showArrow={false}
+            className="w-full"
             onClick={() => setStage("parent")}
-            className="inline-flex h-[56px] items-center justify-center gap-2 rounded-full border-[1.5px] border-border-green bg-white text-[14px] font-bold uppercase text-primary-dark transition-colors duration-150 ease-out hover:border-primary"
           >
             Регистрация с Google
-          </button>
+          </Button>
           <Button size="l" className="w-full" onClick={() => setStage("parent")}>
             Регистрация
           </Button>
-          <button
-            type="button"
-            className="mt-1 text-[14px] font-bold uppercase text-primary-dark transition-opacity hover:opacity-70"
-          >
+          <LinkButton icon="none" className="mt-1">
             Вход
-          </button>
+          </LinkButton>
         </div>
       </OnboardStepShell>
     );
@@ -423,12 +422,14 @@ export function QuestionnaireFlow({
             value={parentData.name}
             onChange={(e) => updateParent("name", e.target.value)}
           />
-          <FormField
-            label="Дата на раждане"
-            type="date"
-            value={parentData.birthDate}
-            onChange={(e) => updateParent("birthDate", e.target.value)}
-          />
+          <div className="flex flex-col gap-2">
+            <Label>Дата на раждане</Label>
+            <DateInput
+              aria-label="Дата на раждане"
+              value={parentData.birthDate}
+              onChange={(value) => updateParent("birthDate", value)}
+            />
+          </div>
           <FormSelect
             label="Пол"
             options={["Жена", "Мъж", "Друго"]}
@@ -793,7 +794,7 @@ export function QuestionnaireFlow({
                           return (
                             <label
                               key={opt.value}
-                              className={`cursor-pointer rounded-full border-[1.5px] px-5 py-2.5 text-[14px] font-bold uppercase transition-colors duration-150 ease-out ${
+                              className={`cursor-pointer rounded-full border-[1.5px] px-5 py-2.5 text-action font-bold uppercase transition-colors duration-150 ease-out ${
                                 checked
                                   ? "border-primary bg-primary text-white"
                                   : "border-border-green bg-primary-light-solid text-primary-dark hover:border-primary"
@@ -820,49 +821,21 @@ export function QuestionnaireFlow({
               </div>
 
               <div className="flex items-center justify-between gap-4">
-                <button
-                  type="button"
+                <LinkButton
+                  icon="back"
                   onClick={handleBack}
                   disabled={page === 0}
-                  className="inline-flex items-center gap-2 text-[13px] font-bold uppercase text-primary-dark transition-opacity hover:opacity-70 disabled:pointer-events-none disabled:opacity-0"
                 >
-                  {isLiteracy ? (
-                    <>
-                      <Image
-                        src="/images/arrow-link.svg"
-                        alt=""
-                        width={12}
-                        height={18}
-                        className="rotate-180 opacity-70"
-                      />
-                      Назад
-                    </>
-                  ) : (
-                    "Назад"
-                  )}
-                </button>
+                  Назад
+                </LinkButton>
 
-                <button
-                  type="button"
+                <Button
+                  size="l"
                   onClick={handleNext}
                   disabled={!allCurrentAnswered}
-                  className={`inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-[15px] font-bold uppercase transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 ${
-                    isLiteracy
-                      ? "bg-primary text-white"
-                      : "bg-secondary text-primary-dark"
-                  }`}
                 >
                   {isLastPage ? "Завърши" : isLiteracy ? "Следващ" : "Напред"}
-                  {isLiteracy && !isLastPage ? (
-                    <Image
-                      src="/images/arrow-link.svg"
-                      alt=""
-                      width={12}
-                      height={18}
-                      className="brightness-0 invert"
-                    />
-                  ) : null}
-                </button>
+                </Button>
               </div>
             </Reveal>
           </div>

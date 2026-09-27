@@ -1,20 +1,13 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { TipCard } from "@/components/TipCard";
+import { LinkButton } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { cardGapClass } from "@/components/ui/cardSurface";
-import {
-  Action,
-  Body,
-  Display,
-  Label,
-  Title,
-} from "@/components/ui/Typography";
+import { Body, Display, Label, Title } from "@/components/ui/Typography";
 import {
   getRelatedTips,
   getTipBySlug,
@@ -45,7 +38,7 @@ export async function generateMetadata({
 
 function TipBody({ blocks }: { blocks: TipBlock[] }) {
   return (
-    <Body as="div" size="relaxed" className="flex flex-col gap-6">
+    <Body as="div" className="flex flex-col gap-6">
       {blocks.map((block, index) => {
         if (block.type === "paragraph") {
           return <p key={index}>{block.text}</p>;
@@ -98,22 +91,15 @@ export default async function TipArticlePage({ params }: PageProps) {
 
       <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
-          <Action
-            as={Link}
+          <LinkButton
             href={category ? `/tips#${category.slug}` : "/tips"}
-            className="mb-8 inline-flex items-center gap-1.5 transition-opacity hover:opacity-80 sm:mb-10"
+            icon="back"
+            className="mb-8 sm:mb-10"
           >
-            <Image
-              src="/images/arrow-link.svg"
-              alt=""
-              width={12}
-              height={19}
-              className="shrink-0 rotate-180"
-            />
             {category
               ? `Назад към ${category.title}`
               : "Назад към полезната информация"}
-          </Action>
+          </LinkButton>
 
           <Reveal className="flex flex-col items-center text-center">
             <Display className="max-w-[820px] text-balance">{tip.title}</Display>
@@ -138,23 +124,14 @@ export default async function TipArticlePage({ params }: PageProps) {
 
             <Reveal delay={220}>
               <div className="mt-8 border-t border-border-green pt-6 sm:mt-10 sm:pt-8">
-                <Link
+                <LinkButton
                   href={category ? `/tips#${category.slug}` : "/tips"}
-                  className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
+                  icon="back"
                 >
-                  <Image
-                    src="/images/arrow-link.svg"
-                    alt=""
-                    width={14}
-                    height={22}
-                    className="shrink-0 rotate-180"
-                  />
-                  <Action>
-                    {category
-                      ? `Назад към ${category.title}`
-                      : "Към полезната информация"}
-                  </Action>
-                </Link>
+                  {category
+                    ? `Назад към ${category.title}`
+                    : "Към полезната информация"}
+                </LinkButton>
               </div>
             </Reveal>
           </div>
@@ -169,8 +146,8 @@ export default async function TipArticlePage({ params }: PageProps) {
             </Reveal>
             <ul className={`mt-8 grid sm:mt-10 sm:grid-cols-2 lg:grid-cols-3 ${cardGapClass}`}>
               {related.map((item, index) => (
-                <li key={item.slug}>
-                  <Reveal delay={Math.min(index * 70, 210)}>
+                <li key={item.slug} className="h-full">
+                  <Reveal delay={Math.min(index * 70, 210)} className="h-full">
                     <TipCard
                       href={`/tips/${item.slug}`}
                       title={item.title}

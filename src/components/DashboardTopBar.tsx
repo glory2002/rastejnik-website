@@ -7,6 +7,7 @@ import { Logo } from "@/components/Header";
 import { ProfileMenu } from "@/components/ProfileMenu";
 import { Button } from "@/components/ui/Button";
 import { FullWidth } from "@/components/ui/Container";
+import { NavText } from "@/components/ui/Typography";
 import { login, useMockAuth } from "@/lib/authMock";
 
 /** Same primary nav links as the public marketing header (`Header.tsx`). */
@@ -46,9 +47,9 @@ export function DashboardTopBar() {
             <Link
               key={link.label}
               href={link.href}
-              className="whitespace-nowrap text-nav font-medium text-primary transition-colors hover:opacity-80"
+              className="whitespace-nowrap text-primary transition-colors hover:opacity-80"
             >
-              {link.label}
+              <NavText tone="inherit">{link.label}</NavText>
             </Link>
           ))}
           {loggedIn ? (
@@ -128,9 +129,9 @@ export function DashboardTopBar() {
                 <Link
                   href={link.href}
                   onClick={closeMenu}
-                  className="block px-2 py-3 text-nav font-medium text-primary transition-opacity hover:opacity-80"
+                  className="block px-2 py-3 text-primary transition-opacity hover:opacity-80"
                 >
-                  {link.label}
+                  <NavText tone="inherit">{link.label}</NavText>
                 </Link>
               </li>
             ))}

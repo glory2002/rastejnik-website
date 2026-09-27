@@ -1,10 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { TokenIcon } from "@/components/icons/TokenIcon";
-import { Button } from "@/components/ui/Button";
+import { Button, CarouselArrow } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Body, Heading, Meta } from "@/components/ui/Typography";
@@ -167,36 +166,18 @@ export function QuestionnairesBrowse({
         {isCarousel ? (
           <div className="mt-4 flex items-center justify-between gap-3 sm:mt-6">
             <div className="flex items-center gap-3">
-              <button
-                type="button"
-                aria-label="Предишни въпросници"
+              <CarouselArrow
+                direction="prev"
+                label="Предишни въпросници"
                 disabled={!canPrev}
                 onClick={() => setIndex((i) => Math.max(0, i - 1))}
-                className="transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-35"
-              >
-                <Image
-                  src="/images/arrow-hero.svg"
-                  alt=""
-                  width={36}
-                  height={36}
-                  className="h-9 w-9 rotate-180"
-                />
-              </button>
-              <button
-                type="button"
-                aria-label="Следващи въпросници"
+              />
+              <CarouselArrow
+                direction="next"
+                label="Следващи въпросници"
                 disabled={!canNext}
                 onClick={() => setIndex((i) => Math.min(maxIndex, i + 1))}
-                className="transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-35"
-              >
-                <Image
-                  src="/images/arrow-hero.svg"
-                  alt=""
-                  width={36}
-                  height={36}
-                  className="h-9 w-9"
-                />
-              </button>
+              />
             </div>
             <Meta as="p" aria-live="polite" aria-atomic="true">
               <span className="sr-only">Карта </span>

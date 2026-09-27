@@ -1,10 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ShevitsaMark } from "@/components/icons/ShevitsaMark";
+import { LinkButton } from "@/components/ui/Button";
 import { cardSurfaceClass } from "@/components/ui/cardSurface";
-import { Action, Heading, Meta } from "@/components/ui/Typography";
+import { Body, Heading, Meta } from "@/components/ui/Typography";
 
-const cardWashes = [
+export const newsCardWashes = [
   { wash: "bg-primary-light-solid", shevitsa: "green" },
   { wash: "bg-accent-pink-solid", shevitsa: "pink" },
   { wash: "bg-accent-pink-solid", shevitsa: "pink" },
@@ -35,7 +35,7 @@ export function NewsCard({
   index?: number;
   featured?: boolean;
 }) {
-  const { wash, shevitsa } = cardWashes[index % cardWashes.length];
+  const { wash, shevitsa } = newsCardWashes[index % newsCardWashes.length];
 
   return (
     <Link
@@ -54,29 +54,24 @@ export function NewsCard({
         {title}
       </Heading>
       {excerpt ? (
-        <p
-          className={`feature-copy text-card-body text-primary ${
+        <Body
+          size="card"
+          tone="primary"
+          className={`feature-copy ${
             featured ? "mt-card-copy-featured" : "mt-card-copy"
           }`}
         >
           {excerpt}
-        </p>
+        </Body>
       ) : null}
       <div
         className={`mt-auto flex items-center ${
           featured ? "pt-card-action-featured" : "pt-card-action"
         }`}
       >
-        <Action className="inline-flex items-center gap-1.5 transition-opacity group-hover:opacity-80">
+        <LinkButton interactive={false} hoverGroup={false}>
           Прочети
-          <Image
-            src="/images/arrow-link.svg"
-            alt=""
-            width={14}
-            height={22}
-            className="shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-1"
-          />
-        </Action>
+        </LinkButton>
       </div>
     </Link>
   );

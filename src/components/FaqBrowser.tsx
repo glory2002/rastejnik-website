@@ -63,9 +63,9 @@ export function FaqBrowser() {
           />
 
           <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-label font-medium text-primary-dark/60">
+            <Label as="p" tone="muted" className="font-medium">
               Показани {visibleQuestions.length} от {filtered.length}
-            </p>
+            </Label>
             {hasMore ? (
               <Button
                 size="l"
