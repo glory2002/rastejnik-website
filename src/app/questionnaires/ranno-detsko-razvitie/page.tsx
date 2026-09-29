@@ -20,7 +20,7 @@ const parentCategory = questionnaireCategories.find(
 
 const accentClasses: Record<QuestionnaireAccent, string> = {
   pink: "bg-accent-pink-light text-accent-pink",
-  orange: "bg-accent-orange-light text-accent-orange",
+  orange: "bg-cream-solid text-accent-orange",
   green: "bg-accent-green-light text-accent-green",
   blue: "bg-accent-blue-light text-accent-blue",
 };

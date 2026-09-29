@@ -19,7 +19,7 @@ import {
   cardGapFeaturedClass,
   cardSurfaceClass,
 } from "@/components/ui/cardSurface";
-import { ResultsTable } from "@/components/DashboardView";
+import { DashboardTableDemo } from "./DashboardTableDemo";
 import type { DashboardTable } from "@/data/dashboardMock";
 import { news } from "@/data/news";
 import { questionnaireCategories } from "@/data/questionnaires";
@@ -98,9 +98,29 @@ const ageDemo = questionnaireCategories.find((item) => item.subcategories)
 const resourceDemo = resources.find((item) => item.kind === "book");
 const associationDemo = associations[0];
 
+const earlyAgeBands =
+  questionnaireCategories.find(
+    (category) => category.slug === "ranno-detsko-razvitie",
+  )?.subcategories ?? [];
+
+/** Active age tab. `green` fills with primary — same hex as accent-green. */
+const ageTabSwatch = {
+  pink: "border-accent-pink bg-accent-pink",
+  orange: "border-accent-orange bg-accent-orange",
+  green: "border-primary bg-primary",
+  blue: "border-accent-blue bg-accent-blue",
+} as const;
+
+const ageTabToken = {
+  pink: "accent-pink",
+  orange: "accent-orange",
+  green: "primary",
+  blue: "accent-blue",
+} as const;
+
 const accentCardClass = {
   pink: "bg-accent-pink-light text-accent-pink",
-  orange: "bg-accent-orange-light text-accent-orange",
+  orange: "bg-cream-solid text-accent-orange",
   green: "bg-accent-green-light text-accent-green",
   blue: "bg-accent-blue-light text-accent-blue",
 } as const;
@@ -175,7 +195,6 @@ const colorRows = [
     name: "wash",
     colors: [
       { name: "status-red-light", token: "--color-status-red-light", hex: "12% status-red", swatch: "bg-status-red-light ring-1 ring-border-green" },
-      { name: "accent-orange-light", token: "--color-accent-orange-light", hex: "14% secondary", swatch: "bg-accent-orange-light ring-1 ring-border-green" },
       { name: "accent-green-light", token: "--color-accent-green-light", hex: "10% primary", swatch: "bg-accent-green-light ring-1 ring-border-green" },
       { name: "accent-pink-light", token: "--color-accent-pink-light", hex: "10% accent-pink", swatch: "bg-accent-pink-light ring-1 ring-border-green" },
       { name: "accent-blue-light", token: "--color-accent-blue-light", hex: "10% accent-blue", swatch: "bg-accent-blue-light ring-1 ring-border-green" },
@@ -295,24 +314,9 @@ export default function DesignSystemPage() {
         id="tipografia"
         kicker="02 Типография"
         title="Типография"
-        lead="Роли една под друга: заглавие, увод, абзац, подзаглавие, етикет. ADYS — medium за дисплеи, bold за заглавия."
+        lead="ADYS — medium за дисплеи, bold за заглавия."
       >
-        <div className="max-w-[40rem] border border-border-green px-8 py-10">
-          <Heading>Заглавие в карта</Heading>
-          <Lead className="mt-3">
-            Увод под заглавието. 22px, medium, тъмно зелено.
-          </Lead>
-          <Body className="mt-3">
-            Абзац за четене. Остава 20px в същото тъмно зелено.
-          </Body>
-          <Heading as="h3" size="sm" className="mt-8">
-            Подзаглавие
-          </Heading>
-          <Label as="p" className="mt-4">
-            Етикет на поле
-          </Label>
-        </div>
-        <div className="mt-block flex flex-col divide-y divide-border-green border-y border-border-green">
+        <div className="flex flex-col divide-y divide-border-green border-y border-border-green">
           <TypeRow
             name="DisplayHero"
             size="clamp(2.5rem, 6.4vw, 88px)"
@@ -516,12 +520,15 @@ export default function DesignSystemPage() {
             <div className="mt-block">
             <Heading as="h3" size="sm">Ред на цветовете</Heading>
             <Body className="mt-3 max-w-[46rem]">
-              Фонът се върти по index % 8 и после се повтаря. Featured ползва
-              същия фон. Шевицата при regular следва фона. При featured е
-              двуцветна: четен index е orange + blue, нечетен е green + pink.
+              Фонът се върти розово, зелено, жълто по index % 3 и после се
+              повтаря. Featured ползва същия фон. Шевицата при regular следва
+              фона. При featured е двуцветна: четен index е orange + blue,
+              нечетен е green + pink.
             </Body>
-            <ul className={`mt-6 grid grid-cols-4 lg:grid-cols-8 ${cardGapCompactClass}`}>
-              {newsCardWashes.map((step, index) => (
+            <ul className={`mt-6 grid grid-cols-3 lg:grid-cols-6 ${cardGapCompactClass}`}>
+              {Array.from({ length: 6 }, (_, index) => {
+                const step = newsCardWashes[index % newsCardWashes.length];
+                return (
                 <li key={index}>
                   <div
                     className={`relative aspect-square ring-1 ring-border-green ${step.wash} [--news-inset:14%] [--news-shevitsa:34%] [--news-shevitsa-ink:0.7]`}
@@ -538,7 +545,8 @@ export default function DesignSystemPage() {
                     {step.shevitsa}
                   </Body>
                 </li>
-              ))}
+                );
+              })}
             </ul>
             </div>
           </div>
@@ -598,7 +606,33 @@ export default function DesignSystemPage() {
               „Предстои“ нямат цвят.
             </Body>
             <div className="mt-6">
-              <ResultsTable table={dashboardTableDemo} resetKey="design-system" />
+              <DashboardTableDemo table={dashboardTableDemo} />
+            </div>
+            <div className="mt-block">
+              <Heading as="h3" size="sm">Възрасти</Heading>
+              <Body className="mt-3 max-w-[46rem]">
+                Табът над таблицата е обвързан с възрастта, не с процента в
+                клетката. Фронтендът чете accent от възрастовата група и с
+                него боядисва активния таб. Клетката си остава червена,
+                оранжева или зелена според резултата.
+              </Body>
+              <ul className={`mt-6 grid grid-cols-2 lg:grid-cols-4 ${cardGapCompactClass}`}>
+                {earlyAgeBands.map((band) => (
+                  <li key={band.slug}>
+                    <p
+                      className={`border-[1.5px] px-4 py-2 text-center text-[14px] font-bold text-white ${ageTabSwatch[band.accent]}`}
+                    >
+                      {band.title}
+                    </p>
+                    <Meta as="p" className="mt-2">
+                      {band.accent}
+                    </Meta>
+                    <Body as="p" size="card" tone="muted" className="mt-1">
+                      {ageTabToken[band.accent]}
+                    </Body>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 

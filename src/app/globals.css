@@ -35,7 +35,6 @@
   --color-primary-wash-solid: color-mix(in srgb, var(--color-primary) 18%, white);
   --color-accent-pink-light: rgba(242, 122, 151, 0.1);
   --color-accent-pink-solid: color-mix(in srgb, var(--color-accent-pink) 7%, white);
-  --color-accent-orange-light: rgba(233, 176, 99, 0.14);
   --color-accent-green-light: rgba(109, 149, 75, 0.1);
   --color-accent-blue-light: rgba(71, 106, 191, 0.1);
   --color-accent-blue-solid: color-mix(in srgb, var(--color-accent-blue) 8%, white);

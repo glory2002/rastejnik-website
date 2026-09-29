@@ -21,6 +21,7 @@ export default function FaqPage() {
       <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
         <Container>
           <ListingHero
+            className="justify-center"
             title="Всички въпроси"
             mark={
               <Image

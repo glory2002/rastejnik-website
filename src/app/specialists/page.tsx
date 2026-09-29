@@ -24,13 +24,13 @@ const listingRailClass =
 
 export default function SpecialistsPage() {
   return (
-    <main className="relative bg-cream [--listing-rail:calc(var(--size-mark)*127.56/109.44)]">
+    <main className="relative bg-cream [--listing-rail:4.75rem] sm:[--listing-rail:calc(var(--size-mark)*127.56/109.44)]">
       <Header variant="framed" />
 
       <section className="relative z-10 w-full py-12 sm:py-16 md:py-24">
         <Container>
           <ListingHero
-            className="px-directory-inset"
+            className="sm:px-directory-inset"
             title="Специалисти и пространства"
             mark={
               <span className={listingRailClass}>
@@ -39,7 +39,7 @@ export default function SpecialistsPage() {
                   alt=""
                   width={128}
                   height={109}
-                  className="h-[length:var(--size-mark)] w-auto shrink-0 object-contain"
+                  className="h-auto w-[length:var(--listing-rail)] shrink-0 object-contain"
                 />
               </span>
             }
@@ -67,7 +67,7 @@ export default function SpecialistsPage() {
                   href={association.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`directory-row group ${cardSurfaceClass} flex items-center gap-cluster px-directory-inset py-cluster outline-none`}
+                  className={`directory-row group ${cardSurfaceClass} flex items-center gap-cluster py-cluster outline-none sm:px-directory-inset`}
                 >
                   <span className={listingRailClass}>
                     <ShevitsaMark index={index} className="relative shrink-0" />

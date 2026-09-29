@@ -418,6 +418,6 @@ export function resultTierColor(percentage: number): string {
 
 export function resultTierColorLight(percentage: number): string {
   if (percentage <= 100 / 3) return "var(--color-status-red-light)";
-  if (percentage <= 200 / 3) return "var(--color-accent-orange-light)";
+  if (percentage <= 200 / 3) return "var(--color-cream)";
   return "var(--color-accent-green-light)";
 }

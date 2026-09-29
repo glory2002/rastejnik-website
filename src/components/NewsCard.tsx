@@ -5,19 +5,14 @@ import { cardSurfaceClass } from "@/components/ui/cardSurface";
 import { Body, Heading, Meta } from "@/components/ui/Typography";
 
 export const newsCardWashes = [
-  { wash: "bg-primary-light-solid", shevitsa: "green" },
   { wash: "bg-accent-pink-solid", shevitsa: "pink" },
-  { wash: "bg-accent-pink-solid", shevitsa: "pink" },
-  { wash: "bg-cream", shevitsa: "orange" },
   { wash: "bg-primary-light-solid", shevitsa: "green" },
   { wash: "bg-cream", shevitsa: "orange" },
-  { wash: "bg-primary-light-solid", shevitsa: "green" },
-  { wash: "bg-accent-pink-solid", shevitsa: "pink" },
 ] as const;
 
 /**
  * Text-led news card — no cover image.
- * Green / pink / cream washes at rest, white on hover.
+ * Pink, green, then yellow (cream) washes at rest, white on hover.
  * Titles carry the hierarchy; body stays quieter. Flat, no radius.
  */
 export function NewsCard({

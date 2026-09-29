@@ -44,7 +44,7 @@ import {
 const formInputClassName =
   "w-full border-[1.5px] border-border-green bg-white px-4 py-3 text-base text-primary-dark outline-none transition-colors focus:border-primary";
 
-const ageAccentTabActive: Record<QuestionnaireAccent, string> = {
+export const ageAccentTabActive: Record<QuestionnaireAccent, string> = {
   pink: "border-accent-pink bg-accent-pink text-white",
   orange: "border-accent-orange bg-accent-orange text-white",
   green: "border-primary bg-primary text-white",
