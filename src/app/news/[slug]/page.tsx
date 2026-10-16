@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { NewsCard } from "@/components/NewsCard";
+import { ShevitsaMark } from "@/components/icons/ShevitsaMark";
+import { NewsCard, newsCardWashes } from "@/components/NewsCard";
 import { LinkButton } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal, RevealStack } from "@/components/ui/Reveal";
@@ -89,6 +89,10 @@ export default async function NewsArticlePage({ params }: PageProps) {
   if (!article) notFound();
 
   const related = getRelatedNews(article.slug);
+  const articleIndex = news.findIndex((item) => item.slug === article.slug);
+  const featured = articleIndex < 2;
+  const shevitsa =
+    newsCardWashes[articleIndex % newsCardWashes.length].shevitsa;
 
   return (
     <main>
@@ -105,6 +109,14 @@ export default async function NewsArticlePage({ params }: PageProps) {
             <Display className="max-w-[820px] text-balance">
               {article.title}
             </Display>
+            <div className="mt-6 flex justify-center [--news-shevitsa:var(--size-news-shevitsa-featured)] [--news-shevitsa-spread:0.42rem] [--news-shevitsa-ink:1] sm:mt-8 sm:[--news-shevitsa:var(--size-news-shevitsa-featured-sm)] sm:[--news-shevitsa-spread:0.52rem]">
+              <ShevitsaMark
+                index={articleIndex}
+                featured={featured}
+                tone={shevitsa}
+                className="news-shevitsa--pulse relative"
+              />
+            </div>
           </RevealStack>
         </Container>
       </section>
@@ -113,23 +125,10 @@ export default async function NewsArticlePage({ params }: PageProps) {
         <Container>
           <div className="mx-auto max-w-[720px]">
             <Reveal>
-              <div className="relative mb-8 aspect-[16/9] overflow-hidden bg-cream sm:mb-12">
-                <Image
-                  src={article.coverImage}
-                  alt=""
-                  fill
-                  sizes="(max-width: 720px) 100vw, 720px"
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </Reveal>
-
-            <Reveal delay={140}>
               <NewsBody blocks={article.body} />
             </Reveal>
 
-            <Reveal delay={220}>
+            <Reveal delay={140}>
               <div className="mt-8 border-t border-border-green pt-6 sm:mt-10 sm:pt-8">
                 <LinkButton href="/news" icon="back">
                   Всички новини

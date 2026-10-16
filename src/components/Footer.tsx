@@ -25,7 +25,7 @@ const legalItems = [
 export function Footer() {
   return (
     <footer className="w-full bg-primary-dark">
-      <FullWidth className="py-section-quiet">
+      <FullWidth className="pt-section-quiet pb-cluster">
         <Reveal className="flex flex-col gap-block lg:flex-row lg:justify-between">
           <div className="max-w-[400px]">
             <Link href="/" aria-label="Растежник начало" className="inline-block">

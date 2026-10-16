@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 83.46 56.43">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #664a2b;
+      }
+
+      .cls-2 {
+        fill: #e9b063;
+      }
+
+      .cls-3 {
+        fill: #6d954b;
+      }
+
+      .cls-4 {
+        fill: none;
+        stroke: #000;
+        stroke-miterlimit: 10;
+      }
+
+    </style>
+  </defs>
+  <path class="cls-3" d="M53.28,48.35h21.32c1.12,0,2.03.91,2.03,2.03v3.03c0,1.12-.91,2.03-2.03,2.03h-21.32v-7.09h0Z"/>
+  <circle class="cls-2" cx="74.66" cy="50.94" r="5.5"/>
+  <path class="cls-3" d="M6.24,46.47c-1.22,0-2.36.59-3.07,1.58l-2.74,3.82c-1.07,1.5,0,3.58,1.84,3.58h48.14v-8.98H6.24Z"/>
+  <path class="cls-3" d="M59.75,32.65H26.48c-3.85,0-7.27,2.44-8.53,6.08l-5.76,16.71h55.9l-8.34-22.79Z"/>
+  <g class="baby-head baby-head-bob">
+    <circle class="cls-2" cx="41.33" cy="24.42" r="3.57"/>
+    <circle class="cls-2" cx="79.89" cy="24.59" r="3.57"/>
+    <path class="cls-2" d="M55.02,3.02h11.21c7.55,0,13.68,6.13,13.68,13.68v9.93c0,7.2-5.84,13.04-13.04,13.04h-12.49c-7.2,0-13.04-5.84-13.04-13.04v-9.93c0-7.55,6.13-13.68,13.68-13.68Z" transform="translate(.09 -.27) rotate(.25)"/>
+    <g>
+      <circle cx="50.7" cy="24.46" r="2.62"/>
+      <circle cx="70.52" cy="24.55" r="2.62"/>
+      <path class="cls-4" d="M64.58,31.98c-.46,1.51-1.86,2.61-3.52,2.6-1.66,0-3.05-1.12-3.5-2.63"/>
+    </g>
+    <polygon class="cls-1" points="66.85 2.86 64.04 .02 61.2 2.84 58.39 0 55.55 2.81 61.18 8.49 66.85 2.86"/>
+  </g>
+  <circle class="cls-2" cx="61.16" cy="50.94" r="5.5"/>
+</svg>

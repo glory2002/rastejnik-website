@@ -173,7 +173,7 @@ export function Button({
   const sharedClassName = cx(
     groupClass,
     "relative inline-flex items-center justify-center overflow-hidden rounded-full",
-    isSecondary ? "bg-white" : "bg-secondary",
+    isSecondary ? "bg-transparent" : "bg-secondary",
     labelClass,
     "transition-colors",
     motionEase,

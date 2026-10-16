@@ -115,12 +115,15 @@ function Logo({
 
 export function Header({
   variant = "overlay",
+  surface,
 }: {
   /** "overlay" sits transparently on top of dark hero media with white text.
    * "light" is the inverted palette for use on light page backgrounds.
    * "framed" is a static cream header that sits above an inset hero block
    * (video framed with margins below it) rather than overlaying it. */
   variant?: "overlay" | "light" | "framed";
+  /** Framed-header background. Defaults to cream. */
+  surface?: string;
 }) {
   const isLight = variant === "light";
   const isFramed = variant === "framed";
@@ -229,7 +232,7 @@ export function Header({
           isStatic
             ? `fixed inset-x-0 top-0 z-50 w-full transition-transform will-change-transform ${
                 isFramed
-                  ? "bg-cream"
+                  ? (surface ?? "bg-cream")
                   : "border-b border-border-green bg-primary-light"
               } ${hideClass}`
             : `fixed inset-x-0 top-0 z-50 w-full transition-[background-color,transform,box-shadow] will-change-transform ${

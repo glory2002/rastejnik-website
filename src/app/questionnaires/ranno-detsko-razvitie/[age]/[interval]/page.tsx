@@ -1,19 +1,18 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { BabyCrawlIcon } from "@/components/icons/BabyCrawlIcon";
-import { BabyRattleIcon } from "@/components/icons/BabyRattleIcon";
+import { MonthBaby } from "@/components/icons/MonthBaby";
 import { QuestionnaireFlow } from "@/components/QuestionnaireFlow";
 import { Reveal } from "@/components/ui/Reveal";
 import { Meta, Title } from "@/components/ui/Typography";
 import { defaultQuestions } from "@/data/questionBank";
-import { getBabyIcons } from "@/lib/babyIcons";
+import { getMonthIcons } from "@/lib/babyIcons";
 import {
   questionnaireCategories,
   findInterval,
+  monthIconOffset,
 } from "@/data/questionnaires";
 
 const parentCategory = questionnaireCategories.find(
@@ -56,10 +55,8 @@ export default async function IntervalQuestionnairePage({
 
   const { sub, interval: currentInterval, index } = found;
 
-  const babyIcons = getBabyIcons();
-  const icon = babyIcons.length > 0 ? babyIcons[index % babyIcons.length] : null;
-  const isRattleBaby = icon === "/images/baby-1.svg";
-  const isCrawlBaby = icon === "/images/baby-2.svg";
+  const monthIcons = getMonthIcons();
+  const icon = monthIcons[monthIconOffset(sub.slug) + index] ?? null;
 
   const header = (
     <div className="flex flex-col items-center gap-4 text-center">
@@ -97,20 +94,8 @@ export default async function IntervalQuestionnairePage({
 
       <Reveal delay={120} className="flex items-center gap-3.5">
         {icon && (
-          <div className="baby-animate-always relative flex h-[96px] w-[96px] shrink-0 items-center justify-center">
-            {isRattleBaby ? (
-              <BabyRattleIcon className="h-[96px] w-[96px]" />
-            ) : isCrawlBaby ? (
-              <BabyCrawlIcon className="h-[96px] w-[96px]" />
-            ) : (
-              <Image
-                src={icon}
-                alt=""
-                width={96}
-                height={96}
-                className="h-[96px] w-[96px]"
-              />
-            )}
+          <div className="relative flex h-[96px] w-[120px] shrink-0 items-center justify-center">
+            <MonthBaby src={icon} className="block h-full w-full" />
           </div>
         )}
 

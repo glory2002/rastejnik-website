@@ -9,9 +9,6 @@ export interface NewsArticle {
   excerpt: string;
   /** Display date for listing / article meta. */
   date: string;
-  /** Decorative cover from brand assets. */
-  coverImage: string;
-  coverClass?: string;
   body: NewsBlock[];
 }
 
@@ -22,7 +19,6 @@ export const news: NewsArticle[] = [
     excerpt:
       "Кратки въпросници, съвети и ресурси на едно място — за родители, които искат яснота без паника.",
     date: "15 юли 2026",
-    coverImage: "/images/news/news-launch.svg",
     body: [
       {
         type: "paragraph",
@@ -48,7 +44,6 @@ export const news: NewsArticle[] = [
     excerpt:
       "Кратка самооценка с твърдения „вярно / не е вярно / не знам“ — за да видите къде сте сигурни и къде искате повече опора.",
     date: "22 юли 2026",
-    coverImage: "/images/news/news-literacy.svg",
     body: [
       {
         type: "paragraph",
@@ -70,7 +65,6 @@ export const news: NewsArticle[] = [
     excerpt:
       "Списък с организации — отправна точка към регистри, колегии и практики близо до вас.",
     date: "28 юли 2026",
-    coverImage: "/images/news/news-associations.svg",
     body: [
       {
         type: "paragraph",
@@ -92,7 +86,6 @@ export const news: NewsArticle[] = [
     excerpt:
       "Смесена мрежа от видеа в YouTube и PDF наръчници — за бърз достъп в ежедневието.",
     date: "30 юли 2026",
-    coverImage: "/images/news/news-resources.svg",
     body: [
       {
         type: "paragraph",
@@ -114,7 +107,6 @@ export const news: NewsArticle[] = [
     excerpt:
       "Нова рубрика с практични идеи за сън, хранене, игра и връзка — на прост език.",
     date: "2 авг 2026",
-    coverImage: "/images/news/news-tips.svg",
     body: [
       {
         type: "paragraph",
@@ -136,7 +128,6 @@ export const news: NewsArticle[] = [
     excerpt:
       "Уебинари, срещи и практическа работа заедно със специалисти. Очаквайте скоро програмата.",
     date: "10 авг 2026",
-    coverImage: "/images/news/news-launch.svg",
     body: [
       {
         type: "paragraph",
@@ -154,7 +145,6 @@ export const news: NewsArticle[] = [
     excerpt:
       "Прозрачност и доверие са важни за нас — как пазим и използваме информацията.",
     date: "18 авг 2026",
-    coverImage: "/images/news/news-resources.svg",
     body: [
       {
         type: "paragraph",
@@ -172,7 +162,6 @@ export const news: NewsArticle[] = [
     excerpt:
       "Истории, въпроси и идеи от нашата общност — защото развитието е по-лесно, когато не сте сами.",
     date: "25 авг 2026",
-    coverImage: "/images/news/news-literacy.svg",
     body: [
       {
         type: "paragraph",

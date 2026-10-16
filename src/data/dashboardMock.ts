@@ -183,27 +183,19 @@ const ivanchoZeroOneRows = rowsFromCells((domain) =>
 
 const petyaTwoThreeRows: Record<DashboardDomain, DashboardCell[]> = {
   "Език и говор": [
-    { kind: "done", values: [88] },
-    { kind: "done", values: [92] },
-    pendingCell("2-3-godini", "2г 9м"),
+    pendingCell("2-3-godini", "30 месеца"),
     { kind: "upcoming" },
   ],
   "Познавателно развитие": [
-    { kind: "done", values: [70] },
-    { kind: "done", values: [65] },
-    pendingCell("2-3-godini", "2г 9м"),
+    pendingCell("2-3-godini", "30 месеца"),
     { kind: "upcoming" },
   ],
   "Физическо развитие": [
-    { kind: "done", values: [95] },
-    { kind: "done", values: [90] },
-    pendingCell("2-3-godini", "2г 9м"),
+    pendingCell("2-3-godini", "30 месеца"),
     { kind: "upcoming" },
   ],
   "Социално и емоционално развитие": [
-    { kind: "done", values: [80] },
-    { kind: "done", values: [85] },
-    pendingCell("2-3-godini", "2г 9м"),
+    pendingCell("2-3-godini", "30 месеца"),
     { kind: "upcoming" },
   ],
 };
@@ -325,10 +317,19 @@ function currentIntervalIndex(ageSlug: string, ageMonths: number): number {
   if (ageSlug === "0-1-godina") {
     return Math.min(Math.max(ageMonths, 0), columns.length - 1);
   }
-  const bandStart =
-    ageSlug === "1-2-godini" ? 12 : ageSlug === "2-3-godini" ? 24 : 36;
-  const within = Math.max(0, ageMonths - bandStart);
-  return Math.min(Math.floor(within / 3), columns.length - 1);
+  if (ageSlug === "1-2-godini") {
+    if (ageMonths < 18) return 0;
+    if (ageMonths < 21) return 1;
+    if (ageMonths < 24) return 2;
+    return Math.min(3, columns.length - 1);
+  }
+  if (ageSlug === "2-3-godini") {
+    return ageMonths < 31 ? 0 : Math.min(1, columns.length - 1);
+  }
+  if (ageSlug === "3-4-godini") {
+    return ageMonths < 43 ? 0 : Math.min(1, columns.length - 1);
+  }
+  return 0;
 }
 
 function emptyBandRows(

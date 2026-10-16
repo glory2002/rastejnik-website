@@ -50,13 +50,21 @@ const monthlyIntervals = (count: number): AgeInterval[] =>
     return { label, slug: slugify(label) };
   });
 
-const quarterlyIntervals = (startYear: number): AgeInterval[] =>
-  [
-    `${startYear}г 3м`,
-    `${startYear}г 6м`,
-    `${startYear}г 9м`,
-    `${startYear + 1} години`,
-  ].map((label) => ({ label, slug: slugify(label) }));
+/** 3–4 years: two checkpoints, in months. */
+const threeToFourYearIntervals: AgeInterval[] = [
+  { label: "42 месеца", slug: "36-42" },
+  { label: "48 месеца", slug: "48" },
+];
+const twoToThreeYearIntervals: AgeInterval[] = [
+  { label: "30 месеца", slug: "24-30" },
+  { label: "36 месеца", slug: "36" },
+];
+const oneToTwoYearIntervals: AgeInterval[] = [
+  { label: "15 месеца", slug: "15-mesetsa" },
+  { label: "18 месеца", slug: "18-mesetsa" },
+  { label: "21 месеца", slug: "21-mesetsa" },
+  { label: "24 месеца", slug: "24-mesetsa" },
+];
 
 export const questionnaireCategories: QuestionnaireCategory[] = [
   {
@@ -103,25 +111,38 @@ export const questionnaireCategories: QuestionnaireCategory[] = [
         title: "1 – 2 години",
         description: "Прохождане, първи думи, самостоятелно хранене.",
         accent: "orange",
-        intervals: quarterlyIntervals(1),
+        intervals: oneToTwoYearIntervals,
       },
       {
         slug: "2-3-godini",
         title: "2 – 3 години",
         description: "Кратки фрази, игра с други деца, самообслужване.",
         accent: "green",
-        intervals: quarterlyIntervals(2),
+        intervals: twoToThreeYearIntervals,
       },
       {
         slug: "3-4-godini",
         title: "3 – 4 години",
         description: "Свързана реч, баланс и координация, социални игри.",
         accent: "blue",
-        intervals: quarterlyIntervals(3),
+        intervals: threeToFourYearIntervals,
       },
     ],
   },
 ];
+
+/** How many checkpoints come before this age group, so month icons stay in order. */
+export function monthIconOffset(ageSlug: string): number {
+  const parent = questionnaireCategories.find(
+    (category) => category.slug === "ranno-detsko-razvitie",
+  );
+  let offset = 0;
+  for (const sub of parent?.subcategories ?? []) {
+    if (sub.slug === ageSlug) return offset;
+    offset += sub.intervals.length;
+  }
+  return 0;
+}
 
 export function findAgeSubcategory(slug: string) {
   const parent = questionnaireCategories.find(
