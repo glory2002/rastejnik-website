@@ -605,6 +605,11 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   transform-origin: 92% 50%;
 }
 
+.baby-offer-shoulder {
+  transform-box: view-box;
+  transform-origin: 79% 51.1%; /* shoulder (102, 50) */
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .group:hover .baby-offer-head,
   .group:focus-visible .baby-offer-head {
@@ -634,6 +639,11 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   .group:hover .baby-offer-curl,
   .group:focus-visible .baby-offer-curl {
     animation: baby-offer-curl 2.4s ease-in-out infinite;
+  }
+
+  .group:hover .baby-offer-shoulder,
+  .group:focus-visible .baby-offer-shoulder {
+    animation: baby-offer-shoulder 2.4s ease-in-out infinite;
   }
 }
 
@@ -692,6 +702,17 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   42%,
   72% {
     transform: translate(-32%, -12%);
+  }
+}
+
+@keyframes baby-offer-shoulder {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  42%,
+  72% {
+    transform: rotate(12deg);
   }
 }
 
@@ -1079,7 +1100,7 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   }
 }
 
-/* 12 months: the baby sidesteps along the table and lifts each foot. */
+/* 12 months: two steps along the table edge. The body waits while both feet are down. */
 .baby-cruise {
   transform-box: fill-box;
 }
@@ -1087,7 +1108,12 @@ input[type="month"]::-webkit-calendar-picker-indicator {
 .baby-cruise-foot,
 .baby-cruise-back-foot {
   transform-box: view-box;
-  transform-origin: center top;
+  transform-origin: center center;
+}
+
+.baby-cruise-reach {
+  transform-box: view-box;
+  transform-origin: 34.8% 30.5%; /* forearm, buried in the sleeve */
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -1105,42 +1131,108 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   .group:focus-visible .baby-cruise-foot {
     animation: baby-cruise-foot 2.6s ease-in-out infinite;
   }
+
+  .group:hover .baby-cruise-reach,
+  .group:focus-visible .baby-cruise-reach {
+    animation: baby-cruise-reach 2.6s ease-in-out infinite;
+  }
 }
 
 @keyframes baby-cruise {
   0%,
-  100% {
+  12% {
     transform: translate(0, 0);
   }
-  46%,
-  54% {
+  19% {
+    transform: translate(3.5%, 0.6%);
+  }
+  26%,
+  40% {
+    transform: translate(7%, 3.5%);
+  }
+  47% {
+    transform: translate(10.5%, 4%);
+  }
+  54%,
+  70% {
     transform: translate(14%, 7%);
+  }
+  79% {
+    transform: translate(10.5%, 4%);
+  }
+  86%,
+  92% {
+    transform: translate(7%, 3.5%);
+  }
+  96% {
+    transform: translate(3.5%, 0.6%);
+  }
+  100% {
+    transform: translate(0, 0);
   }
 }
 
 @keyframes baby-cruise-back-foot {
   0%,
   12%,
-  29%,
+  24%,
+  68%,
+  84%,
   100% {
     transform: translateY(0);
   }
-  17%,
-  23% {
+  16%,
+  21% {
+    transform: translateY(-3%);
+  }
+  74%,
+  80% {
     transform: translateY(-3%);
   }
 }
 
 @keyframes baby-cruise-foot {
   0%,
-  66%,
-  83%,
+  42%,
+  58%,
+  90%,
   100% {
     transform: translateY(0);
   }
-  71%,
-  77% {
+  46%,
+  52% {
     transform: translateY(-7%);
+  }
+  93%,
+  97% {
+    transform: translateY(-7%);
+  }
+}
+
+@keyframes baby-cruise-reach {
+  0%,
+  10%,
+  32%,
+  66%,
+  90%,
+  100% {
+    transform: rotate(0deg);
+  }
+  16%,
+  24% {
+    transform: rotate(8deg);
+  }
+  44%,
+  54% {
+    transform: rotate(11deg);
+  }
+  74%,
+  82% {
+    transform: rotate(-7deg);
+  }
+  93%,
+  97% {
+    transform: rotate(-9deg);
   }
 }
 
@@ -1710,6 +1802,354 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   }
 }
 
+/* 7 months: the head, both hands, and the rattle move a little faster. The hand stays on the toy. */
+.baby-rattle-head {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+.baby-rattle-toy {
+  transform-box: view-box;
+  transform-origin: 32.9% 57.2%; /* wrist of the hand holding the rattle */
+}
+
+.baby-rattle-hand {
+  transform-box: view-box;
+  transform-origin: 86.1% 57.2%; /* wrist of the free hand */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .group:hover .baby-rattle-head,
+  .group:focus-visible .baby-rattle-head {
+    animation: baby-rattle-head 2.4s ease-in-out infinite;
+  }
+
+  .group:hover .baby-rattle-toy,
+  .group:focus-visible .baby-rattle-toy {
+    animation: baby-rattle-toy 0.85s ease-in-out infinite;
+  }
+
+  .group:hover .baby-rattle-hand,
+  .group:focus-visible .baby-rattle-hand {
+    animation: baby-rattle-hand 0.85s ease-in-out infinite;
+    animation-delay: -0.42s;
+  }
+}
+
+@keyframes baby-rattle-head {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  40% {
+    transform: rotate(12deg);
+  }
+  75% {
+    transform: rotate(-12deg);
+  }
+}
+
+@keyframes baby-rattle-toy {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(-12deg);
+  }
+  70% {
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes baby-rattle-hand {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+
+/* Phones have no hover, and the mobile layout (below the md menu) has no pointer to rest on.
+   Same motions as .group:hover, playing on their own. Desktop with a pointer still waits for hover.
+   Skip this block when motion is reduced.
+   Keep these declarations in step with the .group:hover rules above. */
+@media (hover: none) and (prefers-reduced-motion: no-preference),
+  (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .baby-head {
+    animation: baby-head-turn 4.2s ease-in-out infinite;
+  }
+
+  .baby-head.baby-head-quick {
+    animation: baby-head-turn-quick 1.8s ease-in-out infinite;
+  }
+
+  .baby-head-bob {
+    animation: baby-head-bob 2.2s ease-in-out infinite;
+  }
+
+  .baby-gym-head {
+    animation: baby-gym-head 1.8s ease-in-out infinite;
+  }
+
+  .baby-gym-arm {
+    animation: baby-gym-arm 1.3s ease-in-out infinite;
+  }
+
+  .baby-gym-leg {
+    animation: baby-gym-leg 1.45s ease-in-out infinite;
+  }
+
+  .baby-gym-toy {
+    animation: baby-gym-toy 1.6s ease-in-out infinite;
+  }
+
+  .baby-lap-mom {
+    animation: baby-lap-mom 2.6s ease-in-out infinite;
+  }
+
+  .baby-lap-baby {
+    animation: baby-lap-baby 2.1s ease-in-out infinite;
+  }
+
+  .baby-lap-hand {
+    animation: baby-lap-hand 1.15s ease-in-out infinite;
+  }
+
+  .baby-offer-head {
+    animation: baby-offer-head 2.2s ease-in-out infinite;
+  }
+
+  .baby-offer-arm {
+    animation: baby-offer-arm 1.7s ease-in-out infinite;
+  }
+
+  .baby-offer-rattle {
+    animation: baby-offer-rattle 0.72s ease-in-out infinite;
+  }
+
+  .baby-offer-reach {
+    animation: baby-offer-reach 2.4s ease-in-out infinite;
+  }
+
+  .baby-offer-reach-out {
+    animation: baby-offer-reach-out 2.4s ease-in-out infinite;
+  }
+
+  .baby-offer-curl {
+    animation: baby-offer-curl 2.4s ease-in-out infinite;
+  }
+
+  .baby-offer-shoulder {
+    animation: baby-offer-shoulder 2.4s ease-in-out infinite;
+  }
+
+  .baby-chair-head {
+    animation: baby-chair-head 2.2s ease-in-out infinite;
+  }
+
+  .baby-chair-hand {
+    animation: baby-chair-hand 1.5s ease-in-out infinite;
+  }
+
+  .baby-chair-foot {
+    animation: baby-chair-foot 1.5s ease-in-out infinite;
+    animation-delay: -0.75s;
+  }
+
+  .baby-kick-left {
+    animation: baby-kick-tap 1.15s ease-in-out infinite;
+  }
+
+  .baby-kick-right {
+    animation: baby-kick-tap 1.15s ease-in-out infinite;
+    animation-delay: -0.58s;
+  }
+
+  .baby-block-kick-left {
+    animation: baby-block-kick 1.15s ease-in-out infinite;
+  }
+
+  .baby-block-kick-right {
+    animation: baby-block-kick 1.15s ease-in-out infinite;
+    animation-delay: -0.58s;
+  }
+
+  .baby-block-arm {
+    animation: baby-block-arm 1.3s ease-in-out infinite;
+  }
+
+  .baby-kick-hand-left {
+    animation: baby-kick-hand-left 1.3s ease-in-out infinite;
+  }
+
+  .baby-kick-hand-right {
+    animation: baby-kick-hand-right 1.3s ease-in-out infinite;
+    animation-delay: -0.65s;
+  }
+
+  .baby-stand-head {
+    animation: baby-stand-head 2.2s ease-in-out infinite;
+  }
+
+  .baby-stand-back {
+    animation: baby-stand-back 1.7s ease-in-out infinite;
+  }
+
+  .baby-stand-foot {
+    animation: baby-stand-foot 1.7s ease-in-out infinite;
+    animation-delay: -0.85s;
+  }
+
+  .baby-crawl-head {
+    animation: baby-crawl-head 2.2s ease-in-out infinite;
+  }
+
+  .baby-crawl-arm {
+    animation: baby-crawl-arm 1.2s ease-in-out infinite;
+  }
+
+  .baby-crawl-hand {
+    animation: baby-crawl-hand 1.2s ease-in-out infinite;
+  }
+
+  .baby-crawl-leg-front {
+    animation: baby-crawl-leg-front 1.2s ease-in-out infinite;
+  }
+
+  .baby-crawl-leg-back {
+    animation: baby-crawl-leg-back 1.2s ease-in-out infinite;
+  }
+
+  .baby-cruise {
+    animation: baby-cruise 2.6s ease-in-out infinite;
+  }
+
+  .baby-cruise-back-foot {
+    animation: baby-cruise-back-foot 2.6s ease-in-out infinite;
+  }
+
+  .baby-cruise-foot {
+    animation: baby-cruise-foot 2.6s ease-in-out infinite;
+  }
+
+  .baby-cruise-reach {
+    animation: baby-cruise-reach 2.6s ease-in-out infinite;
+  }
+
+  .baby-kick-shin {
+    animation: baby-kick-shin 1.45s ease-in-out infinite;
+  }
+
+  .baby-kick-head {
+    animation: baby-kick-head 1.45s ease-in-out infinite;
+  }
+
+  .baby-ball {
+    animation: baby-ball 1.45s ease-in-out infinite;
+  }
+
+  .baby-fork {
+    animation: baby-fork 1.8s ease-in-out infinite;
+  }
+
+  .baby-bite-head {
+    animation: baby-bite-head 1.8s ease-in-out infinite;
+  }
+
+  .baby-pour {
+    animation: baby-pour 1.6s ease-in-out infinite;
+  }
+
+  .baby-pour-stream {
+    animation: baby-pour-stream 1.6s ease-in-out infinite;
+  }
+
+  .baby-pour-head {
+    animation: baby-pour-head 3.2s ease-in-out infinite;
+  }
+
+  .baby-step-back {
+    animation: baby-step-back 1.2s ease-in-out infinite;
+  }
+
+  .baby-step-front {
+    animation: baby-step-front 1.2s ease-in-out infinite;
+  }
+
+  .baby-step-arm-back {
+    animation: baby-step-arm-back 1.2s ease-in-out infinite;
+  }
+
+  .baby-step-arm-front {
+    animation: baby-step-arm-front 1.2s ease-in-out infinite;
+  }
+
+  .baby-step-head {
+    animation: baby-step-head 1.2s ease-in-out infinite;
+  }
+
+  .baby-sip {
+    animation: baby-sip 1.6s ease-in-out infinite;
+  }
+
+  .baby-sip-head {
+    animation: baby-sip-head 1.6s ease-in-out infinite;
+  }
+
+  .baby-read-head {
+    animation: baby-read-head 3.2s ease-in-out infinite;
+  }
+
+  .baby-page {
+    animation: baby-page 1.8s ease-in-out infinite;
+  }
+
+  .baby-page-under {
+    animation: baby-page-under 1.8s ease-in-out infinite;
+  }
+
+  .baby-page-hand {
+    animation: baby-page-hand 1.8s ease-in-out infinite;
+  }
+
+  .baby-ring-head {
+    animation: baby-ring-head 3.2s ease-in-out infinite;
+  }
+
+  .baby-ring-hand {
+    animation: baby-ring-hand 2.2s ease-in-out infinite;
+  }
+
+  .baby-ring {
+    animation: baby-ring 2.2s ease-in-out infinite;
+  }
+
+  .baby-scribble {
+    animation: baby-scribble 1.1s ease-in-out infinite;
+  }
+
+  .baby-draw {
+    animation: baby-draw 1.1s ease-in-out infinite;
+  }
+
+  .baby-rattle-head {
+    animation: baby-rattle-head 2.4s ease-in-out infinite;
+  }
+
+  .baby-rattle-toy {
+    animation: baby-rattle-toy 0.85s ease-in-out infinite;
+  }
+
+  .baby-rattle-hand {
+    animation: baby-rattle-hand 0.85s ease-in-out infinite;
+    animation-delay: -0.42s;
+  }
+
+}
 /* Baby-rattle icon: shakes when the nearest `group` ancestor is hovered. */
 .rattle-toy {
   transform-origin: 0 0;
