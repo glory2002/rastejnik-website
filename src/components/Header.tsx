@@ -224,23 +224,31 @@ export function Header({
       ? "-translate-y-full pointer-events-none duration-200 ease-out"
       : "translate-y-0 duration-200 ease-out";
 
+  const headerWash = isFramed
+    ? (surface ?? "bg-cream")
+    : "bg-primary-light";
+
   return (
     <>
       <header
         ref={headerRef}
         className={
           isStatic
-            ? `fixed inset-x-0 top-0 z-50 w-full transition-transform will-change-transform ${
-                isFramed
-                  ? (surface ?? "bg-cream")
-                  : "border-b border-border-green bg-primary-light"
+            ? `fixed inset-x-0 top-0 z-50 w-full bg-white transition-transform will-change-transform ${
+                isFramed ? "" : "border-b border-border-green"
               } ${hideClass}`
             : `fixed inset-x-0 top-0 z-50 w-full transition-[background-color,transform,box-shadow] will-change-transform ${
                 isWhiteSurface || menuOpen ? "bg-white shadow-sm" : "bg-transparent"
               } ${hideClass}`
         }
       >
-      <FullWidth className="flex items-center justify-between gap-3 py-3">
+      {isStatic ? (
+        <div
+          aria-hidden
+          className={`pointer-events-none absolute inset-0 -z-10 ${headerWash}`}
+        />
+      ) : null}
+      <FullWidth className="relative flex items-center justify-between gap-3 py-3">
         <Link
           href="/"
           aria-label="Растежник начало"

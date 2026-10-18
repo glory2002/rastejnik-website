@@ -1236,36 +1236,46 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   }
 }
 
-/* 21 months: the shin starts bent, then extends into the ball. */
+/* 21 months: the whole lower leg kicks as one piece, the arms swing, the ball rolls. */
 .baby-kick-shin {
   transform-box: view-box;
   transform-origin: 57.4% 70%; /* knee (58.53, 78.47) */
 }
 
-.baby-kick-head {
-  transform-box: fill-box;
-  transform-origin: center bottom;
-}
-
 .baby-ball {
   transform-box: view-box;
-  transform-origin: 90% 74.1%; /* ball center (91.75, 83.02) */
+  transform-origin: 84.12% 74.1%; /* ball center (85.75, 83.02) */
+}
+
+.baby-kick-arm-back {
+  transform-box: view-box;
+  transform-origin: 19.45% 46%; /* left shoulder (19.83, 51.54) */
+}
+
+.baby-kick-arm-front {
+  transform-box: view-box;
+  transform-origin: 52.99% 46.88%; /* right shoulder (54.02, 52.53) */
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .group:hover .baby-kick-shin,
   .group:focus-visible .baby-kick-shin {
-    animation: baby-kick-shin 1.45s ease-in-out infinite;
-  }
-
-  .group:hover .baby-kick-head,
-  .group:focus-visible .baby-kick-head {
-    animation: baby-kick-head 1.45s ease-in-out infinite;
+    animation: baby-kick-shin 1.7s ease-in-out infinite;
   }
 
   .group:hover .baby-ball,
   .group:focus-visible .baby-ball {
-    animation: baby-ball 1.45s ease-in-out infinite;
+    animation: baby-ball 1.7s ease-in-out infinite;
+  }
+
+  .group:hover .baby-kick-arm-back,
+  .group:focus-visible .baby-kick-arm-back {
+    animation: baby-kick-arm-back 1.7s ease-in-out infinite;
+  }
+
+  .group:hover .baby-kick-arm-front,
+  .group:focus-visible .baby-kick-arm-front {
+    animation: baby-kick-arm-front 1.7s ease-in-out infinite;
   }
 }
 
@@ -1275,33 +1285,66 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   100% {
     transform: rotate(0deg);
   }
-  38%,
-  50% {
-    transform: rotate(-64deg);
+  32% {
+    transform: rotate(4deg);
+  }
+  54%,
+  64% {
+    transform: rotate(-18deg);
+  }
+  82% {
+    transform: rotate(-5deg);
   }
 }
 
-@keyframes baby-kick-head {
+@keyframes baby-kick-arm-back {
   0%,
-  22%,
+  16%,
   100% {
     transform: rotate(0deg);
   }
-  42%,
-  56% {
-    transform: rotate(4deg);
+  32% {
+    transform: rotate(-6deg);
+  }
+  54%,
+  64% {
+    transform: rotate(8deg);
+  }
+  82% {
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes baby-kick-arm-front {
+  0%,
+  16%,
+  100% {
+    transform: rotate(0deg);
+  }
+  32% {
+    transform: rotate(6deg);
+  }
+  54%,
+  64% {
+    transform: rotate(-8deg);
+  }
+  82% {
+    transform: rotate(-2deg);
   }
 }
 
 @keyframes baby-ball {
   0%,
-  32%,
+  50%,
   100% {
     transform: translate(0, 0) rotate(0deg);
   }
-  46%,
-  60% {
-    transform: translate(6%, -2%) rotate(36deg);
+  64%,
+  74% {
+    transform: translate(3%, -0.6%) rotate(12deg);
+  }
+  88% {
+    transform: translate(0.8%, -0.15%) rotate(3deg);
   }
 }
 
@@ -2041,15 +2084,19 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   }
 
   .baby-kick-shin {
-    animation: baby-kick-shin 1.45s ease-in-out infinite;
-  }
-
-  .baby-kick-head {
-    animation: baby-kick-head 1.45s ease-in-out infinite;
+    animation: baby-kick-shin 1.7s ease-in-out infinite;
   }
 
   .baby-ball {
-    animation: baby-ball 1.45s ease-in-out infinite;
+    animation: baby-ball 1.7s ease-in-out infinite;
+  }
+
+  .baby-kick-arm-back {
+    animation: baby-kick-arm-back 1.7s ease-in-out infinite;
+  }
+
+  .baby-kick-arm-front {
+    animation: baby-kick-arm-front 1.7s ease-in-out infinite;
   }
 
   .baby-fork {

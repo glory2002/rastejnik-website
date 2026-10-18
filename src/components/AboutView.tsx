@@ -177,7 +177,7 @@ export function PanelCta({
           <Title className="text-balance">{title}</Title>
           <Body>{body}</Body>
           <Button href="/questionnaires" size="l">
-            Към тестовете
+            Към въпросниците
           </Button>
         </Reveal>
       </Container>
