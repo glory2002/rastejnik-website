@@ -68,6 +68,8 @@ export default async function AgeQuestionnairePage({
 
   const monthIcons = getMonthIcons();
   const iconOffset = monthIconOffset(sub.slug);
+  const stretchCards =
+    sub.slug === "2-3-godini" || sub.slug === "3-4-godini";
 
   return (
     <main>
@@ -100,7 +102,11 @@ export default async function AgeQuestionnairePage({
       <section className="w-full bg-white py-16 md:py-24">
         <Container>
           <div
-            className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ${cardGapCompactClass}`}
+            className={`grid ${
+              stretchCards
+                ? `@container sm:grid-cols-2 ${cardGapCompactClass}`
+                : `sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ${cardGapCompactClass}`
+            }`}
           >
             {sub.intervals.map((interval, index) => {
               const icon = monthIcons[iconOffset + index];
@@ -113,7 +119,11 @@ export default async function AgeQuestionnairePage({
                 >
                 <Link
                   href={`/questionnaires/ranno-detsko-razvitie/${sub.slug}/${interval.slug}`}
-                  className={`group ${cardSurfaceClass} relative flex h-full flex-col items-center justify-center gap-4 bg-cream p-6 text-center transition-colors duration-200 ease-out hover:bg-white aspect-square`}
+                  className={`group ${cardSurfaceClass} relative flex h-full flex-col items-center justify-center gap-4 bg-cream p-6 text-center transition-colors duration-200 ease-out hover:bg-white aspect-square ${
+                    stretchCards
+                      ? "md:aspect-auto md:h-[calc((100cqw-2*var(--spacing-card-compact))/3)] lg:h-[calc((100cqw-3*var(--spacing-card-compact))/4)]"
+                      : ""
+                  }`}
                 >
                   {icon && (
                     <div className="relative flex h-[112px] w-full shrink-0 items-center justify-center">

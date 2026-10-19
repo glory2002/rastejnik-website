@@ -2197,6 +2197,283 @@ input[type="month"]::-webkit-calendar-picker-indicator {
   }
 
 }
+/* Questionnaire hero: the month drawing plays on its own. */
+@media (prefers-reduced-motion: no-preference) {
+  .month-motion .baby-head {
+    animation: baby-head-turn 4.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-head.baby-head-quick {
+    animation: baby-head-turn-quick 1.8s ease-in-out infinite;
+  }
+
+  .month-motion .baby-head-bob {
+    animation: baby-head-bob 2.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-gym-head {
+    animation: baby-gym-head 1.8s ease-in-out infinite;
+  }
+
+  .month-motion .baby-gym-arm {
+    animation: baby-gym-arm 1.3s ease-in-out infinite;
+  }
+
+  .month-motion .baby-gym-leg {
+    animation: baby-gym-leg 1.45s ease-in-out infinite;
+  }
+
+  .month-motion .baby-gym-toy {
+    animation: baby-gym-toy 1.6s ease-in-out infinite;
+  }
+
+  .month-motion .baby-lap-mom {
+    animation: baby-lap-mom 2.6s ease-in-out infinite;
+  }
+
+  .month-motion .baby-lap-baby {
+    animation: baby-lap-baby 2.1s ease-in-out infinite;
+  }
+
+  .month-motion .baby-lap-hand {
+    animation: baby-lap-hand 1.15s ease-in-out infinite;
+  }
+
+  .month-motion .baby-offer-head {
+    animation: baby-offer-head 2.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-offer-arm {
+    animation: baby-offer-arm 1.7s ease-in-out infinite;
+  }
+
+  .month-motion .baby-offer-rattle {
+    animation: baby-offer-rattle 0.72s ease-in-out infinite;
+  }
+
+  .month-motion .baby-offer-reach {
+    animation: baby-offer-reach 2.4s ease-in-out infinite;
+  }
+
+  .month-motion .baby-offer-reach-out {
+    animation: baby-offer-reach-out 2.4s ease-in-out infinite;
+  }
+
+  .month-motion .baby-offer-curl {
+    animation: baby-offer-curl 2.4s ease-in-out infinite;
+  }
+
+  .month-motion .baby-offer-shoulder {
+    animation: baby-offer-shoulder 2.4s ease-in-out infinite;
+  }
+
+  .month-motion .baby-chair-head {
+    animation: baby-chair-head 2.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-chair-hand {
+    animation: baby-chair-hand 1.5s ease-in-out infinite;
+  }
+
+  .month-motion .baby-chair-foot {
+    animation: baby-chair-foot 1.5s ease-in-out infinite;
+    animation-delay: -0.75s;
+  }
+
+  .month-motion .baby-kick-left {
+    animation: baby-kick-tap 1.15s ease-in-out infinite;
+  }
+
+  .month-motion .baby-kick-right {
+    animation: baby-kick-tap 1.15s ease-in-out infinite;
+    animation-delay: -0.58s;
+  }
+
+  .month-motion .baby-block-kick-left {
+    animation: baby-block-kick 1.15s ease-in-out infinite;
+  }
+
+  .month-motion .baby-block-kick-right {
+    animation: baby-block-kick 1.15s ease-in-out infinite;
+    animation-delay: -0.58s;
+  }
+
+  .month-motion .baby-block-arm {
+    animation: baby-block-arm 1.3s ease-in-out infinite;
+  }
+
+  .month-motion .baby-kick-hand-left {
+    animation: baby-kick-hand-left 1.3s ease-in-out infinite;
+  }
+
+  .month-motion .baby-kick-hand-right {
+    animation: baby-kick-hand-right 1.3s ease-in-out infinite;
+    animation-delay: -0.65s;
+  }
+
+  .month-motion .baby-stand-head {
+    animation: baby-stand-head 2.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-stand-back {
+    animation: baby-stand-back 1.7s ease-in-out infinite;
+  }
+
+  .month-motion .baby-stand-foot {
+    animation: baby-stand-foot 1.7s ease-in-out infinite;
+    animation-delay: -0.85s;
+  }
+
+  .month-motion .baby-crawl-head {
+    animation: baby-crawl-head 2.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-crawl-arm {
+    animation: baby-crawl-arm 1.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-crawl-hand {
+    animation: baby-crawl-hand 1.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-crawl-leg-front {
+    animation: baby-crawl-leg-front 1.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-crawl-leg-back {
+    animation: baby-crawl-leg-back 1.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-cruise {
+    animation: baby-cruise 2.6s ease-in-out infinite;
+  }
+
+  .month-motion .baby-cruise-back-foot {
+    animation: baby-cruise-back-foot 2.6s ease-in-out infinite;
+  }
+
+  .month-motion .baby-cruise-foot {
+    animation: baby-cruise-foot 2.6s ease-in-out infinite;
+  }
+
+  .month-motion .baby-cruise-reach {
+    animation: baby-cruise-reach 2.6s ease-in-out infinite;
+  }
+
+  .month-motion .baby-kick-shin {
+    animation: baby-kick-shin 1.7s ease-in-out infinite;
+  }
+
+  .month-motion .baby-ball {
+    animation: baby-ball 1.7s ease-in-out infinite;
+  }
+
+  .month-motion .baby-kick-arm-back {
+    animation: baby-kick-arm-back 1.7s ease-in-out infinite;
+  }
+
+  .month-motion .baby-kick-arm-front {
+    animation: baby-kick-arm-front 1.7s ease-in-out infinite;
+  }
+
+  .month-motion .baby-fork {
+    animation: baby-fork 1.8s ease-in-out infinite;
+  }
+
+  .month-motion .baby-bite-head {
+    animation: baby-bite-head 1.8s ease-in-out infinite;
+  }
+
+  .month-motion .baby-pour {
+    animation: baby-pour 1.6s ease-in-out infinite;
+  }
+
+  .month-motion .baby-pour-stream {
+    animation: baby-pour-stream 1.6s ease-in-out infinite;
+  }
+
+  .month-motion .baby-pour-head {
+    animation: baby-pour-head 3.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-step-back {
+    animation: baby-step-back 1.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-step-front {
+    animation: baby-step-front 1.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-step-arm-back {
+    animation: baby-step-arm-back 1.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-step-arm-front {
+    animation: baby-step-arm-front 1.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-step-head {
+    animation: baby-step-head 1.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-sip {
+    animation: baby-sip 1.6s ease-in-out infinite;
+  }
+
+  .month-motion .baby-sip-head {
+    animation: baby-sip-head 1.6s ease-in-out infinite;
+  }
+
+  .month-motion .baby-read-head {
+    animation: baby-read-head 3.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-page {
+    animation: baby-page 1.8s ease-in-out infinite;
+  }
+
+  .month-motion .baby-page-under {
+    animation: baby-page-under 1.8s ease-in-out infinite;
+  }
+
+  .month-motion .baby-page-hand {
+    animation: baby-page-hand 1.8s ease-in-out infinite;
+  }
+
+  .month-motion .baby-ring-head {
+    animation: baby-ring-head 3.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-ring-hand {
+    animation: baby-ring-hand 2.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-ring {
+    animation: baby-ring 2.2s ease-in-out infinite;
+  }
+
+  .month-motion .baby-scribble {
+    animation: baby-scribble 1.1s ease-in-out infinite;
+  }
+
+  .month-motion .baby-draw {
+    animation: baby-draw 1.1s ease-in-out infinite;
+  }
+
+  .month-motion .baby-rattle-head {
+    animation: baby-rattle-head 2.4s ease-in-out infinite;
+  }
+
+  .month-motion .baby-rattle-toy {
+    animation: baby-rattle-toy 0.85s ease-in-out infinite;
+  }
+
+  .month-motion .baby-rattle-hand {
+    animation: baby-rattle-hand 0.85s ease-in-out infinite;
+    animation-delay: -0.42s;
+  }
+}
+
 /* Baby-rattle icon: shakes when the nearest `group` ancestor is hovered. */
 .rattle-toy {
   transform-origin: 0 0;

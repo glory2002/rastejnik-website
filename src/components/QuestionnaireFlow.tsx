@@ -344,7 +344,7 @@ export function QuestionnaireFlow({
   }
 
   const headerSection = stage === "questions" && header && (
-    <section className="w-full bg-cream py-5 md:py-6">
+    <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
       <Container>
         <Reveal>{header}</Reveal>
       </Container>

@@ -59,7 +59,7 @@ export default async function IntervalQuestionnairePage({
   const icon = monthIcons[monthIconOffset(sub.slug) + index] ?? null;
 
   const header = (
-    <div className="flex flex-col items-center gap-4 text-center">
+    <div className="flex flex-col items-center gap-12 text-center">
       {/* Breadcrumb: ancestors muted, current interval in active primary. */}
       <Reveal>
       <Meta
@@ -92,10 +92,10 @@ export default async function IntervalQuestionnairePage({
       </Meta>
       </Reveal>
 
-      <Reveal delay={120} className="flex items-center gap-3.5">
+      <Reveal delay={120} className="flex flex-col items-center gap-3.5">
         {icon && (
           <div className="relative flex h-[96px] w-[120px] shrink-0 items-center justify-center">
-            <MonthBaby src={icon} className="block h-full w-full" />
+            <MonthBaby src={icon} className="month-motion block h-full w-full" />
           </div>
         )}
 
