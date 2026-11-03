@@ -87,7 +87,7 @@ function pendingCell(ageSlug: string, intervalLabel: string): DashboardCell {
   const interval = sub?.intervals.find((i) => i.label === intervalLabel);
   return {
     kind: "pending",
-    prompt: `Направи тест за ${intervalLabel}`,
+    prompt: `Попълни въпросника за ${intervalLabel}`,
     href: `/questionnaires/ranno-detsko-razvitie/${ageSlug}/${interval?.slug ?? ""}`,
   };
 }
@@ -142,6 +142,37 @@ const petyaSpecialistDomains: ParentalDomainScore[] = specialistDomainNames.map(
     percentage: petyaSpecialistScores[index] ?? 72,
   }),
 );
+
+/** Иванчо’s filled parental questionnaires. Averages match the card scores. */
+const ivanchoLiteracyDomains: ParentalDomainScore[] = [
+  { domain: "Режим и сън", percentage: 72 },
+  { domain: "Темп на развитие", percentage: 68 },
+  { domain: "Език и общуване", percentage: 80 },
+  { domain: "Игра и движение", percentage: 64 },
+];
+const ivanchoCompetenceScores = [78, 70, 66, 74, 84, 60];
+const ivanchoCompetenceDomains: ParentalDomainScore[] = competenceDomainNames.map(
+  (domain, index) => ({
+    domain,
+    percentage: ivanchoCompetenceScores[index] ?? 72,
+  }),
+);
+const ivanchoSpecialistScores = [66, 74, 58, 70, 80, 72];
+const ivanchoSpecialistDomains: ParentalDomainScore[] = specialistDomainNames.map(
+  (domain, index) => ({
+    domain,
+    percentage: ivanchoSpecialistScores[index] ?? 70,
+  }),
+);
+
+function withParentalDomains(
+  items: ParentalQuestionnaireResult[],
+  domains: Record<string, ParentalDomainScore[]>,
+): ParentalQuestionnaireResult[] {
+  return items.map((item) =>
+    domains[item.slug] ? { ...item, domainResults: domains[item.slug] } : item,
+  );
+}
 
 function parentalQuestionnaireResults(
   cells: Record<string, DashboardCell>,
@@ -293,13 +324,17 @@ export const dashboardChildren: DashboardChild[] = [
         upcomingRows(columnsForAgeSlug("3-4-godini").length),
       ),
     ],
-    parentalQuestionnaires: parentalQuestionnaireResults(
-      Object.fromEntries(
-        parentalQuestionnaireMeta.map((category) => [
-          category.slug,
-          parentalPending(category.title, category.slug),
-        ]),
-      ),
+    parentalQuestionnaires: withParentalDomains(
+      parentalQuestionnaireResults({
+        "roditelska-gramotnost": { kind: "done", values: [71] },
+        "roditelska-kompetentnost": { kind: "done", values: [72] },
+        "roditel-specialist": { kind: "done", values: [70] },
+      }),
+      {
+        "roditelska-gramotnost": ivanchoLiteracyDomains,
+        "roditelska-kompetentnost": ivanchoCompetenceDomains,
+        "roditel-specialist": ivanchoSpecialistDomains,
+      },
     ),
   },
   {
@@ -319,22 +354,18 @@ export const dashboardChildren: DashboardChild[] = [
         upcomingRows(columnsForAgeSlug("3-4-godini").length),
       ),
     ],
-    parentalQuestionnaires: parentalQuestionnaireResults({
-      "roditelska-gramotnost": { kind: "done", values: [82] },
-      "roditelska-kompetentnost": { kind: "done", values: [76] },
-      "roditel-specialist": { kind: "done", values: [72] },
-    }).map((item) => {
-      if (item.slug === "roditelska-gramotnost") {
-        return { ...item, domainResults: petyaLiteracyDomains };
-      }
-      if (item.slug === "roditelska-kompetentnost") {
-        return { ...item, domainResults: petyaCompetenceDomains };
-      }
-      if (item.slug === "roditel-specialist") {
-        return { ...item, domainResults: petyaSpecialistDomains };
-      }
-      return item;
-    }),
+    parentalQuestionnaires: withParentalDomains(
+      parentalQuestionnaireResults({
+        "roditelska-gramotnost": { kind: "done", values: [82] },
+        "roditelska-kompetentnost": { kind: "done", values: [76] },
+        "roditel-specialist": { kind: "done", values: [72] },
+      }),
+      {
+        "roditelska-gramotnost": petyaLiteracyDomains,
+        "roditelska-kompetentnost": petyaCompetenceDomains,
+        "roditel-specialist": petyaSpecialistDomains,
+      },
+    ),
   },
 ];
 

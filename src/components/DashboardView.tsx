@@ -607,6 +607,7 @@ function PendingFillControl({
       const target = event.target as Node;
       if (triggerRef.current?.contains(target)) return;
       if (popoverRef.current?.contains(target)) return;
+      if (target instanceof Element && target.closest("[data-pending-column]")) return;
       onToggle?.();
     }
 
@@ -625,7 +626,10 @@ function PendingFillControl({
     <div className="relative shrink-0">
       <UnderlineLinkButton
         ref={triggerRef}
-        onClick={onToggle}
+        onClick={(event) => {
+          event.stopPropagation();
+          onToggle?.();
+        }}
         aria-expanded={open}
       >
         Попълни
@@ -636,7 +640,7 @@ function PendingFillControl({
         createPortal(
           <div
             ref={popoverRef}
-            className="fixed z-50 w-[220px] -translate-x-1/2 bg-primary-dark px-4 py-3 text-center text-white shadow-[0_12px_32px_rgba(31,66,35,0.25)]"
+            className="fixed z-50 w-[280px] -translate-x-1/2 bg-primary-dark px-4 py-3 text-center text-white shadow-[0_12px_32px_rgba(31,66,35,0.25)]"
             style={{ top: coords.top, left: coords.left }}
           >
             <p className="text-[14px] leading-[1.3]">{prompt}</p>
@@ -905,7 +909,22 @@ export function ResultsTable({
                       }
                     >
                       {isUniformAnchor ? (
-                        <div className="flex h-full w-full items-center justify-center border border-dashed border-border-green/40 bg-[rgba(109,149,75,0.03)]">
+                        <div
+                          data-pending-column={cell.kind === "pending" ? "" : undefined}
+                          onClick={
+                            cell.kind === "pending"
+                              ? () =>
+                                  setOpenPending((current) =>
+                                    current === key ? null : key,
+                                  )
+                              : undefined
+                          }
+                          className={`flex h-full w-full items-center justify-center border border-dashed border-border-green/40 bg-[rgba(109,149,75,0.03)] transition-colors ${
+                            cell.kind === "pending"
+                              ? "group/fill cursor-pointer hover:bg-cream focus-within:bg-cream has-[[aria-expanded=true]]:bg-cream"
+                              : ""
+                          }`}
+                        >
                           <StatusCircle
                             cell={cell}
                             domain={domain}

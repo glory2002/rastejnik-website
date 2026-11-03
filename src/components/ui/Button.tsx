@@ -421,7 +421,7 @@ interface UnderlineLinkButtonProps {
   children: React.ReactNode;
   href?: string;
   className?: string;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
   target?: string;
@@ -453,7 +453,8 @@ export const UnderlineLinkButton = forwardRef<
   const sharedClassName = cx(
     "group inline-flex w-max shrink-0 items-center py-1 whitespace-nowrap",
     labelClass,
-    "text-primary-dark hover:text-primary focus-visible:text-primary",
+    "text-primary-dark transition-colors hover:text-primary focus-visible:text-primary",
+    "group-hover/fill:text-primary group-focus-within/fill:text-primary",
     "disabled:pointer-events-none disabled:opacity-40",
     className,
   );
@@ -464,6 +465,7 @@ export const UnderlineLinkButton = forwardRef<
         "transition-colors motion-reduce:transition-none",
         motionEase,
         "group-hover:border-secondary group-focus-visible:border-secondary",
+        "group-hover/fill:border-secondary group-focus-within/fill:border-secondary",
       )}
     >
       {children}

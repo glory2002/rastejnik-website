@@ -28,6 +28,12 @@ export const partners = [
     width: 200,
     height: 83,
   },
+  {
+    name: "Червен конец",
+    src: "/images/cherven-konets-logo.svg",
+    width: 262,
+    height: 113,
+  },
 ];
 
 function PartnerMark({
