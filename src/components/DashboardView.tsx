@@ -21,7 +21,8 @@ import {
   type EarlyDevelopmentBand,
   type ParentalQuestionnaireResult,
 } from "@/data/dashboardMock";
-import { feedbackForScore } from "@/data/questionBank";
+import { feedbackForScore, type DomainGuidance } from "@/data/questionBank";
+import { specialistDomainGuidance } from "@/data/parentalSpecialist";
 import type { QuestionnaireAccent } from "@/data/questionnaires";
 import {
   BoyAvatar,
@@ -29,7 +30,7 @@ import {
 } from "@/components/icons/ChildAvatarIcons";
 import { PlusMarkIcon } from "@/components/icons/PlusMarkIcon";
 import { TokenIcon } from "@/components/icons/TokenIcon";
-import { Button, LinkButton } from "@/components/ui/Button";
+import { Button, LinkButton, UnderlineLinkButton } from "@/components/ui/Button";
 import { NumberInput } from "@/components/ui/NumberInput";
 import { Select } from "@/components/ui/Select";
 import { cardGapClass, cardSurfaceClass } from "@/components/ui/cardSurface";
@@ -72,7 +73,15 @@ type GuidancePayload = {
   domain: string;
   intervalLabel: string;
   percentage: number;
+  guidance?: Record<string, DomainGuidance>;
 };
+
+function guidanceParagraphs(text: string): string[] {
+  return text
+    .split(/\n\n+/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+}
 
 function GuidancePopup({
   payload,
@@ -81,6 +90,20 @@ function GuidancePopup({
   payload: GuidancePayload;
   onClose: () => void;
 }) {
+  const [guidanceOpen, setGuidanceOpen] = useState(false);
+  const feedback = feedbackForScore(
+    payload.domain,
+    payload.percentage,
+    payload.guidance,
+  );
+  const paragraphs = guidanceParagraphs(feedback);
+  const visible = guidanceOpen ? paragraphs : paragraphs.slice(0, 2);
+  const canExpand = !guidanceOpen && paragraphs.length > 2;
+
+  useEffect(() => {
+    setGuidanceOpen(false);
+  }, [payload.domain, payload.percentage, payload.guidance]);
+
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
       if (event.key === "Escape") onClose();
@@ -94,8 +117,6 @@ function GuidancePopup({
     };
   }, [onClose]);
 
-  const feedback = feedbackForScore(payload.domain, payload.percentage);
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-primary-dark/40 px-4 backdrop-blur-sm"
@@ -106,7 +127,9 @@ function GuidancePopup({
         role="dialog"
         aria-modal="true"
         aria-labelledby="guidance-popup-title"
-        className="relative w-full max-w-[440px] bg-white p-6 shadow-[0_16px_48px_rgba(31,66,35,0.2)] md:p-8"
+        className={`relative max-h-[min(90dvh,820px)] w-full overflow-y-auto bg-white p-6 shadow-[0_16px_48px_rgba(31,66,35,0.2)] md:p-8 ${
+          paragraphs.length > 2 ? "max-w-[640px]" : "max-w-[440px]"
+        }`}
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -142,11 +165,18 @@ function GuidancePopup({
             </Heading>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col items-start gap-4">
             <Meta as="p">Насоки</Meta>
-            <Body as="p" className="text-action leading-[1.45]">
-              {feedback}
-            </Body>
+            <div className="flex w-full flex-col gap-4 text-left text-[16px] leading-[1.55] text-primary-dark">
+              {visible.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+            </div>
+            {canExpand ? (
+              <UnderlineLinkButton onClick={() => setGuidanceOpen(true)}>
+                Прочети още
+              </UnderlineLinkButton>
+            ) : null}
           </div>
         </div>
       </div>
@@ -593,14 +623,13 @@ function PendingFillControl({
 
   return (
     <div className="relative shrink-0">
-      <LinkButton
+      <UnderlineLinkButton
         ref={triggerRef}
-        icon="none"
         onClick={onToggle}
         aria-expanded={open}
       >
         Попълни
-      </LinkButton>
+      </UnderlineLinkButton>
 
       {open &&
         coords &&
@@ -663,10 +692,13 @@ function getUniformStatusColumns(table: DashboardTable): Set<number> {
 export function ResultsTable({
   table,
   resetKey,
+  labelWidth = LABEL_COLUMN_WIDTH,
 }: {
   table: DashboardTable;
   /** Resets horizontal scroll when the active child changes. */
   resetKey: string;
+  /** Width of the sticky domain column. Wider labels need more room. */
+  labelWidth?: number;
 }) {
   const [openPending, setOpenPending] = useState<string | null>(null);
   const [guidance, setGuidance] = useState<GuidancePayload | null>(null);
@@ -779,25 +811,32 @@ export function ResultsTable({
   return (
     <>
       <div className="flex w-full flex-col gap-1.5">
-        <div className="relative w-full border-[1.5px] border-border-green bg-white">
+        <div
+          className={`relative border-[1.5px] border-border-green bg-white ${
+            columnCount === 1 ? "w-max max-w-full" : "w-full"
+          }`}
+        >
           <div
             ref={scrollRef}
             className="results-table-scroll w-full overflow-x-auto"
           >
             <div
-              className="grid w-full"
+              className={columnCount === 1 ? "grid w-max" : "grid w-full"}
               style={{
                 // Grow columns to fill the desktop width; keep a 120px floor so
                 // many months still overflow and scroll on narrower viewports.
-                minWidth: LABEL_COLUMN_WIDTH + columnCount * 120,
-                gridTemplateColumns: `${LABEL_COLUMN_WIDTH}px repeat(${columnCount}, minmax(120px, 1fr))`,
+                // A single result column stays beside its label.
+                minWidth: columnCount === 1 ? undefined : labelWidth + columnCount * 120,
+                gridTemplateColumns: `${labelWidth}px repeat(${columnCount}, ${
+                  columnCount === 1 ? "160px" : "minmax(120px, 1fr)"
+                })`,
                 gridTemplateRows: `auto repeat(${domainCount}, minmax(4.75rem, auto))`,
               }}
             >
               <div
                 className="sticky left-0 z-10 bg-primary-light-solid"
                 style={{
-                  width: LABEL_COLUMN_WIDTH,
+                  width: labelWidth,
                   gridRow: 1,
                   gridColumn: 1,
                 }}
@@ -819,7 +858,7 @@ export function ResultsTable({
                     domainIndex > 0 ? "border-t border-border-green/30" : ""
                   }`}
                   style={{
-                    width: LABEL_COLUMN_WIDTH,
+                    width: labelWidth,
                     gridRow: domainIndex + 2,
                     gridColumn: 1,
                   }}
@@ -909,7 +948,7 @@ export function ResultsTable({
                 className={`pointer-events-none absolute inset-y-0 z-20 w-10 bg-gradient-to-r from-white to-transparent transition-opacity duration-200 ${
                   canScrollLeft ? "opacity-100" : "opacity-0"
                 }`}
-                style={{ left: LABEL_COLUMN_WIDTH }}
+                style={{ left: labelWidth }}
               />
               <div
                 aria-hidden
@@ -973,6 +1012,72 @@ function ParentalQuestionnaireCard({
 }) {
   const [pendingOpen, setPendingOpen] = useState(false);
   const [guidance, setGuidance] = useState<GuidancePayload | null>(null);
+  const domains =
+    item.cell.kind === "done" ? (item.domainResults ?? []) : [];
+
+  const guidancePopup = guidance ? (
+    <GuidancePopup payload={guidance} onClose={() => setGuidance(null)} />
+  ) : null;
+
+  if (domains.length > 0) {
+    return (
+      <div
+        className="flex flex-col gap-4 overflow-visible border-[1.5px] border-border-green bg-white px-4 py-5"
+      >
+        <div className="flex items-center gap-3">
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-visible">
+            <TokenIcon
+              src={item.icon}
+              accent={item.accent}
+              position="center"
+              className="h-10 w-10"
+            />
+          </div>
+          <Heading as="h2" size="sm" className="min-w-0 text-balance">
+            {item.title}
+          </Heading>
+        </div>
+        <div className="flex flex-col">
+          {domains.map((result) => (
+            <button
+              key={result.domain}
+              type="button"
+              onClick={() =>
+                setGuidance({
+                  domain: result.domain,
+                  intervalLabel: "Резултат",
+                  percentage: result.percentage,
+                  guidance:
+                    item.slug === "roditel-specialist"
+                      ? specialistDomainGuidance
+                      : undefined,
+                })
+              }
+              aria-label={`Насоки за ${result.domain}, Резултат: ${result.percentage}%`}
+              className="group -mx-4 flex items-center justify-between gap-3 border-t border-border-green/30 px-4 py-2.5 text-left transition-colors duration-150 first:border-t-0 hover:bg-cream focus-visible:bg-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              <span className="min-w-0 text-[16px] font-bold leading-[1.3] text-primary-dark transition-colors duration-150 group-hover:text-primary">
+                {result.domain}
+              </span>
+              <span
+                className="inline-flex min-w-[64px] shrink-0 items-center justify-center gap-1.5 px-3.5 py-2.5"
+                style={{ backgroundColor: resultTierColorLight(result.percentage) }}
+              >
+                <span
+                  className="text-label font-bold"
+                  style={{ color: resultTierColor(result.percentage) }}
+                >
+                  {result.percentage}%
+                </span>
+                <ButtonArrowIcon className="h-[14px] w-[9px] shrink-0 text-primary-dark/40 transition-colors duration-150 group-hover:text-secondary" />
+              </span>
+            </button>
+          ))}
+        </div>
+        {guidancePopup}
+      </div>
+    );
+  }
 
   return (
     <div
@@ -1000,12 +1105,7 @@ function ParentalQuestionnaireCard({
         />
       </div>
 
-      {guidance && (
-        <GuidancePopup
-          payload={guidance}
-          onClose={() => setGuidance(null)}
-        />
-      )}
+      {guidancePopup}
     </div>
   );
 }
@@ -1103,11 +1203,28 @@ export function DashboardView() {
           childId={activeChild.id}
         />
       </div>
-      <div className={`grid grid-cols-1 md:grid-cols-3 ${cardGapClass}`}>
-        {activeChild.parentalQuestionnaires.map((item) => (
-          <ParentalQuestionnaireCard key={item.slug} item={item} />
-        ))}
-      </div>
+      {activeChild.parentalQuestionnaires.some(
+        (item) => !item.domainResults?.length || item.cell.kind !== "done",
+      ) ? (
+        <div className={`grid grid-cols-1 md:grid-cols-3 ${cardGapClass}`}>
+          {activeChild.parentalQuestionnaires
+            .filter((item) => !item.domainResults?.length || item.cell.kind !== "done")
+            .map((item) => (
+              <ParentalQuestionnaireCard key={item.slug} item={item} />
+            ))}
+        </div>
+      ) : null}
+      {activeChild.parentalQuestionnaires.some(
+        (item) => item.cell.kind === "done" && item.domainResults?.length,
+      ) ? (
+        <div className={`grid grid-cols-1 items-start lg:grid-cols-3 ${cardGapClass}`}>
+          {activeChild.parentalQuestionnaires
+            .filter((item) => item.cell.kind === "done" && item.domainResults?.length)
+            .map((item) => (
+              <ParentalQuestionnaireCard key={`${item.slug}-domains`} item={item} />
+            ))}
+        </div>
+      ) : null}
 
       {formMode === "add" && (
         <ChildFormModal

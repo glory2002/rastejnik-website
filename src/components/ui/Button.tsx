@@ -417,6 +417,105 @@ export const LinkButton = forwardRef<HTMLElement, LinkButtonProps>(
   },
 );
 
+interface UnderlineLinkButtonProps {
+  children: React.ReactNode;
+  href?: string;
+  className?: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  target?: string;
+  rel?: string;
+  "aria-expanded"?: boolean;
+}
+
+/**
+ * Link-button label without an arrow. Hover draws a thick yellow rule
+ * under the words. The arrowed `LinkButton` stays unchanged.
+ */
+export const UnderlineLinkButton = forwardRef<
+  HTMLElement,
+  UnderlineLinkButtonProps
+>(function UnderlineLinkButton(
+  {
+    children,
+    href,
+    className = "",
+    onClick,
+    disabled = false,
+    type = "button",
+    target,
+    rel,
+    "aria-expanded": ariaExpanded,
+  },
+  ref,
+) {
+  const sharedClassName = cx(
+    "group inline-flex w-max shrink-0 items-center py-1 whitespace-nowrap",
+    labelClass,
+    "text-primary-dark hover:text-primary focus-visible:text-primary",
+    "disabled:pointer-events-none disabled:opacity-40",
+    className,
+  );
+  const content = (
+    <span
+      className={cx(
+        "border-b-[3px] border-transparent pb-0.5",
+        "transition-colors motion-reduce:transition-none",
+        motionEase,
+        "group-hover:border-secondary group-focus-visible:border-secondary",
+      )}
+    >
+      {children}
+    </span>
+  );
+
+  if (href) {
+    const external = /^https?:/i.test(href);
+    if (external) {
+      return (
+        <a
+          ref={ref as React.Ref<HTMLAnchorElement>}
+          href={href}
+          className={sharedClassName}
+          onClick={onClick}
+          target={target}
+          rel={rel}
+          aria-expanded={ariaExpanded}
+        >
+          {content}
+        </a>
+      );
+    }
+    return (
+      <Link
+        ref={ref as React.Ref<HTMLAnchorElement>}
+        href={href}
+        className={sharedClassName}
+        onClick={onClick}
+        target={target}
+        rel={rel}
+        aria-expanded={ariaExpanded}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      ref={ref as React.Ref<HTMLButtonElement>}
+      type={type}
+      className={sharedClassName}
+      onClick={onClick}
+      disabled={disabled}
+      aria-expanded={ariaExpanded}
+    >
+      {content}
+    </button>
+  );
+});
+
 /** Icon-only carousel control. Same 36px hero arrow as the XL button. */
 const carouselArrowClass = "h-9 w-9";
 

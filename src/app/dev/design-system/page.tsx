@@ -12,7 +12,12 @@ import { ShevitsaMark, shevitsaTones } from "@/components/icons/ShevitsaMark";
 import { TokenIcon } from "@/components/icons/TokenIcon";
 import { partners } from "@/components/PartnersSection";
 import { FormDemo } from "./FormDemo";
-import { Button, CarouselArrow, LinkButton } from "@/components/ui/Button";
+import {
+  Button,
+  CarouselArrow,
+  LinkButton,
+  UnderlineLinkButton,
+} from "@/components/ui/Button";
 import {
   cardGapClass,
   cardGapCompactClass,
@@ -441,6 +446,7 @@ export default function DesignSystemPage() {
               <LinkButton href="#butoni" icon="back">
                 LABEL
               </LinkButton>
+              <UnderlineLinkButton href="#butoni">LABEL</UnderlineLinkButton>
             </ButtonRow>
           </ButtonSet>
           <ButtonSet caption="carousel">

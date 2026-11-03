@@ -1,3 +1,5 @@
+import { parentalCompetenceQuestions } from "@/data/parentalCompetence";
+import { parentalSpecialistQuestions } from "@/data/parentalSpecialist";
 import {
   findAgeSubcategory,
   questionnaireCategories,
@@ -42,6 +44,12 @@ export interface EarlyDevelopmentBand {
   table: DashboardTable;
 }
 
+/** One scored domain inside a parental questionnaire (competence). */
+export interface ParentalDomainScore {
+  domain: string;
+  percentage: number;
+}
+
 /** One of the three parental questionnaires (not early childhood development). */
 export interface ParentalQuestionnaireResult {
   slug: string;
@@ -49,6 +57,8 @@ export interface ParentalQuestionnaireResult {
   icon: string;
   accent: QuestionnaireAccent;
   cell: DashboardCell;
+  /** Per-domain scores, in questionnaire order. Absent until the test is done. */
+  domainResults?: ParentalDomainScore[];
 }
 
 export interface DashboardChild {
@@ -86,13 +96,52 @@ const parentalQuestionnaireMeta = questionnaireCategories.filter(
   (category) => category.slug !== "ranno-detsko-razvitie",
 );
 
-function parentalPending(title: string): DashboardCell {
+const parentalQuestionnaireHref: Record<string, string> = {
+  "roditelska-gramotnost": "/questionnaires/roditelska-gramotnost",
+  "roditelska-kompetentnost": "/questionnaires/roditelska-kompetentnost",
+  "roditel-specialist": "/questionnaires/roditel-specialist",
+};
+
+function parentalPending(title: string, slug?: string): DashboardCell {
   return {
     kind: "pending",
     prompt: `Направи теста „${title}"`,
-    href: "/questionnaires",
+    href: (slug && parentalQuestionnaireHref[slug]) || "/questionnaires",
   };
 }
+
+const competenceDomainNames = [
+  ...new Set(parentalCompetenceQuestions.map((question) => question.domain)),
+];
+
+/** Sample completed competence profile. Average matches the card score of 76. */
+const petyaCompetenceScores = [82, 74, 68, 80, 88, 64];
+const petyaCompetenceDomains: ParentalDomainScore[] = competenceDomainNames.map(
+  (domain, index) => ({
+    domain,
+    percentage: petyaCompetenceScores[index] ?? 76,
+  }),
+);
+
+/** Literacy is scored in four knowledge areas. Average matches the card score of 82. */
+const petyaLiteracyDomains: ParentalDomainScore[] = [
+  { domain: "Режим и сън", percentage: 78 },
+  { domain: "Темп на развитие", percentage: 85 },
+  { domain: "Език и общуване", percentage: 90 },
+  { domain: "Игра и движение", percentage: 75 },
+];
+
+/** Same six domains as parental competence. Average matches the card score of 72. */
+const specialistDomainNames = [
+  ...new Set(parentalSpecialistQuestions.map((question) => question.domain)),
+];
+const petyaSpecialistScores = [78, 70, 64, 74, 82, 64];
+const petyaSpecialistDomains: ParentalDomainScore[] = specialistDomainNames.map(
+  (domain, index) => ({
+    domain,
+    percentage: petyaSpecialistScores[index] ?? 72,
+  }),
+);
 
 function parentalQuestionnaireResults(
   cells: Record<string, DashboardCell>,
@@ -248,7 +297,7 @@ export const dashboardChildren: DashboardChild[] = [
       Object.fromEntries(
         parentalQuestionnaireMeta.map((category) => [
           category.slug,
-          parentalPending(category.title),
+          parentalPending(category.title, category.slug),
         ]),
       ),
     ),
@@ -273,9 +322,18 @@ export const dashboardChildren: DashboardChild[] = [
     parentalQuestionnaires: parentalQuestionnaireResults({
       "roditelska-gramotnost": { kind: "done", values: [82] },
       "roditelska-kompetentnost": { kind: "done", values: [76] },
-      "roditel-specialist": parentalPending(
-        "Взаимоотношения родител-специалист",
-      ),
+      "roditel-specialist": { kind: "done", values: [72] },
+    }).map((item) => {
+      if (item.slug === "roditelska-gramotnost") {
+        return { ...item, domainResults: petyaLiteracyDomains };
+      }
+      if (item.slug === "roditelska-kompetentnost") {
+        return { ...item, domainResults: petyaCompetenceDomains };
+      }
+      if (item.slug === "roditel-specialist") {
+        return { ...item, domainResults: petyaSpecialistDomains };
+      }
+      return item;
     }),
   },
 ];
@@ -381,7 +439,7 @@ export function createDashboardChild(input: NewChildInput): DashboardChild {
       Object.fromEntries(
         parentalQuestionnaireMeta.map((category) => [
           category.slug,
-          parentalPending(category.title),
+          parentalPending(category.title, category.slug),
         ]),
       ),
     ),

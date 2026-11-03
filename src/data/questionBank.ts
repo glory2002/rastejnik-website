@@ -1,3 +1,5 @@
+import { competenceDomainGuidance } from "@/data/competenceGuidance";
+
 export interface QuestionAnswerOption {
   value: string;
   label: string;
@@ -22,6 +24,15 @@ const answerScores: Record<string, number> = {
   yes: 100,
   sometimes: 50,
   "not-yet": 0,
+  never: 0,
+  rarely: 25,
+  often: 75,
+  "almost-always": 100,
+  "strongly-disagree": 0,
+  disagree: 25,
+  neutral: 50,
+  agree: 75,
+  "strongly-agree": 100,
 };
 
 export interface DomainResult {
@@ -41,6 +52,27 @@ const domainFeedback: Record<string, { low: string; medium: string; high: string
     medium: "Познавате основни факти, с отделни теми за доизясняване. Продължавайте да четете проверени източници и да наблюдавате детето си без сравнения.",
     high: "Демонстрирате добра родителска грамотност по темите за ранно развитие. Продължавайте да се опирате на доказателства и да се доверявате на наблюденията си.",
   },
+  "Режим и сън": {
+    low: "Режимът на сън, бодърстване и хранене още не е ясна опора. Кратък, повтарящ се ред през деня помага и на детето, и на вас.",
+    medium: "Познавате основното за режима, с отделни теми за доизясняване. Наблюдавайте детето и коригирайте реда според неговите сигнали.",
+    high: "Разпознавате защо предвидимият режим подкрепя ранното развитие. Продължавайте да го напасвате към ритъма на детето.",
+  },
+  "Темп на развитие": {
+    low: "Сравнението с връстници лесно създава тревога. Всяко дете има свой темп и изоставането в едно умение не означава само по себе си проблем.",
+    medium: "Знаете, че темпът е индивидуален, но някои сравнения още тежат. Следете посоката на развитие при вашето дете, не таблицата на другите.",
+    high: "Добре различавате индивидуален темп от повод за разговор със специалист. Продължавайте да наблюдавате без надпревара.",
+  },
+  "Език и общуване": {
+    low: "Говорът, четенето и пеенето от ранна възраст изграждат езика. Кратък ежедневен разговор с детето е добра първа стъпка.",
+    medium: "Познавате ролята на говора и четенето, с място за по-редовна практика. Назовавайте това, което правите заедно.",
+    high: "Разпознавате как ежедневният говор и четенето подкрепят езика. Продължавайте в същия ритъм.",
+  },
+  "Игра и движение": {
+    low: "Свободната игра и движението са част от развитието, не награда след „полезното“. Отделете кратко време на пода всеки ден.",
+    medium: "Знаете, че играта и движението са важни, и можете да ги правите по-редовни. Следвайте това, с което детето се занимава.",
+    high: "Добре разбирате мястото на свободната игра и движението. Продължавайте да оставяте детето да изследва безопасно.",
+  },
+  ...competenceDomainGuidance,
   "Физическо развитие": {
     low: "Основните двигателни умения все още се изграждат. Отделяйте кратки, редовни моменти за свободна игра и движение на пода, за да подкрепите тази област.",
     medium: "Двигателните умения се развиват добре, с място за още практика. Продължавайте с редовна игра на пода и движение навън.",
@@ -72,9 +104,16 @@ const fallbackFeedback = {
 export const generalGuidance =
   "Всяко дете се развива с различно темпо и тези резултати са само ориентировъчни — целта им е да ви помогнат да забележите областите, в които детето може да се възползва от още игра и внимание, а не да поставят диагноза. При притеснения винаги споделяйте резултатите с педиатър или специалист по детско развитие.";
 
+export type DomainGuidance = { low: string; medium: string; high: string };
+
 /** Supportive guidance copy for a domain score — shared by results screen and dashboard. */
-export function feedbackForScore(domain: string, percentage: number): string {
-  const tiers = domainFeedback[domain] ?? fallbackFeedback;
+export function feedbackForScore(
+  domain: string,
+  percentage: number,
+  guidance?: Record<string, DomainGuidance>,
+): string {
+  const tiers =
+    guidance?.[domain] ?? domainFeedback[domain] ?? fallbackFeedback;
   if (percentage < 40) return tiers.low;
   if (percentage < 75) return tiers.medium;
   return tiers.high;
@@ -111,6 +150,7 @@ export function getOverallStatus(domainResults: DomainResult[]): OverallStatus {
 export function getDomainResults(
   questions: QuestionnaireQuestion[],
   answers: Record<string, string>,
+  guidance?: Record<string, DomainGuidance>,
 ): DomainResult[] {
   const order: string[] = [];
   const totals = new Map<string, { sum: number; count: number }>();
@@ -136,7 +176,11 @@ export function getDomainResults(
   return order.map((domain) => {
     const { sum, count } = totals.get(domain)!;
     const percentage = count > 0 ? Math.round(sum / count) : 0;
-    return { domain, percentage, feedback: feedbackForScore(domain, percentage) };
+    return {
+      domain,
+      percentage,
+      feedback: feedbackForScore(domain, percentage, guidance),
+    };
   });
 }
 

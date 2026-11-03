@@ -6,6 +6,7 @@ import {
   generalGuidance,
   getDomainResults,
   getOverallStatus,
+  type DomainGuidance,
   type OverallLevel,
   type QuestionAnswerOption,
   type QuestionnaireQuestion,
@@ -13,7 +14,7 @@ import {
 import { ShevitsaAssembleIcon } from "@/components/icons/ShevitsaAssembleIcon";
 import { TrafficLightIcon } from "@/components/icons/TrafficLightIcon";
 import { FaqToggleIcon } from "@/components/FaqList";
-import { Button, LinkButton } from "@/components/ui/Button";
+import { Button, LinkButton, UnderlineLinkButton } from "@/components/ui/Button";
 import { DateInput } from "@/components/ui/DateInput";
 import { NumberInput } from "@/components/ui/NumberInput";
 import { FormSelect } from "@/components/ui/Select";
@@ -128,6 +129,31 @@ function domainTierColor(percentage: number): string {
 
 const trafficLightOrder: OverallLevel[] = ["red", "yellow", "green"];
 
+/** Long guidance reads like a 12pt Word page: 16px type, A4-like line length. */
+function GuidanceText({
+  text,
+  limit,
+}: {
+  text: string;
+  /** When set, only the first paragraphs are shown. */
+  limit?: number;
+}) {
+  const paragraphs = text
+    .split(/\n\n+/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+  const visible =
+    limit === undefined ? paragraphs : paragraphs.slice(0, limit);
+
+  return (
+    <div className="flex w-full max-w-[38rem] flex-col gap-4 text-left text-[16px] leading-[1.55] text-primary-dark">
+      {visible.map((paragraph, index) => (
+        <p key={index}>{paragraph}</p>
+      ))}
+    </div>
+  );
+}
+
 function TrafficLight({
   level,
   label,
@@ -230,13 +256,26 @@ interface QuestionnaireFlowProps {
   options?: QuestionAnswerOption[];
   /** Questions shown per step. Literacy uses 1 to match the validated form. */
   pageSize?: number;
-  /** Shared instruction above each literacy statement. */
+  /** Shared instruction above each statement. */
   instruction?: string;
   /**
-   * `"literacy"` — one statement per step, centered radio cards
-   * (вярно / невярно / не знам), matching the validated UI.
+   * `"literacy"` — one statement per step, centered stacked choices.
+   * Shared by parental literacy (3 options) and parental competence (5 options).
    */
   variant?: "default" | "literacy";
+  /** Show the question's domain as a heading above the statement. */
+  showDomain?: boolean;
+  /**
+   * Per-domain guidance used at the checkpoint and the summary.
+   * Needed when two questionnaires share domain names.
+   */
+  domainGuidance?: Record<string, DomainGuidance>;
+  /** Results-screen copy. Defaults match the early-development assessment. */
+  completion?: {
+    lead?: string;
+    guidance?: string;
+    overallLabels?: Partial<Record<OverallLevel, string>>;
+  };
 }
 
 export function QuestionnaireFlow({
@@ -248,10 +287,16 @@ export function QuestionnaireFlow({
   pageSize = PAGE_SIZE,
   instruction,
   variant = "default",
+  showDomain = false,
+  domainGuidance,
+  completion,
 }: QuestionnaireFlowProps) {
   const [page, setPage] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [stage, setStage] = useState<Stage>("checking");
+  /** Domain whose traffic-light result is on screen, between question groups. */
+  const [pausedDomain, setPausedDomain] = useState<string | null>(null);
+  const [guidanceOpen, setGuidanceOpen] = useState(false);
   const [openDomains, setOpenDomains] = useState<number[]>([]);
   const [registerData, setRegisterData] = useState({ email: "", password: "" });
   const [parentData, setParentData] = useState<ParentData>(emptyParentData);
@@ -298,6 +343,10 @@ export function QuestionnaireFlow({
     if (stage === "complete") setOpenDomains([]);
   }, [stage]);
 
+  useEffect(() => {
+    setGuidanceOpen(false);
+  }, [pausedDomain]);
+
   const totalPages = Math.ceil(questions.length / pageSize);
   const isLastPage = page === totalPages - 1;
 
@@ -317,25 +366,57 @@ export function QuestionnaireFlow({
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
   }
 
-  function handleNext() {
-    if (isLastPage) {
-      const prefersReducedMotion =
-        typeof window !== "undefined" &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function finishQuestionnaire() {
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      if (prefersReducedMotion) {
-        setStage("complete");
-        return;
-      }
-
-      setStage("transition");
-      transitionTimeout.current = setTimeout(() => {
-        setStage("complete");
-      }, TRANSITION_DURATION_MS);
-    } else {
-      setPage((p) => p + 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    if (prefersReducedMotion) {
+      setStage("complete");
+      return;
     }
+
+    setStage("transition");
+    transitionTimeout.current = setTimeout(() => {
+      setStage("complete");
+    }, TRANSITION_DURATION_MS);
+  }
+
+  function handleNext() {
+    const lastOnPage = pageQuestions[pageQuestions.length - 1];
+    const index = lastOnPage
+      ? questions.findIndex((q) => q.id === lastOnPage.id)
+      : -1;
+    const nextQuestion = index >= 0 ? questions[index + 1] : undefined;
+    const endsDomain =
+      showDomain &&
+      !!lastOnPage &&
+      (!nextQuestion || nextQuestion.domain !== lastOnPage.domain);
+
+    if (endsDomain) {
+      setPausedDomain(lastOnPage.domain);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    if (isLastPage) {
+      finishQuestionnaire();
+      return;
+    }
+
+    setPage((p) => p + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function continueAfterDomain() {
+    const finishing = isLastPage;
+    setPausedDomain(null);
+    if (finishing) {
+      finishQuestionnaire();
+      return;
+    }
+    setPage((p) => p + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleBack() {
@@ -344,7 +425,11 @@ export function QuestionnaireFlow({
   }
 
   const headerSection = stage === "questions" && header && (
-    <section className="w-full bg-cream py-12 sm:py-16 md:py-24">
+    <section
+      className={`w-full bg-cream pt-12 sm:pt-16 md:pt-24 ${
+        isLiteracy ? "pb-0" : "pb-12 sm:pb-16 md:pb-24"
+      }`}
+    >
       <Container>
         <Reveal>{header}</Reveal>
       </Container>
@@ -554,8 +639,14 @@ export function QuestionnaireFlow({
   }
 
   if (stage === "complete") {
-    const domainResults = getDomainResults(questions, answers);
+    const domainResults = getDomainResults(questions, answers, domainGuidance);
     const overallStatus = getOverallStatus(domainResults);
+    const overallLabel =
+      completion?.overallLabels?.[overallStatus.level] ?? overallStatus.label;
+    const resultsLead =
+      completion?.lead ??
+      "Успешно завършихте оценката на развитието на вашето дете. Ето обобщените резултати и препоръки, които ще ви помогнат да подкрепите растежа му.";
+    const resultsGuidance = completion?.guidance ?? generalGuidance;
 
     return (
       <section className="w-full bg-white py-12 sm:py-16 md:py-24">
@@ -564,18 +655,14 @@ export function QuestionnaireFlow({
             <div className="flex flex-col items-center gap-8 text-center sm:gap-10">
         <Reveal className="flex flex-col items-center gap-4">
           <Title className="max-w-[560px] text-balance">Поздравления!</Title>
-          <Body className="max-w-[480px]">
-            Успешно завършихте оценката на развитието на вашето дете. Ето
-            обобщените резултати и препоръки, които ще ви помогнат да
-            подкрепите растежа му.
-          </Body>
+          <Body className="max-w-[480px]">{resultsLead}</Body>
         </Reveal>
 
         {domainResults.length > 0 && (
           <Reveal delay={140} className="w-full bg-white p-6 text-left sm:p-8 md:p-10">
             <div className="flex flex-col items-center gap-12 text-center">
               <Heading size="sm">Обобщение на резултатите</Heading>
-              <TrafficLight level={overallStatus.level} label={overallStatus.label} />
+              <TrafficLight level={overallStatus.level} label={overallLabel} />
             </div>
 
             {/* Large gap between domain groups; tight spacing inside each group. */}
@@ -634,7 +721,9 @@ export function QuestionnaireFlow({
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <Body className="pt-2">{result.feedback}</Body>
+                        <div className="pt-4">
+                          <GuidanceText text={result.feedback} />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -646,7 +735,7 @@ export function QuestionnaireFlow({
               <Heading as="h4" size="sm">
                 Общи насоки
               </Heading>
-              <Body>{generalGuidance}</Body>
+              <Body>{resultsGuidance}</Body>
             </div>
           </Reveal>
         )}
@@ -663,10 +752,107 @@ export function QuestionnaireFlow({
     );
   }
 
+  if (stage === "questions" && pausedDomain) {
+    const result = getDomainResults(questions, answers, domainGuidance).find(
+      (item) => item.domain === pausedDomain,
+    );
+    const status = getOverallStatus(result ? [result] : []);
+    const statusLabel =
+      completion?.overallLabels?.[status.level] ?? status.label;
+    const tierColor = result ? domainTierColor(result.percentage) : undefined;
+
+    return (
+      <section className="w-full bg-white py-12 sm:py-16 md:py-24">
+        <Container>
+          <div className="mx-auto flex w-full max-w-[720px] flex-col items-center gap-8 text-center sm:gap-10">
+            <Reveal className="flex flex-col items-center gap-4">
+              <Title className="max-w-[640px] text-balance">{pausedDomain}</Title>
+            </Reveal>
+
+            {result && (
+              <Reveal delay={140} className="w-full bg-white p-6 text-left sm:p-8 md:p-10">
+                <div className="flex flex-col items-center gap-12 text-center">
+                  <Heading size="sm">Резултат за областта</Heading>
+                  <TrafficLight level={status.level} label={statusLabel} />
+                </div>
+
+                <div className="mt-10 sm:mt-16">
+                  <div className="mb-1.5 flex items-baseline justify-between gap-3">
+                    <Heading as="span" size="sm" tone="dark">
+                      {result.domain}
+                    </Heading>
+                    <Heading
+                      as="span"
+                      size="sm"
+                      tone="inherit"
+                      className="shrink-0"
+                      style={{ color: tierColor }}
+                    >
+                      {result.percentage}%
+                    </Heading>
+                  </div>
+
+                  <div className="wave-progress-bar @container relative w-full">
+                    <div className="wave-progress-track absolute inset-0 bg-cream-solid" />
+                    <div
+                      className="wave-progress-fill absolute inset-y-0 left-0 transition-[width] duration-500 ease-out"
+                      style={{
+                        width: `${result.percentage}%`,
+                        backgroundImage: "none",
+                        backgroundColor: tierColor,
+                      }}
+                    />
+                  </div>
+
+                  <div className="mt-8 flex flex-col items-start gap-4">
+                    <Heading as="h4" size="sm">
+                      Насоки
+                    </Heading>
+                    <GuidanceText
+                      text={result.feedback}
+                      limit={guidanceOpen ? undefined : 2}
+                    />
+                    {guidanceOpen ? null : (
+                      <UnderlineLinkButton
+                        aria-expanded={false}
+                        onClick={() => setGuidanceOpen(true)}
+                      >
+                        Прочети още
+                      </UnderlineLinkButton>
+                    )}
+                  </div>
+                </div>
+              </Reveal>
+            )}
+
+            <Reveal delay={220} className="flex w-full items-center justify-between gap-4">
+              <LinkButton
+                icon="back"
+                onClick={() => {
+                  setPausedDomain(null);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                Назад
+              </LinkButton>
+              <Button size="l" onClick={continueAfterDomain}>
+                {isLastPage ? "Към обобщението" : "Следваща област"}
+              </Button>
+            </Reveal>
+          </div>
+        </Container>
+      </section>
+    );
+  }
+
   return (
     <>
       {headerSection}
-      <section className={`w-full py-12 sm:py-16 md:py-24 ${isLiteracy ? "bg-cream" : "bg-white"}`}>
+      <section
+        className={`w-full pb-12 sm:pb-16 md:pb-24 ${
+          isLiteracy ? "bg-cream pt-6 sm:pt-8" : "bg-white pt-12 sm:pt-16 md:pt-24"
+        }`}
+      >
         <Container>
           <div
             className={`mx-auto w-full ${isLiteracy ? "max-w-[640px]" : "max-w-[720px]"}`}
@@ -714,14 +900,34 @@ export function QuestionnaireFlow({
                         {instruction ? (
                           <Body className="max-w-[520px]">{instruction}</Body>
                         ) : null}
-                        <Heading
-                          as="p"
-                          size="md"
-                          tone="dark"
-                          className="max-w-[560px] leading-[1.3]"
-                        >
-                          {q.text}
-                        </Heading>
+                        {showDomain ? (
+                          <div className="flex flex-col items-center gap-4">
+                            <Heading
+                              as="h2"
+                              size="md"
+                              className="max-w-[520px] text-balance leading-[1.3]"
+                            >
+                              {q.domain}
+                            </Heading>
+                            <Heading
+                              as="p"
+                              size="sm"
+                              tone="dark"
+                              className="max-w-[560px]"
+                            >
+                              {q.text}
+                            </Heading>
+                          </div>
+                        ) : (
+                          <Heading
+                            as="p"
+                            size="md"
+                            tone="dark"
+                            className="max-w-[560px] leading-[1.3]"
+                          >
+                            {q.text}
+                          </Heading>
+                        )}
                         <div className="flex w-full max-w-[480px] flex-col gap-3">
                           {answerOptions.map((opt) => {
                             const checked = answers[q.id] === opt.value;
