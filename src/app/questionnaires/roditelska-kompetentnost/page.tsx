@@ -1,52 +1,84 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { QuestionnaireFlow } from "@/components/QuestionnaireFlow";
-import { Title } from "@/components/ui/Typography";
+import { TokenIcon } from "@/components/icons/TokenIcon";
+import { LinkButton } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
 import {
-  competenceAnswerOptions,
-  parentalCompetenceQuestions,
-} from "@/data/parentalCompetence";
+  cardGapCompactClass,
+  cardSurfaceClass,
+} from "@/components/ui/cardSurface";
+import { Display, Heading, Lead } from "@/components/ui/Typography";
+import { competenceAgeBands } from "@/data/parentalCompetence";
+import { questionnaireCategories } from "@/data/questionnaires";
+
+const category = questionnaireCategories.find(
+  (item) => item.slug === "roditelska-kompetentnost",
+)!;
 
 export const metadata: Metadata = {
   title: "Родителска компетентност — Растежник",
-  description:
-    "Кратка самооценка на увереността и уменията ви да отговаряте на нуждите на детето във всекидневни ситуации.",
+  description: category.description,
 };
 
 export default function ParentalCompetencePage() {
-  const header = (
-    <div className="flex flex-col items-center gap-4 text-center">
-      <Title as="h1" className="max-w-[700px]">
-        Родителска компетентност
-      </Title>
-    </div>
-  );
-
   return (
     <main>
-      <Header variant="framed" />
+      <Header variant="framed" surface="bg-accent-orange-light" />
 
-      <QuestionnaireFlow
-        questions={parentalCompetenceQuestions}
-        options={competenceAnswerOptions}
-        pageSize={1}
-        variant="literacy"
-        showDomain
-        backHref="/dashboard"
-        backLabel="Към таблото"
-        header={header}
-        completion={{
-          lead: "Успешно завършихте самооценката на родителската компетентност. Ето обобщението и насоките за ежедневието с детето.",
-          guidance:
-            "Резултатът показва колко често усещате, че се справяте в ежедневни ситуации. Той не оценява колко добър родител сте. По-нисък резултат означава, че в тези моменти има място за повече опора. При нужда споделете как се чувствате с близък човек или със специалист.",
-          overallLabels: {
-            red: "Нужна е подкрепа",
-            yellow: "Има място за увереност",
-            green: "Стабилна компетентност",
-          },
-        }}
-      />
+      <section className="w-full bg-accent-orange-light py-16 md:py-24">
+        <Container>
+          <LinkButton href="/questionnaires" icon="back" className="mb-8">
+            Въпросници
+          </LinkButton>
+
+          <Reveal className="text-accent-orange">
+            <Display tone="inherit" className="max-w-[700px]">
+              {category.title}
+            </Display>
+          </Reveal>
+          <Reveal delay={140}>
+            <Lead className="mt-6 max-w-[560px]">
+              {category.description} Изберете възраст по-долу, за да започнете
+              съответния въпросник.
+            </Lead>
+          </Reveal>
+        </Container>
+      </section>
+
+      <section className="w-full bg-white py-16 md:py-24">
+        <Container>
+          <div
+            className={`@container grid sm:grid-cols-2 ${cardGapCompactClass}`}
+          >
+            {competenceAgeBands.map((band, index) => (
+              <Reveal key={band.slug} delay={index * 80} className="h-full">
+                <Link
+                  href={`/questionnaires/roditelska-kompetentnost/${band.slug}`}
+                  className={`group ${cardSurfaceClass} relative flex h-full flex-col items-center justify-center gap-4 bg-cream p-6 text-center transition-colors duration-200 ease-out hover:bg-white aspect-square md:aspect-auto md:h-[calc((100cqw-2*var(--spacing-card-compact))/3)] lg:h-[calc((100cqw-3*var(--spacing-card-compact))/4)]`}
+                >
+                  <div className="relative flex h-[112px] w-full shrink-0 items-center justify-center">
+                    <TokenIcon
+                      src={category.icon}
+                      accent={band.accent}
+                      position="center"
+                      className="h-[96px] w-[96px]"
+                    />
+                  </div>
+                  <Heading as="span" size="sm">
+                    {band.title}
+                  </Heading>
+                  <LinkButton interactive={false} hoverGroup={false}>
+                    Започни
+                  </LinkButton>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
 
       <Footer />
     </main>

@@ -50,6 +50,13 @@ export interface ParentalDomainScore {
   percentage: number;
 }
 
+/** Age split inside a parental questionnaire card. */
+export interface ParentalAgeBand {
+  id: string;
+  label: string;
+  domainResults: ParentalDomainScore[];
+}
+
 /** One of the three parental questionnaires (not early childhood development). */
 export interface ParentalQuestionnaireResult {
   slug: string;
@@ -59,6 +66,8 @@ export interface ParentalQuestionnaireResult {
   cell: DashboardCell;
   /** Per-domain scores, in questionnaire order. Absent until the test is done. */
   domainResults?: ParentalDomainScore[];
+  /** When set, the card shows these age tabs instead of one flat list. */
+  ageBands?: ParentalAgeBand[];
 }
 
 export interface DashboardChild {
@@ -114,13 +123,30 @@ const competenceDomainNames = [
   ...new Set(parentalCompetenceQuestions.map((question) => question.domain)),
 ];
 
-/** Sample completed competence profile. Average matches the card score of 76. */
-const petyaCompetenceScores = [82, 74, 68, 80, 88, 64];
-const petyaCompetenceDomains: ParentalDomainScore[] = competenceDomainNames.map(
-  (domain, index) => ({
+function competenceDomains(scores: number[]): ParentalDomainScore[] {
+  return competenceDomainNames.map((domain, index) => ({
     domain,
-    percentage: petyaCompetenceScores[index] ?? 76,
-  }),
+    percentage: scores[index] ?? 0,
+  }));
+}
+
+function competenceAgeBands(early: number[], later: number[]): ParentalAgeBand[] {
+  return [
+    { id: "0-6", label: "0–6 м.", domainResults: competenceDomains(early) },
+    {
+      id: "6-plus",
+      label: "от 6 месеца",
+      domainResults: competenceDomains(later),
+    },
+  ];
+}
+
+/** Sample completed competence profile. The later band matches the card score of 76. */
+const petyaCompetenceScores = [82, 74, 68, 80, 88, 64];
+const petyaCompetenceDomains = competenceDomains(petyaCompetenceScores);
+const petyaCompetenceBands = competenceAgeBands(
+  [74, 68, 62, 76, 80, 58],
+  petyaCompetenceScores,
 );
 
 /** Literacy is scored in four knowledge areas. Average matches the card score of 82. */
@@ -151,12 +177,10 @@ const ivanchoLiteracyDomains: ParentalDomainScore[] = [
   { domain: "Игра и движение", percentage: 64 },
 ];
 const ivanchoCompetenceScores = [78, 70, 66, 74, 84, 60];
-const ivanchoCompetenceDomains: ParentalDomainScore[] = competenceDomainNames.map(
-  (domain, index) => ({
-    domain,
-    percentage: ivanchoCompetenceScores[index] ?? 72,
-  }),
-);
+const ivanchoCompetenceDomains = competenceDomains(ivanchoCompetenceScores);
+const ivanchoCompetenceBands = competenceAgeBands(ivanchoCompetenceScores, [
+  84, 76, 72, 80, 88, 66,
+]);
 const ivanchoSpecialistScores = [66, 74, 58, 70, 80, 72];
 const ivanchoSpecialistDomains: ParentalDomainScore[] = specialistDomainNames.map(
   (domain, index) => ({
@@ -168,10 +192,20 @@ const ivanchoSpecialistDomains: ParentalDomainScore[] = specialistDomainNames.ma
 function withParentalDomains(
   items: ParentalQuestionnaireResult[],
   domains: Record<string, ParentalDomainScore[]>,
+  competenceBands?: ParentalAgeBand[],
 ): ParentalQuestionnaireResult[] {
-  return items.map((item) =>
-    domains[item.slug] ? { ...item, domainResults: domains[item.slug] } : item,
-  );
+  return items.map((item) => {
+    if (item.slug === "roditelska-kompetentnost" && competenceBands) {
+      return {
+        ...item,
+        domainResults: domains[item.slug],
+        ageBands: competenceBands,
+      };
+    }
+    return domains[item.slug]
+      ? { ...item, domainResults: domains[item.slug] }
+      : item;
+  });
 }
 
 function parentalQuestionnaireResults(
@@ -335,6 +369,7 @@ export const dashboardChildren: DashboardChild[] = [
         "roditelska-kompetentnost": ivanchoCompetenceDomains,
         "roditel-specialist": ivanchoSpecialistDomains,
       },
+      ivanchoCompetenceBands,
     ),
   },
   {
@@ -365,6 +400,7 @@ export const dashboardChildren: DashboardChild[] = [
         "roditelska-kompetentnost": petyaCompetenceDomains,
         "roditel-specialist": petyaSpecialistDomains,
       },
+      petyaCompetenceBands,
     ),
   },
 ];

@@ -421,6 +421,11 @@ interface UnderlineLinkButtonProps {
   children: React.ReactNode;
   href?: string;
   className?: string;
+  /**
+   * Default matches the action label (16px). "s" is the compact label for
+   * tight surfaces such as an age tab.
+   */
+  size?: "l" | "s";
   onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
@@ -441,6 +446,7 @@ export const UnderlineLinkButton = forwardRef<
     children,
     href,
     className = "",
+    size = "l",
     onClick,
     disabled = false,
     type = "button",
@@ -451,8 +457,8 @@ export const UnderlineLinkButton = forwardRef<
   ref,
 ) {
   const sharedClassName = cx(
-    "group inline-flex w-max shrink-0 items-center py-1 whitespace-nowrap",
-    labelClass,
+    "group inline-flex w-max shrink-0 items-center whitespace-nowrap font-bold uppercase",
+    size === "s" ? "py-0.5 text-[14px] leading-[1.3]" : "py-1 text-action",
     "text-primary-dark transition-colors hover:text-primary focus-visible:text-primary",
     "group-hover/fill:text-primary group-focus-within/fill:text-primary",
     "disabled:pointer-events-none disabled:opacity-40",

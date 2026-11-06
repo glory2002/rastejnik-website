@@ -471,6 +471,9 @@ export default function DesignSystemPage() {
               <Button variant="secondary" size="s">
                 LABEL
               </Button>
+              <UnderlineLinkButton href="#butoni" size="s">
+                LABEL
+              </UnderlineLinkButton>
             </ButtonRow>
           </ButtonSet>
         </div>

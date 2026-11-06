@@ -563,11 +563,13 @@ function PendingFillControl({
   href,
   open,
   onToggle,
+  size = "l",
 }: {
   prompt: string;
   href: string;
   open: boolean;
   onToggle?: () => void;
+  size?: "l" | "s";
 }) {
   const triggerRef = useRef<HTMLElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -626,6 +628,7 @@ function PendingFillControl({
     <div className="relative shrink-0">
       <UnderlineLinkButton
         ref={triggerRef}
+        size={size}
         onClick={(event) => {
           event.stopPropagation();
           onToggle?.();
@@ -640,10 +643,10 @@ function PendingFillControl({
         createPortal(
           <div
             ref={popoverRef}
-            className="fixed z-50 w-[280px] -translate-x-1/2 bg-primary-dark px-4 py-3 text-center text-white shadow-[0_12px_32px_rgba(31,66,35,0.25)]"
+            className="fixed z-50 w-max max-w-[360px] -translate-x-1/2 bg-primary-dark px-4 py-3 text-center text-white shadow-[0_12px_32px_rgba(31,66,35,0.25)]"
             style={{ top: coords.top, left: coords.left }}
           >
-            <p className="text-[14px] leading-[1.3]">{prompt}</p>
+            <p className="whitespace-nowrap text-[14px] leading-[1.3]">{prompt}</p>
             <Button href={href} size="s" className="mt-2">
               Започни сега
             </Button>
@@ -1026,13 +1029,33 @@ export function ResultsTable({
  */
 function ParentalQuestionnaireCard({
   item,
+  initialBand,
 }: {
   item: ParentalQuestionnaireResult;
+  /** Age tab to open first. Used by the competence card. */
+  initialBand?: string;
 }) {
+  const bands = item.ageBands ?? [];
   const [pendingOpen, setPendingOpen] = useState(false);
+  const [laterFillOpen, setLaterFillOpen] = useState(false);
   const [guidance, setGuidance] = useState<GuidancePayload | null>(null);
-  const domains =
-    item.cell.kind === "done" ? (item.domainResults ?? []) : [];
+  const [bandId, setBandId] = useState(
+    () => bands.find((band) => band.id === initialBand)?.id ?? bands[0]?.id,
+  );
+
+  useEffect(() => {
+    const available = item.ageBands ?? [];
+    const next =
+      available.find((band) => band.id === initialBand)?.id ?? available[0]?.id;
+    if (next) setBandId(next);
+  }, [initialBand, item.ageBands]);
+
+  const activeBand = bands.find((band) => band.id === bandId) ?? bands[0];
+  const domains = activeBand
+    ? activeBand.domainResults
+    : item.cell.kind === "done"
+      ? (item.domainResults ?? [])
+      : [];
 
   const guidancePopup = guidance ? (
     <GuidancePopup payload={guidance} onClose={() => setGuidance(null)} />
@@ -1040,9 +1063,7 @@ function ParentalQuestionnaireCard({
 
   if (domains.length > 0) {
     return (
-      <div
-        className="flex flex-col gap-4 overflow-visible border-[1.5px] border-border-green bg-white px-4 py-5"
-      >
+      <div className="flex flex-col gap-4 overflow-visible border-[1.5px] border-border-green bg-white px-4 py-5">
         <div className="flex items-center gap-3">
           <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-visible">
             <TokenIcon
@@ -1056,15 +1077,71 @@ function ParentalQuestionnaireCard({
             {item.title}
           </Heading>
         </div>
+        {bands.length > 0 ? (
+          <div className="flex items-stretch gap-2" role="tablist" aria-label="Възраст">
+            {bands.map((band) => {
+              const isActive = band.id === activeBand?.id;
+              const activeClass =
+                band.id === "6-plus"
+                  ? ageAccentTabActive.blue
+                  : ageAccentTabActive.orange;
+              const showFill = band.id === "6-plus" && !isActive;
+              const tabClass = `flex flex-1 items-center justify-center border-[1.5px] px-2 py-1.5 text-center text-[14px] font-bold leading-[1.5] transition-colors ${
+                isActive
+                  ? activeClass
+                  : "border-border-green/50 bg-white text-primary-dark/35 hover:border-border-green hover:text-primary-dark/55"
+              }`;
+
+              if (!showFill) {
+                return (
+                  <button
+                    key={band.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    onClick={() => setBandId(band.id)}
+                    className={tabClass}
+                  >
+                    {band.label}
+                  </button>
+                );
+              }
+
+              return (
+                <div
+                  key={band.id}
+                  className={`${tabClass} group/fill flex-col gap-1 hover:bg-cream focus-within:bg-cream has-[[aria-expanded=true]]:bg-cream`}
+                >
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={false}
+                    onClick={() => setBandId(band.id)}
+                    className="text-[14px] font-bold leading-[1.5]"
+                  >
+                    {band.label}
+                  </button>
+                  <PendingFillControl
+                    prompt="Попълни въпросника за периода от 6 месеца"
+                    href="/questionnaires/roditelska-kompetentnost/6-plus"
+                    open={laterFillOpen}
+                    onToggle={() => setLaterFillOpen((open) => !open)}
+                    size="s"
+                  />
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
         <div className="flex flex-col">
           {domains.map((result) => (
             <button
-              key={result.domain}
+              key={`${activeBand?.id ?? "all"}-${result.domain}`}
               type="button"
               onClick={() =>
                 setGuidance({
                   domain: result.domain,
-                  intervalLabel: "Резултат",
+                  intervalLabel: activeBand?.label ?? "Резултат",
                   percentage: result.percentage,
                   guidance:
                     item.slug === "roditel-specialist"
@@ -1072,7 +1149,7 @@ function ParentalQuestionnaireCard({
                       : undefined,
                 })
               }
-              aria-label={`Насоки за ${result.domain}, Резултат: ${result.percentage}%`}
+              aria-label={`Насоки за ${result.domain}, ${activeBand?.label ?? "Резултат"}: ${result.percentage}%`}
               className="group -mx-4 flex items-center justify-between gap-3 border-t border-border-green/30 px-4 py-2.5 text-left transition-colors duration-150 first:border-t-0 hover:bg-cream focus-visible:bg-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               <span className="min-w-0 text-[16px] font-bold leading-[1.3] text-primary-dark transition-colors duration-150 group-hover:text-primary">
@@ -1184,6 +1261,20 @@ function EarlyDevelopmentSection({
   );
 }
 
+/** Competence card opens on the band that matches the child's age label. */
+function ageMonthsFromLabel(ageLabel: string): number {
+  if (ageLabel.includes("годин")) {
+    const years = Number.parseInt(ageLabel, 10);
+    return (Number.isFinite(years) ? years : 0) * 12;
+  }
+  const months = Number.parseInt(ageLabel, 10);
+  return Number.isFinite(months) ? months : 0;
+}
+
+function competenceBandForAge(ageLabel: string): string {
+  return ageMonthsFromLabel(ageLabel) >= 6 ? "6-plus" : "0-6";
+}
+
 export function DashboardView() {
   const [children, setChildren] = useState(initialDashboardChildren);
   const [activeId, setActiveId] = useState(initialDashboardChildren[0].id);
@@ -1240,7 +1331,15 @@ export function DashboardView() {
           {activeChild.parentalQuestionnaires
             .filter((item) => item.cell.kind === "done" && item.domainResults?.length)
             .map((item) => (
-              <ParentalQuestionnaireCard key={`${item.slug}-domains`} item={item} />
+              <ParentalQuestionnaireCard
+                key={`${activeChild.id}-${item.slug}-domains`}
+                item={item}
+                initialBand={
+                  item.ageBands?.length
+                    ? competenceBandForAge(activeChild.ageLabel)
+                    : undefined
+                }
+              />
             ))}
         </div>
       ) : null}

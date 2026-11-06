@@ -2,6 +2,17 @@ import type {
   QuestionAnswerOption,
   QuestionnaireQuestion,
 } from "@/data/questionBank";
+import type { QuestionnaireAccent } from "@/data/questionnaires";
+
+/** Age choice on the competence landing screen, matching the dashboard tabs. */
+export const competenceAgeBands: {
+  slug: string;
+  title: string;
+  accent: QuestionnaireAccent;
+}[] = [
+  { slug: "0-6", title: "0–6 м.", accent: "orange" },
+  { slug: "6-plus", title: "от 6 месеца", accent: "blue" },
+];
 
 /** Frequency scale — higher frequency scores higher parental competence. */
 export const competenceAnswerOptions: QuestionAnswerOption[] = [
